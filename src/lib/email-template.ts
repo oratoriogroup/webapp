@@ -1,7 +1,7 @@
 // Registration confirmation email. Table layout and inline styles only, so it
 // renders the same in Gmail, Outlook, Apple Mail and phone mail apps. Images
 // are small JPG/PNG files hosted on the site (about 140KB in total).
-import { EVENT, SITE_URL, DIRECTIONS_URL, CONTACTS, WHATSAPP_GROUP_URL, SOCIALS, YOUTUBE_CHANNEL_URL } from './event';
+import { EVENT, SITE_URL, DIRECTIONS_URL, CONTACTS, WHATSAPP_GROUP_URL, SOCIALS, YOUTUBE_CHANNEL_URL, whatsappLink } from './event';
 import { googleCalendarUrl } from './calendar';
 import type { ConnectType } from './form';
 
@@ -39,7 +39,7 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
     (c) => `<tr>
       <td style="padding:8px 0;font-family:${FONT};font-size:16px;font-weight:700;color:${INK}">${c.label}</td>
       <td align="right" style="padding:8px 0">
-        <a href="https://wa.me/${c.intl}" target="_blank" style="display:inline-block;padding:8px 14px;border-radius:999px;background:${GREEN};color:#fff;font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">WhatsApp</a>
+        <a href="${whatsappLink(c.intl)}" target="_blank" style="display:inline-block;padding:8px 14px;border-radius:999px;background:${GREEN};color:#fff;font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">WhatsApp</a>
         <a href="tel:+${c.intl}" style="display:inline-block;margin-left:6px;padding:8px 14px;border-radius:999px;background:#fde8ea;color:${RED};font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">Call</a>
       </td></tr>`,
   ).join('');

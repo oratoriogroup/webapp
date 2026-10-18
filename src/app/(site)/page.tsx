@@ -8,9 +8,10 @@ import MinisterCard from '@/components/MinisterCard';
 import Backdrop from '@/components/Backdrop';
 import StageLights from '@/components/StageLights';
 import Marquee from '@/components/Marquee';
+import HeroShowcase from '@/components/HeroShowcase';
 import { Reveal, Stagger, StaggerItem } from '@/components/anim';
 import { SOCIAL_ICON } from '@/components/icons';
-import { EVENT, CONVENER, MINISTERS, SOCIALS, CONTACTS, MAP_EMBED_URL, DIRECTIONS_URL } from '@/lib/event';
+import { EVENT, CONVENER, MINISTERS, SOCIALS, CONTACTS, MAP_EMBED_URL, DIRECTIONS_URL, whatsappLink } from '@/lib/event';
 import { getSettings } from '@/lib/settings';
 import { youtubeId } from '@/lib/youtube';
 
@@ -80,16 +81,8 @@ export default async function HomePage() {
             </StaggerItem>
           </Stagger>
 
-          <Reveal delay={0.2} className="relative mx-auto w-full max-w-md lg:max-w-none">
-            <img
-              src="/images/flyer-convener.webp"
-              alt="Oratorio 2026 flyer: The Sound of Thanks, with Dr. Oyindamola Adejumo-Ayibiowu"
-              width={1200}
-              height={1500}
-              fetchPriority="high"
-              decoding="async"
-              className="halo w-full rounded-[2rem]"
-            />
+          <Reveal delay={0.2} className="relative mx-auto w-full max-w-md lg:max-w-[560px]">
+            <HeroShowcase />
           </Reveal>
         </div>
       </section>
@@ -234,8 +227,8 @@ export default async function HomePage() {
                 {CONTACTS.map((c) => (
                   <li key={c.intl} className="flex flex-wrap items-center gap-2">
                     <span className="min-w-28 font-semibold">{c.label}</span>
-                    <a href={`https://wa.me/${c.intl}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center gap-1 rounded-full bg-[#25D366]/15 px-3 font-semibold text-[#128C4B] dark:text-[#4ade80]"><MessageCircle className="size-3.5" /> Chat</a>
-                    <a href={`tel:+${c.intl}`} className="inline-flex min-h-9 items-center gap-1 rounded-full bg-brand-soft px-3 font-semibold text-brand"><Phone className="size-3.5" /> Call</a>
+                    <a href={whatsappLink(c.intl)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-1.5 rounded-full bg-[#25D366]/15 px-4 font-semibold text-[#128C4B] dark:text-[#4ade80]"><MessageCircle className="size-4" /> Chat</a>
+                    <a href={`tel:+${c.intl}`} className="inline-flex min-h-12 items-center gap-1.5 rounded-full bg-brand-soft px-4 font-semibold text-brand"><Phone className="size-4" /> Call</a>
                   </li>
                 ))}
               </ul>
@@ -248,15 +241,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="container-x section-y">
-        <Reveal className="band relative overflow-hidden rounded-[2rem] px-6 py-12 text-center sm:px-12 sm:py-14">
-          <StageLights className="opacity-70" />
-          <div className="relative">
-            <h2 className="h-display text-3xl sm:text-5xl">Be part of the Sound of Thanks.</h2>
-            <p className="mx-auto mt-3 max-w-xl text-white/85">Attend in person, watch online, volunteer or partner with us. It takes about three minutes.</p>
-            <Link href="/register" className="btn mt-7 min-h-12 bg-white !px-8 text-[15px] text-brand-deep shadow-xl hover:-translate-y-0.5">Register now <ArrowRight className="size-4" /></Link>
-          </div>
+      {/* Final CTA: full-bleed band, flush with the venue section and footer */}
+      <section className="band relative mt-0 mb-0 overflow-hidden pt-0 pb-0">
+        <StageLights className="opacity-70" />
+        <Reveal className="container-x relative py-12 text-center sm:py-14">
+          <h2 className="h-display text-3xl sm:text-5xl">Be part of the Sound of Thanks.</h2>
+          <p className="mx-auto mt-3 max-w-xl text-white/85">Attend in person, watch online, volunteer or partner with us. It takes about three minutes.</p>
+          <Link href="/register" className="btn mt-7 min-h-12 bg-white !px-8 text-[15px] text-brand-deep shadow-xl hover:-translate-y-0.5">Register now <ArrowRight className="size-4" /></Link>
         </Reveal>
       </section>
     </>

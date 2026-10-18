@@ -4,7 +4,7 @@ import { CalendarPlus, Download, MessageCircle, Phone } from 'lucide-react';
 import Backdrop from '@/components/Backdrop';
 import StageLights from '@/components/StageLights';
 import { SOCIAL_ICON, WhatsAppIcon } from '@/components/icons';
-import { EVENT, SOCIALS, CONTACTS, WHATSAPP_GROUP_URL } from '@/lib/event';
+import { EVENT, SOCIALS, CONTACTS, WHATSAPP_GROUP_URL, whatsappLink } from '@/lib/event';
 import { googleCalendarUrl } from '@/lib/calendar';
 import { getSettings } from '@/lib/settings';
 import { youtubeId } from '@/lib/youtube';
@@ -61,8 +61,8 @@ export default async function LivePage() {
               {CONTACTS.map((c) => (
                 <li key={c.intl} className="flex flex-wrap items-center gap-2">
                   <span className="min-w-28 font-semibold">{c.label}</span>
-                  <a href={`https://wa.me/${c.intl}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full bg-[#25D366]/15 px-3 py-1 font-semibold text-[#128C4B] dark:text-[#4ade80]"><MessageCircle className="size-3.5" /> Chat</a>
-                  <a href={`tel:+${c.intl}`} className="inline-flex items-center gap-1 rounded-full bg-brand-soft px-3 py-1 font-semibold text-brand"><Phone className="size-3.5" /> Call</a>
+                  <a href={whatsappLink(c.intl)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-1.5 rounded-full bg-[#25D366]/15 px-4 font-semibold text-[#128C4B] dark:text-[#4ade80]"><MessageCircle className="size-3.5" /> Chat</a>
+                  <a href={`tel:+${c.intl}`} className="inline-flex min-h-12 items-center gap-1.5 rounded-full bg-brand-soft px-4 font-semibold text-brand"><Phone className="size-3.5" /> Call</a>
                 </li>
               ))}
             </ul>

@@ -39,6 +39,10 @@ export const CONTACTS = [
   { label: '0704 554 0477', intl: '2347045540477' },
 ] as const;
 
+export const ENQUIRY_TEXT =
+  'Hello, I am enquiring about Oratorio 2026: The Sound of Thanks. Please guide me on directions and event details.';
+export const whatsappLink = (intl: string) => `https://wa.me/${intl}?text=${encodeURIComponent(ENQUIRY_TEXT)}`;
+
 export const WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/DiKAmcnys4GCtRblEcVnIJ';
 export const LINKTREE_URL = 'https://linktr.ee/oyindamolaadejumoayibiowu';
 

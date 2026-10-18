@@ -4,13 +4,10 @@ import { SOCIAL_ICON } from './icons';
 
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-gradient-to-br from-[#2b0a1f] via-[#24081c] to-[#1a0a24] text-white/80">
+    <footer className="bg-gradient-to-br from-[#2b0a1f] via-[#24081c] to-[#1a0a24] text-white/80">
       <div className="container-x grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <img src="/images/logo-white.webp" alt="Oratorio Music Foundation" width={1777} height={493} className="h-10 w-auto" loading="lazy" />
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
-            {EVENT.name}: {EVENT.theme}. {EVENT.dateLabel}, {EVENT.timeLabel}, live in Lagos and streaming worldwide.
-          </p>
         </div>
         <div>
           <p className="text-sm font-semibold text-white">Explore</p>
