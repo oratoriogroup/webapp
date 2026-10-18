@@ -42,9 +42,8 @@ export default async function RegistrationDetail({ params }: { params: Promise<{
         <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="btn-outline !justify-start !rounded-xl"><MessageCircle className="size-4" /> WhatsApp</a>
       </div>
 
-      <div className="mt-4 grid gap-2 text-sm sm:grid-cols-3">
+      <div className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
         <div className="card p-4"><p className="text-xs text-muted">Confirmation email</p><p className={`mt-1 font-semibold ${r.email_sent_at ? 'text-brand-green' : 'text-brand-red'}`}>{r.email_sent_at ? `Sent ${fmtWAT(r.email_sent_at)}` : 'Not sent'}</p>{r.email_error && <p className="mt-1 text-xs text-muted">{r.email_error}</p>}</div>
-        <div className="card p-4"><p className="text-xs text-muted">Google Form copy</p><p className={`mt-1 font-semibold ${r.gform_status === 'sent' ? 'text-brand-green' : 'text-brand-red'}`}>{r.gform_status === 'sent' ? 'Saved to sheet' : 'Not saved'}</p>{r.gform_error && <p className="mt-1 text-xs text-muted">{r.gform_error}</p>}</div>
         <div className="card p-4"><p className="text-xs text-muted">Check-in</p><p className="mt-1 font-semibold">{r.checked_in_at ? `Checked in ${fmtWAT(r.checked_in_at)}` : 'Not checked in'}</p></div>
       </div>
 

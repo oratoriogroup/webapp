@@ -4,7 +4,6 @@ import { validateAll, connectTypeOf, ENTRY, type Answers } from '@/lib/form';
 import { clientIp, sameOrigin, rateLimited, newRefCode } from '@/lib/security';
 import { getSettings } from '@/lib/settings';
 import { mailConfigured, sendRegistrationEmail } from '@/lib/mailer';
-import { forwardToGoogleForm } from '@/lib/gform';
 import { createHash } from 'node:crypto';
 
 export const dynamic = 'force-dynamic';
@@ -51,7 +50,7 @@ export async function POST(req: Request) {
   if (settings.registration_open !== 'true') return fail(403, 'Registration is closed.');
 
   const input = body.answers && typeof body.answers === 'object' ? body.answers : {};
-  const { path, errors, clean } = validateAll(input);
+  const { errors, clean } = validateAll(input);
   if (Object.keys(errors).length) return fail(422, 'Please check the highlighted fields.', errors);
 
   const connect = connectTypeOf(clean)!;
@@ -85,22 +84,19 @@ export async function POST(req: Request) {
     throw e;
   }
 
-  const [mail, gform] = await Promise.all([
+  const mail = await (
     mailConfigured()
       ? sendRegistrationEmail({ fullName, email, refCode, connect }).then(
           () => ({ ok: true as const }),
           (e: unknown) => ({ ok: false as const, error: e instanceof Error ? e.message : 'send failed' }),
         )
-      : Promise.resolve({ ok: false as const, error: 'email not configured' }),
-    forwardToGoogleForm(clean, path),
-  ]);
+      : Promise.resolve({ ok: false as const, error: 'email not configured' })
+  );
 
   await sql`
     update public.registrations set
       email_sent_at = ${mail.ok ? sql`now()` : null},
-      email_error = ${mail.ok ? null : mail.error.slice(0, 300)},
-      gform_status = ${gform.ok ? 'sent' : 'failed'},
-      gform_error = ${gform.ok ? null : gform.error.slice(0, 300)}
+      email_error = ${mail.ok ? null : mail.error.slice(0, 300)}
     where id = ${row!.id}`;
 
   if (typeof body.draftToken === 'string' && /^[A-Za-z0-9_-]{43}$/.test(body.draftToken)) {

@@ -11,7 +11,7 @@ Website and admin for Oratorio 2026: The Sound of Thanks (oratoriogroup.org).
 | Path | What it is |
 | --- | --- |
 | `/` | Home: event details, countdown, featured video, lineup, venue map |
-| `/register` | Registration (same questions as the Oratorio Google Form; answers are also copied to the form's sheet) |
+| `/register` | Registration, saved to Supabase (with save and continue later) |
 | `/register/success` | Confirmation: Google Calendar, .ics download, DP maker, share links |
 | `/live` | Livestream (YouTube link set from the admin) |
 | `/admin` | Admin: overview, registrations (search, CSV export, resend email, check-in), livestream and settings |

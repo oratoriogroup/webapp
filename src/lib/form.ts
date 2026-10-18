@@ -1,6 +1,6 @@
-// Registration form model, mirrored from the Oratorio 2026 Google Form so every
-// answer can also be forwarded to that form's response sheet. Shared by the
-// browser (rendering, step navigation) and the server (validation).
+// Registration form model (questions originally taken from the Oratorio 2026
+// Google Form). Shared by the browser (rendering, step navigation) and the
+// server (validation). Supabase is the only record; nothing is sent to Google.
 import raw from '@/data/registration-form.json';
 
 export type Question = {
