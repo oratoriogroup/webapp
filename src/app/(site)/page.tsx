@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import { ArrowRight, CalendarDays, Clock, MapPin, Radio, Navigation, Music, Mic2, Drama, Laugh, Footprints, Drum, Flame, PlayCircle } from 'lucide-react';
 import Countdown from '@/components/Countdown';
-import VideoEmbed from '@/components/VideoEmbed';
+import VideoShowcase from '@/components/VideoShowcase';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import MinisterCard from '@/components/MinisterCard';
 import Backdrop from '@/components/Backdrop';
+import StageLights from '@/components/StageLights';
+import Marquee from '@/components/Marquee';
 import { SOCIAL_ICON } from '@/components/icons';
 import { EVENT, CONVENER, MINISTERS, SOCIALS, MAP_EMBED_URL, DIRECTIONS_URL } from '@/lib/event';
 import { getSettings } from '@/lib/settings';
@@ -26,18 +30,22 @@ const delay = (i: number) => ({ ['--reveal-delay' as string]: `${i * 90}ms` });
 export default async function HomePage() {
   const settings = await getSettings();
   const videoId = youtubeId(settings.featured_video_url);
+  const isShort = /\/shorts\//.test(settings.featured_video_url);
+  // A converted landscape file in public/videos wins over a YouTube link.
+  const hasFile = existsSync(join(process.cwd(), 'public', 'videos', 'glimpse.mp4'));
 
   return (
     <>
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-bg">
         <Backdrop />
+        <StageLights />
         <div className="container-x relative grid min-h-[calc(100svh-4rem)] items-center gap-12 py-14 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <div data-reveal>
             <p className="eyebrow">{EVENT.organiser} presents</p>
             <h1 className="h-display mt-5 text-5xl leading-[1.02] sm:text-6xl lg:text-7xl xl:text-8xl">
               Oratorio 2026
-              <span className="text-gradient mt-2 block pb-2 italic">{EVENT.theme}</span>
+              <span className="text-gradient shimmer mt-2 block pb-2 italic">{EVENT.theme}</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">{EVENT.tagline}. Live in Lagos and streaming worldwide.</p>
 
@@ -83,6 +91,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <div className="mt-10"><Marquee /></div>
+
       {/* Featured video */}
       <section id="video" className="container-x py-16 sm:py-24">
         <div data-reveal className="mx-auto max-w-3xl text-center">
@@ -90,8 +100,10 @@ export default async function HomePage() {
           <h2 className="h-display mt-3 text-4xl sm:text-5xl lg:text-6xl">A glimpse of Oratorio</h2>
         </div>
         <div data-reveal style={delay(1)} className="mx-auto mt-10 max-w-5xl">
-          {videoId ? (
-            <VideoEmbed id={videoId} title="Oratorio highlight" />
+          {hasFile ? (
+            <VideoShowcase kind="file" src="/videos/glimpse.mp4" poster="/videos/glimpse.jpg" title="A glimpse of Oratorio" />
+          ) : videoId ? (
+            <VideoShowcase kind="youtube" id={videoId} vertical={isShort} title="A glimpse of Oratorio" />
           ) : (
             <div className="relative flex aspect-video w-full flex-col items-center justify-center overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-brand-soft via-surface to-gold-soft text-center">
               <PlayCircle className="size-14 text-brand" strokeWidth={1.3} />

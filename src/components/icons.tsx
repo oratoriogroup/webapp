@@ -39,9 +39,16 @@ export const LinkedInIcon = ({ className }: P) => (
   </svg>
 );
 
+export const LinktreeIcon = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="m13.74 5.85 4.03-4.15 2.34 2.4-4.22 4.02h5.94v3.32h-5.97l4.25 4.13-2.34 2.35-5.77-5.8-5.77 5.8-2.34-2.34 4.25-4.13H2.17V8.12h5.94L3.89 4.1l2.34-2.4 4.03 4.15V0h3.48v5.85Zm-3.48 10.4h3.48V24h-3.48v-7.75Z" />
+  </svg>
+);
+
 export const SOCIAL_ICON = {
   facebook: FacebookIcon,
   instagram: InstagramIcon,
   tiktok: TikTokIcon,
   youtube: YouTubeIcon,
+  linktree: LinktreeIcon,
 } as const;

@@ -28,3 +28,17 @@ export const embedUrl = (id: string, autoplay = true) =>
   `https://www.youtube-nocookie.com/embed/${id}?rel=0&playsinline=1&modestbranding=1${autoplay ? '&autoplay=1' : ''}`;
 
 export const thumbUrl = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+
+// True for a link to a YouTube channel page rather than a single video.
+export const isChannelUrl = (input: string | null | undefined) => {
+  try {
+    const u = new URL(String(input || '').trim());
+    return /(^|\.)youtube\.com$/.test(u.hostname) && /^\/(@[\w.-]+|channel\/UC[\w-]{22}|c\/[\w.-]+)(\/(live|streams|videos|featured))?\/?$/.test(u.pathname);
+  } catch {
+    return false;
+  }
+};
+
+// Plays whatever the channel is streaming live right now.
+export const channelLiveEmbedUrl = (channelId: string) =>
+  `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&rel=0&playsinline=1`;

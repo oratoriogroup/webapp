@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { CalendarDays, Clock, MapPin } from 'lucide-react';
 import RegisterForm from './RegisterForm';
+import Backdrop from '@/components/Backdrop';
+import StageLights from '@/components/StageLights';
 import { EVENT } from '@/lib/event';
 import { getSettings } from '@/lib/settings';
 
@@ -16,11 +18,14 @@ export default async function RegisterPage() {
   const open = settings.registration_open === 'true';
 
   return (
-    <div className="container-x py-10 sm:py-16">
+    <div className="relative isolate overflow-hidden">
+      <Backdrop className="opacity-60" />
+      <StageLights />
+    <div className="container-x relative py-10 sm:py-16">
       <div className="mx-auto grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] [&>*]:min-w-0">
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <p className="eyebrow">Registration</p>
-          <h1 className="h-display mt-3 text-4xl leading-tight sm:text-5xl">Join us for the Sound of Thanks.</h1>
+          <h1 className="h-display mt-3 text-4xl leading-tight sm:text-6xl">Join us for the <span className="text-gradient shimmer italic">Sound of Thanks.</span></h1>
           <p className="mt-4 text-muted">
             Whether you are coming to the venue, watching online, or would like to sing, pray or serve with us, register here. It takes about three minutes.
           </p>
@@ -41,6 +46,7 @@ export default async function RegisterPage() {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 }

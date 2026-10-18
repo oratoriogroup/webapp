@@ -228,3 +228,145 @@ body {
     transition: none;
   }
 }
+
+/* Stage light beams */
+.beam {
+  position: absolute;
+  top: -30%;
+  width: 34vw;
+  max-width: 560px;
+  height: 140%;
+  transform-origin: 50% 0;
+  background: linear-gradient(180deg, var(--beam-color, rgba(201, 138, 18, 0.22)), transparent 75%);
+  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  filter: blur(6px);
+  mix-blend-mode: multiply;
+  opacity: 0.7;
+}
+[data-theme='dark'] .beam {
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+.beam-a {
+  left: 6%;
+  --beam-color: rgba(200, 32, 47, 0.2);
+  animation: sweep 11s ease-in-out infinite;
+}
+.beam-b {
+  left: 38%;
+  --beam-color: rgba(224, 162, 27, 0.24);
+  animation: sweep 14s ease-in-out infinite reverse;
+}
+.beam-c {
+  left: 68%;
+  --beam-color: rgba(122, 42, 143, 0.2);
+  animation: sweep 12s ease-in-out -4s infinite;
+}
+@keyframes sweep {
+  0%,
+  100% {
+    transform: rotate(-16deg);
+  }
+  50% {
+    transform: rotate(16deg);
+  }
+}
+
+/* Twinkling sparkles */
+.spark {
+  position: absolute;
+  width: var(--s, 6px);
+  height: var(--s, 6px);
+  background: radial-gradient(circle, #fff 0%, #ffd77a 40%, transparent 70%);
+  border-radius: 999px;
+  animation: twinkle 3.6s ease-in-out infinite;
+  opacity: 0;
+}
+.spark::before,
+.spark::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 260%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 122, 0.9), transparent);
+  transform: translate(-50%, -50%);
+}
+.spark::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  45%,
+  55% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Light sweeping across gradient text */
+.shimmer {
+  background-size: 220% auto;
+  animation: shimmer 6s linear infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+/* Marquee */
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Gentle attention pulse on the WhatsApp button */
+.wa-float::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.55);
+  animation: wa-pulse 2.6s ease-out infinite;
+}
+@keyframes wa-pulse {
+  70% {
+    box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beam,
+  .spark,
+  .shimmer,
+  .marquee-track,
+  .wa-float::before {
+    animation: none;
+  }
+  .spark {
+    opacity: 0.6;
+  }
+}
+
+.pop-in {
+  animation: pop-in 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+@keyframes pop-in {
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+}

@@ -6,6 +6,8 @@ import { Check, CalendarPlus, Download, Navigation, Radio, Copy, Mail, ExternalL
 import { EVENT, SITE_URL, DIRECTIONS_URL } from '@/lib/event';
 import { FacebookIcon, LinkedInIcon, WhatsAppIcon, XIcon } from '@/components/icons';
 import DpMaker from './DpMaker';
+import StageLights from '@/components/StageLights';
+import Backdrop from '@/components/Backdrop';
 
 type Done = { ref: string; name: string; email: string; connect: 'attend' | 'online' | 'volunteer' | 'partner' };
 
@@ -40,7 +42,8 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
     );
   }
 
-  const first = done.name.trim().split(/\s+/)[0];
+  // Full name as typed: many people write the surname first.
+  const first = done.name.trim().replace(/\s+/g, ' ');
   const shareText = `I just registered for ${EVENT.name}: ${EVENT.theme}, ${EVENT.dateShort}, ${EVENT.timeLabel}, Lagos and online. Join me:`;
   const url = SITE_URL;
   const enc = encodeURIComponent;
@@ -61,10 +64,13 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
   };
 
   return (
-    <div className="container-x py-12 sm:py-16">
+    <div className="relative isolate overflow-hidden">
+      <Backdrop className="opacity-60" />
+      <StageLights />
+    <div className="container-x relative py-12 sm:py-16">
       <div className="mx-auto max-w-2xl">
         <div className="text-center">
-          <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-brand text-white shadow-lg shadow-brand/30">
+          <div className="pop-in mx-auto flex size-20 items-center justify-center rounded-full bg-brand text-white shadow-lg shadow-brand/30">
             <Check className="size-10" strokeWidth={2.5} />
           </div>
           <p className="eyebrow mt-6">Registration confirmed</p>
@@ -136,6 +142,7 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

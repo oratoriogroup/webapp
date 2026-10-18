@@ -7,7 +7,7 @@ import { supabaseServer } from '@/lib/supabase-server';
 import { isAllowedAdmin, requireAdmin } from '@/lib/admin';
 import { clientIp, rateLimited } from '@/lib/security';
 import { saveSettings, type Settings } from '@/lib/settings';
-import { youtubeId } from '@/lib/youtube';
+import { youtubeId, isChannelUrl } from '@/lib/youtube';
 import { sql } from '@/lib/db';
 import { mailConfigured, sendRegistrationEmail } from '@/lib/mailer';
 import type { ConnectType } from '@/lib/form';
@@ -48,10 +48,10 @@ export async function updateSettings(_: ActionState, form: FormData): Promise<Ac
   const getdp = String(form.get('getdp_url') || '').trim();
   const open = form.get('registration_open') === 'on' ? 'true' : 'false';
 
-  if (livestream && !youtubeId(livestream)) return { error: 'The livestream link must be a YouTube link (watch, live or youtu.be).' };
+  if (livestream && !youtubeId(livestream) && !isChannelUrl(livestream)) return { error: 'The livestream link must be a YouTube channel or video link.' };
   if (featured && !youtubeId(featured)) return { error: 'The featured video must be a YouTube link.' };
   if (getdp && !/^https:\/\/(www\.)?getdp\.co\//.test(getdp)) return { error: 'The GetDP link must start with https://getdp.co/' };
-  if (![livestream, featured, getdp].every(httpsOrEmpty) && !youtubeId(livestream)) return { error: 'Links must start with https://' };
+  if (![livestream, featured, getdp].every(httpsOrEmpty)) return { error: 'Links must start with https://' };
 
   const patch: Partial<Settings> = { livestream_url: livestream, featured_video_url: featured, getdp_url: getdp, registration_open: open };
   await saveSettings(patch, admin.email);

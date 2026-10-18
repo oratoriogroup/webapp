@@ -11,6 +11,21 @@ export const dynamic = 'force-dynamic';
 const fail = (status: number, error: string, fields?: Record<string, string>) =>
   NextResponse.json({ ok: false, error, fields }, { status });
 
+const alreadyRegistered = (by: 'email' | 'phone') =>
+  fail(
+    409,
+    by === 'email'
+      ? 'This email address is already registered for Oratorio 2026. Check your inbox for your confirmation.'
+      : 'This phone number is already registered for Oratorio 2026. Each person can register once.',
+    { [by === 'email' ? ENTRY.email : ENTRY.whatsapp]: by === 'email' ? 'Already registered.' : 'Already registered.' },
+  );
+
+// International digits, e.g. 08012345678 and +234 801 234 5678 both become 2348012345678.
+const normalisePhone = (raw: string) => {
+  const d = raw.replace(/\D/g, '');
+  return /^0\d{10}$/.test(d) ? `234${d.slice(1)}` : d;
+};
+
 export async function POST(req: Request) {
   const h = req.headers;
   if (!sameOrigin(h)) return fail(403, 'Request not allowed.');
@@ -42,26 +57,32 @@ export async function POST(req: Request) {
   const fullName = String(clean[ENTRY.fullName]);
   const email = String(clean[ENTRY.email]).toLowerCase();
 
-  // One registration per email per type. A repeat returns the existing
-  // reference instead of creating a duplicate or sending a second email.
-  const existing = await sql<{ ref_code: string }[]>`
-    select ref_code from public.registrations
-    where lower(email) = ${email} and connect_type = ${connect}
+  // One registration per email address and one per phone number, whatever
+  // the type. The database enforces the same rule with unique indexes.
+  const phoneNorm = normalisePhone(String(clean[ENTRY.whatsapp]));
+  const existing = await sql<{ email: string; phone_norm: string | null }[]>`
+    select email, phone_norm from public.registrations
+    where lower(email) = ${email} or phone_norm = ${phoneNorm}
     limit 1`;
-  if (existing[0]) {
-    return NextResponse.json({ ok: true, ref: existing[0].ref_code, name: fullName, email, connect, duplicate: true });
-  }
+  if (existing[0]) return alreadyRegistered(existing[0].email.toLowerCase() === email ? 'email' : 'phone');
 
   const refCode = newRefCode();
-  const [row] = await sql<{ id: string }[]>`
+  let row: { id: string } | undefined;
+  try {
+  [row] = await sql<{ id: string }[]>`
     insert into public.registrations
-      (ref_code, full_name, whatsapp, email, age_range, location, church, connect_type, party_size, volunteer_kind, answers, ip, user_agent)
+      (ref_code, full_name, whatsapp, phone_norm, email, age_range, location, church, connect_type, party_size, volunteer_kind, answers, ip, user_agent)
     values
-      (${refCode}, ${fullName}, ${String(clean[ENTRY.whatsapp])}, ${email}, ${(clean[ENTRY.age] as string) ?? null},
+      (${refCode}, ${fullName}, ${String(clean[ENTRY.whatsapp])}, ${phoneNorm}, ${email}, ${(clean[ENTRY.age] as string) ?? null},
        ${(clean[ENTRY.location] as string) ?? null}, ${(clean[ENTRY.church] as string) ?? null}, ${connect},
        ${(clean[ENTRY.partySize] as string) ?? null}, ${(clean[ENTRY.volunteerKind] as string) ?? null},
        ${sql.json(clean)}, ${ip}, ${(h.get('user-agent') || '').slice(0, 300)})
     returning id`;
+  } catch (e) {
+    // Two submissions racing past the check above: the unique index decides.
+    if ((e as { code?: string }).code === '23505') return alreadyRegistered(String((e as { constraint_name?: string }).constraint_name || '').includes('phone') ? 'phone' : 'email');
+    throw e;
+  }
 
   const [mail, gform] = await Promise.all([
     mailConfigured()

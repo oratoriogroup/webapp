@@ -30,7 +30,21 @@ export const SOCIALS = [
   { key: 'instagram', label: 'Instagram', handle: '@officialoyindaadejumo', url: 'https://www.instagram.com/officialoyindaadejumo' },
   { key: 'tiktok', label: 'TikTok', handle: '@officialoyindaadejumo', url: 'https://www.tiktok.com/@officialoyindaadejumo' },
   { key: 'youtube', label: 'YouTube', handle: 'Oyindamola Adejumo Ayibiowu', url: 'https://www.youtube.com/@OyindamolaAdejumoAyibiowu' },
+  { key: 'linktree', label: 'Linktree', handle: 'oyindamolaadejumoayibiowu', url: 'https://linktr.ee/oyindamolaadejumoayibiowu' },
 ] as const;
+
+// Enquiries and directions. Both lines take WhatsApp and calls.
+export const CONTACTS = [
+  { label: '0705 169 9842', intl: '2347051699842' },
+  { label: '0704 554 0477', intl: '2347045540477' },
+] as const;
+
+export const WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/DiKAmcnys4GCtRblEcVnIJ';
+export const LINKTREE_URL = 'https://linktr.ee/oyindamolaadejumoayibiowu';
+
+// The livestream runs on the convener's YouTube channel.
+export const YOUTUBE_CHANNEL_ID = 'UCqgnj1t2O4tDGXoWtYu6TVw';
+export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@OyindamolaAdejumoAyibiowu';
 
 export type Minister = { slug: string; name: string; role?: string; photo?: string };
 

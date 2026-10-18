@@ -4,20 +4,22 @@ import { useActionState, useState } from 'react';
 import { Loader2, Save } from 'lucide-react';
 import { updateSettings, type ActionState } from '../../actions';
 import type { Settings } from '@/lib/settings';
-import { youtubeId, thumbUrl } from '@/lib/youtube';
+import { youtubeId, thumbUrl, isChannelUrl } from '@/lib/youtube';
 
 export default function SettingsForm({ initial }: { initial: Settings }) {
   const [state, action, pending] = useActionState<ActionState, FormData>(updateSettings, {});
   const [live, setLive] = useState(initial.livestream_url);
   const id = youtubeId(live);
+  const channel = !id && isChannelUrl(live);
 
   return (
     <form action={action} className="mt-6 space-y-5">
       <section className="card p-5 sm:p-6">
-        <label htmlFor="livestream_url" className="font-semibold">Livestream link (YouTube)</label>
-        <p className="mt-1 text-sm text-muted">Paste the YouTube live link when the stream is scheduled. The live page switches to the player on its own.</p>
+        <label htmlFor="livestream_url" className="font-semibold">Livestream (YouTube)</label>
+        <p className="mt-1 text-sm text-muted">Use the channel link and the live page plays whatever the channel is streaming, from an hour before the start. For a specific stream, paste its video link instead.</p>
         <input id="livestream_url" name="livestream_url" value={live} onChange={(e) => setLive(e.target.value)} placeholder="https://www.youtube.com/live/..." className="field mt-3" inputMode="url" />
-        {live && !id && <p className="mt-2 text-sm text-brand-red">This does not look like a YouTube link.</p>}
+        {live && !id && !channel && <p className="mt-2 text-sm text-brand-red">This does not look like a YouTube channel or video link.</p>}
+        {channel && <p className="mt-2 text-sm text-brand-green">Channel mode: the live page plays the channel&apos;s current live stream during the event.</p>}
         {id && (
           <div className="mt-4 flex items-center gap-3 rounded-xl bg-surface-2 p-3">
             <img src={thumbUrl(id)} alt="" className="h-14 w-24 rounded-md object-cover" />
