@@ -42,7 +42,7 @@ export default function BottomNav() {
 
   const item = 'flex flex-1 flex-col items-center gap-1 py-1.5 text-[11px] font-medium';
   const pill = (active: boolean) =>
-    `flex h-8 w-14 items-center justify-center rounded-full transition-colors ${active ? 'bg-gold-soft text-gold' : 'text-muted'}`;
+    `flex h-8 w-14 items-center justify-center rounded-full transition-colors ${active ? 'bg-brand-soft text-brand' : 'text-muted'}`;
 
   return (
     <>
@@ -51,7 +51,7 @@ export default function BottomNav() {
           {TABS.map((t) => {
             const active = t.match(pathname);
             return (
-              <Link key={t.href} href={t.href} className={`${item} ${active ? 'text-gold' : 'text-muted'}`} aria-current={active ? 'page' : undefined}>
+              <Link key={t.href} href={t.href} className={`${item} ${active ? 'text-brand' : 'text-muted'}`} aria-current={active ? 'page' : undefined}>
                 <span className={pill(active)}>
                   <t.icon className="size-5" strokeWidth={active ? 2.2 : 1.8} />
                 </span>
@@ -59,7 +59,7 @@ export default function BottomNav() {
               </Link>
             );
           })}
-          <button type="button" onClick={() => setOpen(true)} className={`${item} ${open ? 'text-gold' : 'text-muted'}`} aria-haspopup="dialog" aria-expanded={open}>
+          <button type="button" onClick={() => setOpen(true)} className={`${item} ${open ? 'text-brand' : 'text-muted'}`} aria-haspopup="dialog" aria-expanded={open}>
             <span className={pill(open)}>
               <Menu className="size-5" strokeWidth={1.8} />
             </span>
@@ -82,14 +82,14 @@ export default function BottomNav() {
               {MORE.map((m) => (
                 <li key={m.href}>
                   <Link href={m.href} onClick={() => setOpen(false)} className="flex items-center gap-3 px-4 py-3.5 text-[15px] font-medium hover:bg-surface-2">
-                    <m.icon className="size-5 text-gold" />
+                    <m.icon className="size-5 text-brand" />
                     {m.label}
                   </Link>
                 </li>
               ))}
               <li>
                 <button type="button" onClick={toggle} className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[15px] font-medium hover:bg-surface-2">
-                  {theme === 'dark' ? <Sun className="size-5 text-gold" /> : <Moon className="size-5 text-gold" />}
+                  {theme === 'dark' ? <Sun className="size-5 text-brand" /> : <Moon className="size-5 text-brand" />}
                   {theme === 'dark' ? 'Light mode' : 'Dark mode'}
                 </button>
               </li>

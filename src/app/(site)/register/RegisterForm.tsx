@@ -118,7 +118,7 @@ export default function RegisterForm() {
           <span>{section.title}</span>
         </div>
         <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-2">
-          <div className="h-full rounded-full bg-gold transition-all duration-300" style={{ width: `${((step + 1) / totalSteps) * 100}%` }} />
+          <div className="h-full rounded-full bg-gradient-to-r from-brand via-gold to-brand-2 transition-all duration-300" style={{ width: `${((step + 1) / totalSteps) * 100}%` }} />
         </div>
       </div>
 
@@ -161,7 +161,7 @@ export default function RegisterForm() {
           ) : (
             <span />
           )}
-          <button type="submit" className="btn-primary min-w-36 whitespace-nowrap" disabled={submitting}>
+          <button type="submit" className="btn-brand min-w-36 whitespace-nowrap" disabled={submitting}>
             {submitting ? (
               <>
                 <Loader2 className="size-4 animate-spin" /> Submitting
@@ -226,8 +226,8 @@ function Field({ q, answers, error, onChange }: { q: Question; answers: Answers;
         {opts.map((o) => {
           const on = picked.includes(o);
           return (
-            <label key={o} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 text-[15px] transition-colors ${on ? 'border-gold bg-gold-soft' : 'border-line bg-surface hover:bg-surface-2'}`}>
-              <input type={multi ? 'checkbox' : 'radio'} name={id} checked={on} onChange={() => toggle(o)} className="mt-0.5 size-4 shrink-0 accent-[var(--gold)]" />
+            <label key={o} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 text-[15px] transition-colors ${on ? 'border-brand bg-brand-soft' : 'border-line bg-surface hover:bg-surface-2'}`}>
+              <input type={multi ? 'checkbox' : 'radio'} name={id} checked={on} onChange={() => toggle(o)} className="mt-0.5 size-4 shrink-0 accent-[var(--brand)]" />
               <span>{o === OTHER ? 'Other' : optionLabel(o)}</span>
             </label>
           );

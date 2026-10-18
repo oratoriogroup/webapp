@@ -28,7 +28,7 @@ export default function AdminShell({ email, children }: { email: string; childre
         <nav className="mt-2 flex-1 space-y-1 px-3" aria-label="Admin">
           {NAV.map((n) => (
             <Link key={n.href} href={n.href} aria-current={active(n) ? 'page' : undefined}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${active(n) ? 'bg-gold-soft text-gold' : 'text-muted hover:bg-surface-2 hover:text-text'}`}>
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${active(n) ? 'bg-brand-soft text-brand' : 'text-muted hover:bg-surface-2 hover:text-text'}`}>
               <n.icon className="size-[18px]" /> {n.label}
             </Link>
           ))}
@@ -58,15 +58,15 @@ export default function AdminShell({ email, children }: { email: string; childre
             </form>
           </div>
         </header>
-        <main className="mx-auto w-full max-w-6xl px-4 py-6 pb-28 sm:px-6 md:py-8 md:pb-10">{children}</main>
+        <main className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-28 sm:px-6 md:py-8 md:pb-10">{children}</main>
       </div>
 
       {/* Mobile bottom nav */}
       <nav aria-label="Admin" className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur md:hidden">
         <div className="flex px-2 pt-1.5">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className={`flex flex-1 flex-col items-center gap-1 py-1.5 text-[11px] font-medium ${active(n) ? 'text-gold' : 'text-muted'}`}>
-              <span className={`flex h-8 w-14 items-center justify-center rounded-full ${active(n) ? 'bg-gold-soft' : ''}`}><n.icon className="size-5" /></span>
+            <Link key={n.href} href={n.href} className={`flex flex-1 flex-col items-center gap-1 py-1.5 text-[11px] font-medium ${active(n) ? 'text-brand' : 'text-muted'}`}>
+              <span className={`flex h-8 w-14 items-center justify-center rounded-full ${active(n) ? 'bg-brand-soft' : ''}`}><n.icon className="size-5" /></span>
               {n.short || n.label}
             </Link>
           ))}

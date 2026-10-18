@@ -56,7 +56,7 @@ export default async function RegistrationDetail({ params }: { params: Promise<{
             lastSection = x.section;
             return (
               <div key={i}>
-                {head && <p className="mt-5 mb-1 text-xs font-semibold tracking-wider text-gold uppercase">{head}</p>}
+                {head && <p className="mt-5 mb-1 text-xs font-semibold tracking-wider text-brand uppercase">{head}</p>}
                 <div className="border-b border-line py-3 last:border-0">
                   <dt className="text-sm text-muted">{x.question}</dt>
                   <dd className="mt-1 text-[15px] whitespace-pre-wrap">{x.answer}</dd>

@@ -25,9 +25,9 @@ export default async function RegisterPage() {
             Whether you are coming to the venue, watching online, or would like to sing, pray or serve with us, register here. It takes about three minutes.
           </p>
           <ul className="mt-6 space-y-3 text-[15px]">
-            <li className="flex items-center gap-3"><CalendarDays className="size-5 text-gold" /> {EVENT.dateLabel}</li>
-            <li className="flex items-center gap-3"><Clock className="size-5 text-gold" /> {EVENT.timeLabel}</li>
-            <li className="flex items-start gap-3"><MapPin className="mt-0.5 size-5 shrink-0 text-gold" /> {EVENT.venueName}, {EVENT.venueAddress}</li>
+            <li className="flex items-center gap-3"><CalendarDays className="size-5 text-brand" /> {EVENT.dateLabel}</li>
+            <li className="flex items-center gap-3"><Clock className="size-5 text-brand" /> {EVENT.timeLabel}</li>
+            <li className="flex items-start gap-3"><MapPin className="mt-0.5 size-5 shrink-0 text-brand" /> {EVENT.venueName}, {EVENT.venueAddress}</li>
           </ul>
         </aside>
         <div>

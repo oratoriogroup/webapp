@@ -26,14 +26,14 @@ export default function SiteHeader() {
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-surface-2 hover:text-text">
+            <Link key={n.href} href={n.href} className="rounded-full px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-brand-soft hover:text-brand">
               {n.label}
             </Link>
           ))}
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link href="/register" className="btn-primary hidden !py-2.5 sm:inline-flex">
+          <Link href="/register" className="btn-brand hidden !py-2.5 sm:inline-flex">
             Register
           </Link>
         </div>

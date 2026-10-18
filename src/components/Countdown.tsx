@@ -25,7 +25,7 @@ export default function Countdown({ tone = 'dark' }: { tone?: 'dark' | 'auto' })
   }, []);
 
   const live = now !== null && now >= target;
-  const cell = tone === 'dark' ? 'border-white/15 bg-white/5 text-white' : 'border-line bg-surface text-text';
+  const cell = tone === 'dark' ? 'border-white/15 bg-white/5 text-white' : 'border-line bg-surface-2 text-brand';
   const sub = tone === 'dark' ? 'text-white/60' : 'text-muted';
 
   if (live) {

@@ -4,7 +4,7 @@ import { SOCIAL_ICON } from './icons';
 
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-ink text-white/80">
+    <footer className="border-t border-line bg-gradient-to-br from-[#2b0a1f] via-[#24081c] to-[#1a0a24] text-white/80">
       <div className="container-x grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <img src="/images/logo-white.webp" alt="Oratorio Music Foundation" width={1777} height={493} className="h-10 w-auto" loading="lazy" />

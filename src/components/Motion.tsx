@@ -1,0 +1,52 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { ArrowUp } from 'lucide-react';
+
+// Fades [data-reveal] elements up as they scroll into view.
+export function RevealObserver() {
+  const pathname = usePathname();
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!('IntersectionObserver' in window)) return;
+    root.classList.add('js-reveal');
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-shown');
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+    );
+    document.querySelectorAll('[data-reveal]:not(.is-shown)').forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [pathname]);
+  return null;
+}
+
+// "Back to top" arrow, shown once the visitor has scrolled down.
+export function BackToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 700);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <button
+      type="button"
+      aria-label="Back to top"
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      className={`fixed right-4 bottom-24 z-40 inline-flex size-12 items-center justify-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-all duration-300 hover:-translate-y-1 md:right-8 md:bottom-8 ${
+        show ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
+      }`}
+    >
+      <ArrowUp className="size-5" strokeWidth={2.4} />
+    </button>
+  );
+}

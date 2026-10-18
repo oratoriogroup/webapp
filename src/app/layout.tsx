@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
+import { Anton, Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import { EVENT, SITE_URL } from '@/lib/event';
 import './globals.css';
 
@@ -11,10 +11,13 @@ const display = Cormorant_Garamond({
 });
 const sans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   variable: '--font-sans-face',
   display: 'swap',
 });
+
+// Heavy condensed face used only by the DP card (not preloaded on every page).
+const impact = Anton({ subsets: ['latin'], weight: '400', variable: '--font-impact-face', display: 'swap', preload: false });
 
 const description = `${EVENT.tagline}. ${EVENT.dateLabel}, ${EVENT.timeLabel}, live in Lagos and streaming worldwide.`;
 
@@ -45,12 +48,13 @@ export const viewport: Viewport = {
   ],
 };
 
-// Runs before paint so the saved or system theme applies with no flash.
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='light'}})()`;
+// Runs before paint so the saved theme applies with no flash. Light is the
+// default; dark mode is used only when the visitor turns it on.
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${display.variable} ${sans.variable} ${impact.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

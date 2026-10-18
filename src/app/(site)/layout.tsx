@@ -1,6 +1,7 @@
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import BottomNav from '@/components/BottomNav';
+import { RevealObserver, BackToTop } from '@/components/Motion';
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,6 +13,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <main id="main">{children}</main>
       <SiteFooter />
       <BottomNav />
+      <BackToTop />
+      <RevealObserver />
     </>
   );
 }

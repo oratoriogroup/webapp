@@ -38,17 +38,17 @@ export const CONVENER: Minister = {
   slug: 'oyindamola-adejumo-ayibiowu',
   name: 'Dr. Oyindamola Adejumo-Ayibiowu',
   role: 'Convener & Founder, Oratorio Music Foundation',
-  // Add the headshot at public/images/ministers/<slug>.jpg and set photo here.
+  photo: '/images/ministers/oyindamola-adejumo-ayibiowu.webp',
 };
 
 export const MINISTERS: Minister[] = [
-  { slug: 'pelumi-deborah', name: 'Pelumi Deborah' },
-  { slug: 'adeyinka-alaseyori', name: 'Adeyinka Alaseyori' },
-  { slug: 'woli-agba', name: 'Woli Agba' },
-  { slug: 'tope-flourish', name: 'Tope Flourish' },
-  { slug: 'george-sax', name: 'George Sax' },
-  { slug: 'elijah-daniels', name: 'Elijah Daniels' },
-  { slug: 'ester-jesus-baby', name: 'Ester Jesus Baby' },
+  { slug: 'pelumi-deborah', name: 'Pelumi Deborah', photo: '/images/ministers/pelumi-deborah.webp' },
+  { slug: 'adeyinka-alaseyori', name: 'Adeyinka Alaseyori', photo: '/images/ministers/adeyinka-alaseyori.webp' },
+  { slug: 'woli-agba', name: 'Woli Agba', photo: '/images/ministers/woli-agba.webp' },
+  { slug: 'tope-flourish', name: 'Tope Flourish', photo: '/images/ministers/tope-flourish.webp' },
+  { slug: 'george-sax', name: 'George Sax', photo: '/images/ministers/george-sax.webp' },
+  { slug: 'elijah-daniels', name: 'Elijah Daniels', photo: '/images/ministers/elijah-daniels.webp' },
+  { slug: 'ester-jesus-baby', name: 'Ester Jesus Baby', photo: '/images/ministers/ester-jesus-baby.webp' },
 ];
 
 export const initials = (name: string) =>

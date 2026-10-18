@@ -64,13 +64,13 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
     <div className="container-x py-12 sm:py-16">
       <div className="mx-auto max-w-2xl">
         <div className="text-center">
-          <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-gold text-ink shadow-lg shadow-gold/30">
+          <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-brand text-white shadow-lg shadow-brand/30">
             <Check className="size-10" strokeWidth={2.5} />
           </div>
           <p className="eyebrow mt-6">Registration confirmed</p>
           <h1 className="h-display mt-3 text-4xl leading-tight sm:text-5xl">You&apos;re in, {first}.</h1>
           <p className="mx-auto mt-4 max-w-lg text-[17px] text-muted">
-            {LINES[done.connect]} A confirmation is on its way to <span className="font-semibold text-text underline decoration-gold underline-offset-4">{done.email}</span>.
+            {LINES[done.connect]} A confirmation is on its way to <span className="font-semibold text-text underline decoration-brand underline-offset-4">{done.email}</span>.
           </p>
           <p className="mt-3 text-sm text-muted">
             Reference <span className="font-mono font-semibold text-text">{done.ref}</span>
@@ -78,15 +78,15 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
         </div>
 
         {/* Save the date */}
-        <div className="relative mt-10 overflow-hidden rounded-3xl bg-ink p-6 text-white sm:p-8">
-          <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(70% 90% at 100% 0%, rgba(226,180,79,.28), transparent 70%)' }} />
+        <div className="band relative mt-10 overflow-hidden rounded-3xl p-6 sm:p-8">
+          <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(70% 90% at 100% 0%, rgba(255,255,255,.18), transparent 70%)' }} />
           <div className="relative">
-            <p className="text-xs font-semibold tracking-[0.2em] text-[#e2b44f] uppercase">Save the date</p>
+            <p className="text-xs font-semibold tracking-[0.2em] text-white/85 uppercase">Save the date</p>
             <p className="h-display mt-3 text-3xl sm:text-4xl">{EVENT.dateLabel}</p>
-            <p className="mt-2 text-white/75">{EVENT.timeLabel}</p>
-            <p className="mt-1 text-white/75">{EVENT.venueName}, {EVENT.venueAddress}</p>
+            <p className="mt-2 text-white/85">{EVENT.timeLabel}</p>
+            <p className="mt-1 text-white/85">{EVENT.venueName}, {EVENT.venueAddress}</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <a href={calendarUrl} target="_blank" rel="noopener noreferrer" className="btn-gold !py-3.5">
+              <a href={calendarUrl} target="_blank" rel="noopener noreferrer" className="btn bg-white !py-3.5 text-brand shadow-lg hover:-translate-y-0.5">
                 <CalendarPlus className="size-4" /> Add to Google Calendar
               </a>
               <a href="/oratorio-2026.ics" download className="btn !border !border-white/25 !py-3.5 text-white hover:!bg-white/10">
@@ -118,7 +118,7 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
         </div>
 
         {/* Share */}
-        <div className="mt-6 rounded-3xl border border-gold/40 bg-gold-soft p-6 sm:p-8">
+        <div className="mt-6 rounded-3xl border border-brand/20 bg-brand-soft p-6 sm:p-8">
           <h2 className="h-display text-center text-3xl">Spread the word</h2>
           <p className="mx-auto mt-2 max-w-md text-center text-muted">Invite friends, family and your church or campus to register.</p>
           <div className="mt-6 flex gap-2 rounded-2xl border border-line bg-surface p-2">

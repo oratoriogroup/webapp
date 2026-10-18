@@ -2,34 +2,50 @@
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+/* Palette taken from the Oratorio artwork: crimson, gold and the purple of the
+   convener's attire, on a bright warm white in light mode. */
 :root {
-  --bg: #faf7f2;
+  --bg: #fffcf8;
   --surface: #ffffff;
-  --surface-2: #f3ede3;
-  --text: #17120e;
-  --muted: #6b6158;
-  --border: #e6ddd0;
-  --gold: #a87a22;
-  --gold-soft: #f5ead2;
-  --red: #c42f2a;
-  --green: #5f9422;
-  --ink: #0d0a08;
-  --ring: rgba(168, 122, 34, 0.35);
+  --surface-2: #fdf3ec;
+  --text: #1c1220;
+  --muted: #6a5d6c;
+  --border: #f0e2d8;
+  --brand: #c8202f;
+  --brand-2: #7a2a8f;
+  --gold: #c98a12;
+  --gold-soft: #fff1d6;
+  --brand-soft: #fde8ea;
+  --red: #c8202f;
+  --green: #4f8f1c;
+  --ink: #12090f;
+  --ring: rgba(200, 32, 47, 0.25);
+  --band-a: #c8202f;
+  --band-b: #7a2a8f;
+  --hero-ring: rgba(200, 32, 47, 0.1);
+  --hero-ring-2: rgba(201, 138, 18, 0.14);
   color-scheme: light;
 }
 
 [data-theme='dark'] {
-  --bg: #0d0a08;
-  --surface: #161210;
-  --surface-2: #1f1915;
-  --text: #f4eee5;
-  --muted: #a99d90;
-  --border: #2f2721;
-  --gold: #e2b44f;
-  --gold-soft: #2a2114;
-  --red: #e2514a;
+  --bg: #0e080d;
+  --surface: #181016;
+  --surface-2: #22171f;
+  --text: #f6eff4;
+  --muted: #b3a3b0;
+  --border: #33242f;
+  --brand: #ff4d5e;
+  --brand-2: #c069d6;
+  --gold: #f0bd4f;
+  --gold-soft: #2c2113;
+  --brand-soft: #34141b;
+  --red: #ff5a67;
   --green: #8cc63f;
-  --ring: rgba(226, 180, 79, 0.4);
+  --ring: rgba(255, 77, 94, 0.35);
+  --band-a: #5b0f1d;
+  --band-b: #3a1446;
+  --hero-ring: rgba(255, 77, 94, 0.12);
+  --hero-ring-2: rgba(240, 189, 79, 0.12);
   color-scheme: dark;
 }
 
@@ -40,6 +56,9 @@
   --color-text: var(--text);
   --color-muted: var(--muted);
   --color-line: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-brand-soft: var(--brand-soft);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-brand-red: var(--red);
@@ -61,56 +80,56 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--gold);
+  background: var(--brand);
   color: #fff;
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
 @utility container-x {
-  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  @apply mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16;
 }
 
 @utility eyebrow {
-  @apply text-xs font-semibold tracking-[0.2em] text-gold uppercase;
+  @apply text-xs font-bold tracking-[0.22em] text-brand uppercase;
 }
 
 @utility h-display {
   @apply font-display font-semibold tracking-tight;
 }
 
+@utility text-gradient {
+  background: linear-gradient(100deg, var(--brand) 0%, var(--gold) 55%, var(--brand-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors duration-150 select-none disabled:cursor-not-allowed disabled:opacity-60;
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-all duration-200 select-none disabled:cursor-not-allowed disabled:opacity-60;
 }
 
 @utility btn-primary {
   @apply btn bg-text text-bg hover:opacity-90;
 }
 
+@utility btn-brand {
+  @apply btn bg-brand text-white shadow-lg shadow-brand/25 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand/30;
+}
+
 @utility btn-gold {
-  @apply btn bg-gold text-ink hover:brightness-110;
+  @apply btn bg-gold text-white shadow-lg shadow-gold/25 hover:-translate-y-0.5 dark:text-ink;
 }
 
 @utility btn-outline {
-  @apply btn border border-line bg-surface text-text hover:bg-surface-2;
+  @apply btn border border-line bg-surface text-text hover:border-brand/40 hover:bg-surface-2;
 }
 
 @utility card {
@@ -118,10 +137,94 @@ body {
 }
 
 @utility field {
-  @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-[15px] text-text placeholder:text-muted/70 focus:border-gold focus:ring-4 focus:ring-(--ring) focus:outline-none;
+  @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-[15px] text-text placeholder:text-muted/70 focus:border-brand focus:ring-4 focus:ring-(--ring) focus:outline-none;
+}
+
+/* Coloured band (CTA strips, save-the-date card): crimson to purple in light
+   mode, a deep version of the same in dark mode. */
+@utility band {
+  background: linear-gradient(120deg, var(--band-a), var(--band-b));
+  color: #fff;
 }
 
 /* Bottom nav clearance on phones. */
 .pb-safe {
   padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+}
+
+/* Background motion: slowly turning rings and drifting light, like the
+   reference site. Pure CSS transforms, so it costs almost nothing. */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.08);
+  }
+}
+@keyframes pulse-ring {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.anim-spin {
+  animation: spin-slow 90s linear infinite;
+  transform-origin: center;
+}
+.anim-spin-rev {
+  animation: spin-rev 120s linear infinite;
+  transform-origin: center;
+}
+.anim-drift {
+  animation: drift 18s ease-in-out infinite;
+}
+.anim-pulse {
+  animation: pulse-ring 6s ease-in-out infinite;
+}
+
+/* Scroll reveal. Content is visible by default; only once the script runs
+   does it hide elements until they enter the viewport. */
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js-reveal [data-reveal].is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .anim-spin,
+  .anim-spin-rev,
+  .anim-drift,
+  .anim-pulse {
+    animation: none;
+  }
+  .js-reveal [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

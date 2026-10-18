@@ -71,7 +71,7 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
                   </div>
                   <p className="mt-0.5 truncate text-sm text-muted">{r.email}</p>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                    <span className="rounded-full bg-gold-soft px-2.5 py-1 font-semibold text-gold">{TYPE_LABEL[r.connect_type]}</span>
+                    <span className="rounded-full bg-gold-soft px-2.5 py-1 font-semibold text-brand">{TYPE_LABEL[r.connect_type]}</span>
                     {r.email_sent_at ? <MailCheck className="size-4 text-brand-green" aria-label="Email sent" /> : <MailWarning className="size-4 text-brand-red" aria-label="Email not sent" />}
                     {r.checked_in_at && <CheckCircle2 className="size-4 text-brand-green" aria-label="Checked in" />}
                   </div>
@@ -97,11 +97,11 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
                 {rows.map((r) => (
                   <tr key={r.id} className="hover:bg-surface-2">
                     <td className="px-4 py-3">
-                      <Link href={`/admin/registrations/${r.id}`} className="font-semibold hover:text-gold">{r.full_name}</Link>
+                      <Link href={`/admin/registrations/${r.id}`} className="font-semibold hover:text-brand">{r.full_name}</Link>
                       <div className="font-mono text-xs text-muted">{r.ref_code}</div>
                     </td>
                     <td className="px-4 py-3"><div className="max-w-56 truncate">{r.email}</div><div className="text-xs text-muted">{r.whatsapp}</div></td>
-                    <td className="px-4 py-3"><span className="rounded-full bg-gold-soft px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-gold">{TYPE_LABEL[r.connect_type]}</span></td>
+                    <td className="px-4 py-3"><span className="rounded-full bg-gold-soft px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-brand">{TYPE_LABEL[r.connect_type]}</span></td>
                     <td className="px-4 py-3 text-muted">{r.party_size || '-'}</td>
                     <td className="px-4 py-3">{r.email_sent_at ? <span className="inline-flex items-center gap-1 text-brand-green"><MailCheck className="size-4" /> Sent</span> : <span className="inline-flex items-center gap-1 text-brand-red"><MailWarning className="size-4" /> Not sent</span>}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-muted">{fmtWAT(r.created_at)}</td>

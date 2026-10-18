@@ -65,13 +65,13 @@ export default async function Overview() {
         {tiles.map((t) => {
           const body = (
             <>
-              <span className="flex size-10 items-center justify-center rounded-xl bg-gold-soft text-gold"><t.icon className="size-5" /></span>
+              <span className="flex size-10 items-center justify-center rounded-xl bg-brand-soft text-brand"><t.icon className="size-5" /></span>
               <p className="mt-4 font-display text-4xl font-semibold tabular-nums">{t.value.toLocaleString()}</p>
               <p className="mt-1 text-sm text-muted">{t.label}</p>
             </>
           );
           return t.href ? (
-            <Link key={t.label} href={`/admin/registrations${t.href}`} className="card p-5 transition-colors hover:border-gold/50">{body}</Link>
+            <Link key={t.label} href={`/admin/registrations${t.href}`} className="card p-5 transition-colors hover:border-brand/40">{body}</Link>
           ) : (
             <div key={t.label} className="card p-5">{body}</div>
           );
@@ -85,7 +85,7 @@ export default async function Overview() {
             {daily.map((d) => (
               <div key={d.day} className="group flex h-full flex-1 flex-col items-center justify-end gap-2">
                 <span className="text-[10px] font-semibold text-muted opacity-0 group-hover:opacity-100">{d.n}</span>
-                <div className="w-full rounded-t-md bg-gold/80 transition-colors group-hover:bg-gold" style={{ height: `${Math.max(2, (d.n / max) * 100)}%` }} title={`${d.day}: ${d.n}`} />
+                <div className="w-full rounded-t-md bg-brand/80 transition-colors group-hover:bg-brand" style={{ height: `${Math.max(2, (d.n / max) * 100)}%` }} title={`${d.day}: ${d.n}`} />
               </div>
             ))}
           </div>
@@ -95,7 +95,7 @@ export default async function Overview() {
         <section className="card p-5">
           <div className="flex items-center justify-between">
             <h2 className="font-semibold">Latest registrations</h2>
-            <Link href="/admin/registrations" className="inline-flex items-center gap-1 text-sm font-semibold text-gold">All <ArrowRight className="size-3.5" /></Link>
+            <Link href="/admin/registrations" className="inline-flex items-center gap-1 text-sm font-semibold text-brand">All <ArrowRight className="size-3.5" /></Link>
           </div>
           {latest.length === 0 ? (
             <p className="mt-6 text-sm text-muted">No registrations yet.</p>
@@ -103,7 +103,7 @@ export default async function Overview() {
             <ul className="mt-3 divide-y divide-line">
               {latest.map((r) => (
                 <li key={r.id}>
-                  <Link href={`/admin/registrations/${r.id}`} className="flex items-center justify-between gap-3 py-3 hover:text-gold">
+                  <Link href={`/admin/registrations/${r.id}`} className="flex items-center justify-between gap-3 py-3 hover:text-brand">
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-semibold">{r.full_name}</span>
                       <span className="text-xs text-muted">{TYPE_LABEL[r.connect_type]}</span>
