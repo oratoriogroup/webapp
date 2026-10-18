@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Loader2, Bookmark, Copy, Mail, X, RotateCcw } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/icons';
+import PhoneField from '@/components/PhoneField';
 import { SITE_URL } from '@/lib/event';
 import { SECTIONS, OTHER, otherKey, optionLabel, pathFor, validateSection, ENTRY, type Answers, type Question } from '@/lib/form';
 
@@ -319,7 +320,9 @@ function Field({ q, answers, error, onChange }: { q: Question; answers: Answers;
     q.entry === ENTRY.fullName ? 'name' : q.entry === ENTRY.email ? 'email' : q.entry === ENTRY.whatsapp ? 'tel' : q.entry === ENTRY.location ? 'address-level2' : 'off';
 
   let control: React.ReactNode;
-  if (q.type === 'short') {
+  if (q.entry === ENTRY.whatsapp) {
+    control = <PhoneField id={id} value={(v as string) ?? ''} onChange={(val) => onChange(q.entry, val)} invalid={!!error} describedBy={describedBy} />;
+  } else if (q.type === 'short') {
     control = (
       <input id={id} type={inputType} inputMode={inputType === 'tel' ? 'tel' : undefined} autoComplete={autoComplete} maxLength={200} value={(v as string) ?? ''} onChange={(e) => onChange(q.entry, e.target.value)} aria-invalid={!!error} aria-describedby={describedBy} className="field mt-2" />
     );

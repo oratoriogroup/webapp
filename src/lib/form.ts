@@ -2,6 +2,7 @@
 // Google Form). Shared by the browser (rendering, step navigation) and the
 // server (validation). Supabase is the only record; nothing is sent to Google.
 import raw from '@/data/registration-form.json';
+import { isValidPhoneNumber } from 'libphonenumber-js/min';
 
 export type Question = {
   entry: string;
@@ -99,7 +100,7 @@ export const validateSection = (sectionIndex: number, answers: Answers): Record<
       const s = String(v);
       if (s.length > (q.type === 'short' ? MAX_SHORT : MAX_LONG)) errors[q.entry] = 'This answer is too long.';
       else if (q.entry === ENTRY.email && !EMAIL_RE.test(s.trim())) errors[q.entry] = 'Enter a valid email address.';
-      else if (q.entry === ENTRY.whatsapp && !PHONE_RE.test(s.trim())) errors[q.entry] = 'Enter a valid phone number, e.g. +2348012345678.';
+      else if (q.entry === ENTRY.whatsapp && !(PHONE_RE.test(s.trim()) && s.trim().startsWith('+') && isValidPhoneNumber(s.trim()))) errors[q.entry] = 'Enter a valid WhatsApp number for the selected country.';
     } else {
       const picked = Array.isArray(v) ? v : [String(v)];
       if (q.type !== 'checkbox' && picked.length > 1) errors[q.entry] = 'Choose one option.';

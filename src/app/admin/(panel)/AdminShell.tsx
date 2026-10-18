@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Settings, LogOut, ExternalLink, Radio, Heart, ScanLine } from 'lucide-react';
+import { useEffect, useState, useTransition } from 'react';
+import { LayoutDashboard, Users, Settings, LogOut, ExternalLink, Radio, Heart, ScanLine, ChevronsLeft, ChevronsRight, Loader2 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Logo } from '@/components/SiteHeader';
 import { signOut } from '../actions';
@@ -15,36 +16,107 @@ const NAV = [
   { href: '/admin/settings', label: 'Livestream & settings', short: 'Settings', icon: Settings },
 ];
 
+const COLLAPSE_KEY = 'oratorio-admin-sidebar';
+
+// Confirmation before signing out, so a stray tap never logs staff out.
+function LogoutDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [pending, start] = useTransition();
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-[80] flex items-end justify-center p-0 sm:items-center sm:p-4" role="alertdialog" aria-modal="true" aria-labelledby="logout-title">
+      <button type="button" aria-label="Cancel" className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="pop-in relative w-full max-w-sm rounded-t-3xl border border-line bg-surface p-6 shadow-2xl sm:rounded-3xl">
+        <span className="flex size-12 items-center justify-center rounded-2xl bg-brand-soft text-brand"><LogOut className="size-6" /></span>
+        <p id="logout-title" className="h-display mt-4 text-2xl">Log out?</p>
+        <p className="mt-1 text-sm text-muted">You will need to sign in again to use the Oratorio admin.</p>
+        <div className="mt-6 grid grid-cols-2 gap-2">
+          <button type="button" onClick={onClose} className="btn-outline min-h-12" autoFocus>Cancel</button>
+          <button type="button" disabled={pending} onClick={() => start(() => signOut())} className="btn-brand min-h-12">
+            {pending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />} Log out
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminShell({ email, children }: { email: string; children: React.ReactNode }) {
   const pathname = usePathname();
   const active = (n: (typeof NAV)[number]) => (n.exact ? pathname === n.href : pathname.startsWith(n.href));
+  const [collapsed, setCollapsed] = useState(false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
+
+  useEffect(() => {
+    try {
+      setCollapsed(localStorage.getItem(COLLAPSE_KEY) === '1');
+    } catch {}
+  }, []);
+  const toggle = () => {
+    setCollapsed((c) => {
+      try {
+        localStorage.setItem(COLLAPSE_KEY, c ? '0' : '1');
+      } catch {}
+      return !c;
+    });
+  };
+
+  const item = (n: { label: string }, isActive: boolean) =>
+    `group relative flex items-center gap-3 rounded-xl py-2.5 text-sm font-medium transition-colors ${collapsed ? 'justify-center px-0' : 'px-3'} ${
+      isActive ? 'bg-brand-soft text-brand' : 'text-muted hover:bg-surface-2 hover:text-text'
+    }`;
+  const tip = (label: string) =>
+    collapsed ? (
+      <span className="pointer-events-none absolute left-full z-50 ml-3 rounded-lg bg-text px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap text-bg opacity-0 shadow-lg transition-opacity group-hover:opacity-100">{label}</span>
+    ) : null;
 
   return (
-    <div className="min-h-dvh bg-bg md:grid md:grid-cols-[260px_1fr]">
+    <div className={`min-h-dvh bg-bg md:grid md:transition-[grid-template-columns] md:duration-300 ${collapsed ? 'md:grid-cols-[80px_1fr]' : 'md:grid-cols-[264px_1fr]'}`}>
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-dvh flex-col border-r border-line bg-surface md:flex">
-        <div className="flex h-16 items-center border-b border-line px-5">
-          <Logo className="h-8" />
+        <div className={`flex h-16 items-center border-b border-line ${collapsed ? 'justify-center px-2' : 'justify-between px-5'}`}>
+          {collapsed ? <img src="/images/mark.png" alt="Oratorio" width={36} height={36} className="size-9 object-contain" /> : <Logo className="h-8" />}
+          {!collapsed && (
+            <button type="button" onClick={toggle} aria-label="Collapse sidebar" title="Collapse sidebar" className="inline-flex size-9 items-center justify-center rounded-lg text-muted hover:bg-surface-2 hover:text-text">
+              <ChevronsLeft className="size-[18px]" />
+            </button>
+          )}
         </div>
-        <p className="px-5 pt-5 text-[11px] font-semibold tracking-[0.18em] text-muted uppercase">Control centre</p>
-        <nav className="mt-2 flex-1 space-y-1 px-3" aria-label="Admin">
+        {collapsed ? (
+          <button type="button" onClick={toggle} aria-label="Expand sidebar" title="Expand sidebar" className="mx-auto mt-3 inline-flex size-9 items-center justify-center rounded-lg text-muted hover:bg-surface-2 hover:text-text">
+            <ChevronsRight className="size-[18px]" />
+          </button>
+        ) : (
+          <p className="px-5 pt-5 text-[11px] font-semibold tracking-[0.18em] text-muted uppercase">Control centre</p>
+        )}
+        <nav className={`mt-2 flex-1 space-y-1 ${collapsed ? 'px-3' : 'px-3'}`} aria-label="Admin">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} aria-current={active(n) ? 'page' : undefined}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${active(n) ? 'bg-brand-soft text-brand' : 'text-muted hover:bg-surface-2 hover:text-text'}`}>
-              <n.icon className="size-[18px]" /> {n.label}
+            <Link key={n.href} href={n.href} aria-current={active(n) ? 'page' : undefined} aria-label={collapsed ? n.label : undefined} className={item(n, active(n))}>
+              <n.icon className="size-[18px] shrink-0" /> {!collapsed && n.label}
+              {tip(n.label)}
             </Link>
           ))}
-          <a href="/livestream" target="_blank" rel="noopener" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-text">
-            <Radio className="size-[18px]" /> View livestream <ExternalLink className="ml-auto size-3.5" />
+          <a href="/livestream" target="_blank" rel="noopener" aria-label={collapsed ? 'View livestream' : undefined} className={item({ label: 'View livestream' }, false)}>
+            <Radio className="size-[18px] shrink-0" /> {!collapsed && <>View livestream <ExternalLink className="ml-auto size-3.5" /></>}
+            {tip('View livestream')}
           </a>
         </nav>
-        <div className="border-t border-line p-4">
-          <p className="truncate text-xs text-muted" title={email}>{email}</p>
-          <div className="mt-3 flex items-center gap-2">
+        <div className={`border-t border-line ${collapsed ? 'flex flex-col items-center gap-2 p-3' : 'p-4'}`}>
+          {!collapsed && <p className="truncate text-xs text-muted" title={email}>{email}</p>}
+          <div className={collapsed ? 'flex flex-col items-center gap-2' : 'mt-3 flex items-center gap-2'}>
             <ThemeToggle />
-            <form action={signOut} className="flex-1">
-              <button className="btn-outline w-full !py-2.5"><LogOut className="size-4" /> Log out</button>
-            </form>
+            {collapsed ? (
+              <button type="button" onClick={() => setConfirmLogout(true)} aria-label="Log out" title="Log out" className="inline-flex size-10 items-center justify-center rounded-full border border-line text-muted hover:bg-surface-2 hover:text-text">
+                <LogOut className="size-4" />
+              </button>
+            ) : (
+              <button type="button" onClick={() => setConfirmLogout(true)} className="btn-outline flex-1 !py-2.5"><LogOut className="size-4" /> Log out</button>
+            )}
           </div>
         </div>
       </aside>
@@ -55,9 +127,7 @@ export default function AdminShell({ email, children }: { email: string; childre
           <Logo className="h-7" />
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <form action={signOut}>
-              <button aria-label="Log out" className="inline-flex size-10 items-center justify-center rounded-full border border-line"><LogOut className="size-4" /></button>
-            </form>
+            <button type="button" onClick={() => setConfirmLogout(true)} aria-label="Log out" className="inline-flex size-10 items-center justify-center rounded-full border border-line"><LogOut className="size-4" /></button>
           </div>
         </header>
         <main className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-28 sm:px-6 md:py-8 md:pb-10">{children}</main>
@@ -74,6 +144,8 @@ export default function AdminShell({ email, children }: { email: string; childre
           ))}
         </div>
       </nav>
+
+      <LogoutDialog open={confirmLogout} onClose={() => setConfirmLogout(false)} />
     </div>
   );
 }

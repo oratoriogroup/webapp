@@ -16,7 +16,7 @@
    },
    {
     "entry": "1012986608",
-    "title": "WhatsApp number (with country code, e.g. +234...)",
+    "title": "WhatsApp number",
     "help": "",
     "type": "short",
     "required": true,
@@ -30,22 +30,6 @@
     "type": "short",
     "required": true,
     "options": [],
-    "other": false
-   },
-   {
-    "entry": "978939934",
-    "title": "Age range",
-    "help": "",
-    "type": "select",
-    "required": true,
-    "options": [
-     "Under 18",
-     "18 – 25",
-     "26 – 35",
-     "36 – 45",
-     "46 – 60",
-     "60+"
-    ],
     "other": false
    },
    {

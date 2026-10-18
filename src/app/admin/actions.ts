@@ -113,3 +113,14 @@ export async function checkInByCode(code: string, undo = false): Promise<ActionS
   revalidatePath('/admin');
   return { ok: undo ? 'Check-in undone.' : 'Checked in.' };
 }
+
+// Google / Apple sign-in through Supabase Auth. The provider must be switched
+// on in Supabase; the callback still only lets in emails on the admin list.
+export async function oauthSignIn(provider: 'google' | 'apple'): Promise<ActionState> {
+  if (provider !== 'google' && provider !== 'apple') return { error: 'Unknown provider.' };
+  const supabase = await supabaseServer();
+  const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://oratoriogroup.org').replace(/\/$/, '');
+  const { data, error } = await supabase.auth.signInWithOAuth({ provider, options: { redirectTo: `${site}/admin/auth/callback` } });
+  if (error || !data?.url) return { error: `${provider === 'google' ? 'Google' : 'Apple'} sign-in is not switched on yet. Use your email and password.` };
+  redirect(data.url);
+}
