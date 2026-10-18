@@ -3,110 +3,64 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Home, Users, PenLine, Radio, Menu, X, MapPin, Info, Sparkles, Moon, Sun, Share2 } from 'lucide-react';
-import { useTheme } from './ThemeToggle';
-import { SOCIALS } from '@/lib/event';
-import { SOCIAL_ICON } from './icons';
+import { Home, Info, Users, Radio, PenLine } from 'lucide-react';
 
 const TABS = [
-  { href: '/', label: 'Home', icon: Home, match: (p: string) => p === '/' },
-  { href: '/#lineup', label: 'Lineup', icon: Users, match: () => false },
-  { href: '/register', label: 'Register', icon: PenLine, match: (p: string) => p.startsWith('/register') },
-  { href: '/live', label: 'Live', icon: Radio, match: (p: string) => p.startsWith('/live') },
+  { href: '/', label: 'Home', icon: Home, section: null as string | null },
+  { href: '/#about', label: 'About', icon: Info, section: 'about' },
+  { href: '/#lineup', label: 'Lineup', icon: Users, section: 'lineup' },
+  { href: '/livestream', label: 'Live', icon: Radio, section: null },
+  { href: '/register', label: 'Register', icon: PenLine, section: null },
 ];
 
-const MORE = [
-  { href: '/#about', label: 'About Oratorio', icon: Info },
-  { href: '/#experience', label: 'The Experience', icon: Sparkles },
-  { href: '/#venue', label: 'Venue & Directions', icon: MapPin },
-  { href: '/#share', label: 'Share your experience', icon: Share2 },
-];
-
-// Phone navigation: a fixed five tab bar, the way the HW app does it.
+// Floating app-style dock for phones (under 768px). On the home page it
+// highlights the section currently on screen.
 export default function BottomNav() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const { theme, toggle } = useTheme();
+  const [section, setSection] = useState<string | null>(null);
 
-  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [open]);
+    if (pathname !== '/' || !('IntersectionObserver' in window)) return setSection(null);
+    const els = ['about', 'lineup'].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        const vis = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (vis) setSection(vis.target.id);
+        else if (window.scrollY < 300) setSection(null);
+      },
+      { threshold: [0.25, 0.5] },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [pathname]);
 
-  const item = 'flex flex-1 flex-col items-center gap-1 py-1.5 text-[11px] font-medium';
-  const pill = (active: boolean) =>
-    `flex h-8 w-14 items-center justify-center rounded-full transition-colors ${active ? 'bg-brand-soft text-brand' : 'text-muted'}`;
+  const isActive = (t: (typeof TABS)[number]) => {
+    if (t.section) return pathname === '/' && section === t.section;
+    if (t.href === '/') return pathname === '/' && !section;
+    return pathname.startsWith(t.href);
+  };
 
   return (
-    <>
-      <nav aria-label="Primary" className="pb-safe fixed inset-x-0 bottom-0 z-50 border-t border-line bg-surface/95 backdrop-blur-md md:hidden">
-        <div className="mx-auto flex max-w-lg items-stretch px-2 pt-1.5">
-          {TABS.map((t) => {
-            const active = t.match(pathname);
-            return (
-              <Link key={t.href} href={t.href} className={`${item} ${active ? 'text-brand' : 'text-muted'}`} aria-current={active ? 'page' : undefined}>
-                <span className={pill(active)}>
-                  <t.icon className="size-5" strokeWidth={active ? 2.2 : 1.8} />
-                </span>
-                {t.label}
-              </Link>
-            );
-          })}
-          <button type="button" onClick={() => setOpen(true)} className={`${item} ${open ? 'text-brand' : 'text-muted'}`} aria-haspopup="dialog" aria-expanded={open}>
-            <span className={pill(open)}>
-              <Menu className="size-5" strokeWidth={1.8} />
-            </span>
-            More
-          </button>
-        </div>
-      </nav>
-
-      {open && (
-        <div className="fixed inset-0 z-[60] md:hidden" role="dialog" aria-modal="true" aria-label="More">
-          <button type="button" aria-label="Close menu" className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <div className="pb-safe absolute inset-x-0 bottom-0 rounded-t-3xl border-t border-line bg-surface p-5 shadow-2xl">
-            <div className="mb-4 flex items-center justify-between">
-              <p className="h-display text-2xl">Menu</p>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close" className="inline-flex size-10 items-center justify-center rounded-full bg-surface-2">
-                <X className="size-5" />
-              </button>
-            </div>
-            <ul className="divide-y divide-line overflow-hidden rounded-2xl border border-line">
-              {MORE.map((m) => (
-                <li key={m.href}>
-                  <Link href={m.href} onClick={() => setOpen(false)} className="flex items-center gap-3 px-4 py-3.5 text-[15px] font-medium hover:bg-surface-2">
-                    <m.icon className="size-5 text-brand" />
-                    {m.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <button type="button" onClick={toggle} className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[15px] font-medium hover:bg-surface-2">
-                  {theme === 'dark' ? <Sun className="size-5 text-brand" /> : <Moon className="size-5 text-brand" />}
-                  {theme === 'dark' ? 'Light mode' : 'Dark mode'}
-                </button>
-              </li>
-            </ul>
-            <div className="mt-5 flex justify-center gap-3">
-              {SOCIALS.map((s) => {
-                const Icon = SOCIAL_ICON[s.key];
-                return (
-                  <a key={s.key} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="inline-flex size-11 items-center justify-center rounded-full border border-line text-text hover:bg-surface-2">
-                    <Icon className="size-5" />
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+    <nav aria-label="Primary" className="pb-safe fixed inset-x-0 bottom-0 z-50 px-3 md:hidden">
+      <div className="mx-auto mb-2 flex max-w-md items-stretch rounded-2xl border border-line/80 bg-surface/90 p-1.5 shadow-2xl shadow-black/10 backdrop-blur-xl">
+        {TABS.map((t) => {
+          const active = isActive(t);
+          const cta = t.href === '/register';
+          return (
+            <Link
+              key={t.href}
+              href={t.href}
+              aria-current={active ? 'page' : undefined}
+              className={`flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-semibold transition-colors ${
+                cta ? 'bg-brand text-white shadow-lg shadow-brand/30' : active ? 'bg-brand-soft text-brand' : 'text-muted'
+              }`}
+            >
+              <t.icon className="size-5" strokeWidth={active || cta ? 2.2 : 1.8} />
+              {t.label}
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
   );
 }

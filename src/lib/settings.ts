@@ -37,5 +37,5 @@ export const saveSettings = async (patch: Partial<Settings>, by: string) => {
   }
   revalidateTag('settings');
   revalidatePath('/');
-  revalidatePath('/live');
+  revalidatePath('/livestream');
 };

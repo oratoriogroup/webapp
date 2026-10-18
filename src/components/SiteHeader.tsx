@@ -5,7 +5,7 @@ export const NAV = [
   { href: '/#about', label: 'About' },
   { href: '/#lineup', label: 'Lineup' },
   { href: '/#venue', label: 'Venue' },
-  { href: '/live', label: 'Livestream' },
+  { href: '/livestream', label: 'Livestream' },
 ];
 
 export function Logo({ className = 'h-9' }: { className?: string }) {

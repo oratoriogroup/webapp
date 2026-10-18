@@ -21,7 +21,7 @@ export default async function RegisterPage() {
     <div className="relative isolate overflow-hidden">
       <Backdrop className="opacity-60" />
       <StageLights />
-    <div className="container-x relative py-10 sm:py-16">
+    <div className="container-x relative section-y">
       <div className="mx-auto grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] [&>*]:min-w-0">
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <p className="eyebrow">Registration</p>

@@ -23,7 +23,7 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
         {id && (
           <div className="mt-4 flex items-center gap-3 rounded-xl bg-surface-2 p-3">
             <img src={thumbUrl(id)} alt="" className="h-14 w-24 rounded-md object-cover" />
-            <p className="text-sm">Video ID <span className="font-mono font-semibold">{id}</span> will play on <a href="/live" target="_blank" className="font-semibold text-brand underline-offset-4 hover:underline">/live</a>.</p>
+            <p className="text-sm">Video ID <span className="font-mono font-semibold">{id}</span> will play on <a href="/livestream" target="_blank" className="font-semibold text-brand underline-offset-4 hover:underline">/live</a>.</p>
           </div>
         )}
       </section>

@@ -74,6 +74,14 @@ const PHONE_RE = /^\+?[0-9\s()-]{7,20}$/;
 const MAX_SHORT = 200;
 const MAX_LONG = 2000;
 
+// Removes tags, control and zero-width characters from typed answers.
+const stripText = (s: string, max: number) =>
+  s
+    .replace(/<[^>]*>/g, '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u200B-\u200F\u2028\u2029\uFEFF]/g, '')
+    .trim()
+    .slice(0, max);
+
 const isEmpty = (v: unknown) => (Array.isArray(v) ? v.length === 0 : !String(v ?? '').trim());
 
 export const validateSection = (sectionIndex: number, answers: Answers): Record<string, string> => {
@@ -118,9 +126,9 @@ export const validateAll = (input: Answers) => {
     for (const q of SECTIONS[i]!.questions) {
       const v = input[q.entry];
       if (isEmpty(v)) continue;
-      clean[q.entry] = Array.isArray(v) ? v.map((x) => String(x)) : String(v).trim();
+      clean[q.entry] = Array.isArray(v) ? v.map((x) => String(x)) : stripText(String(v), q.type === 'paragraph' ? MAX_LONG : MAX_SHORT);
       const ok = otherKey(q.entry);
-      if (q.other && input[ok]) clean[ok] = String(input[ok]).trim();
+      if (q.other && input[ok]) clean[ok] = stripText(String(input[ok]), MAX_SHORT);
     }
   }
   const complete = connectTypeOf(input) !== null && (connectTypeOf(input) !== 'volunteer' || path.length === 4);

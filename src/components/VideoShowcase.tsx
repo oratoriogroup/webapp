@@ -1,50 +1,88 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Play, Volume2, VolumeX } from 'lucide-react';
 
 type Props =
   | { kind: 'file'; src: string; poster?: string; title: string }
   | { kind: 'youtube'; id: string; vertical: boolean; title: string };
 
-// Landscape video frame for the home page, in the style of the reference site:
-// plays muted on a loop once it scrolls into view, with an unmute button.
-// A vertical YouTube Short sits in the centre with its own picture blurred
-// across the sides, so it fills the landscape frame without stretching.
+// Landscape video frame for the home page, in the style of the reference site.
+// The self-hosted file plays muted on a loop once it scrolls into view, with
+// an unmute button. Phones that block autoplay (for example iPhone in Low
+// Power Mode) get a large play button instead of a frozen frame.
 export default function VideoShowcase(props: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [inView, setInView] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const [blocked, setBlocked] = useState(false);
+  const started = useRef(false);
 
   useEffect(() => {
     const el = wrap.current;
     if (!el || !('IntersectionObserver' in window)) return setInView(true);
-    const io = new IntersectionObserver(([e]) => setInView(!!e?.isIntersecting), { threshold: 0.25 });
+    const io = new IntersectionObserver(([e]) => setInView(!!e?.isIntersecting), { threshold: 0.2 });
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  // Pause the self-hosted video while it is off screen to save data.
   useEffect(() => {
     const v = video.current;
     if (!v) return;
-    if (inView) void v.play().catch(() => {});
-    else v.pause();
-  }, [inView]);
+    if (inView) {
+      v.muted = muted;
+      v.play().then(
+        () => setBlocked(false),
+        () => setBlocked(true),
+      );
+    } else if (started.current) {
+      // Only pause once it has actually played, to save data off screen.
+      v.pause();
+    }
+  }, [inView, muted]);
 
-  const toggleMute = () => {
-    if (video.current) video.current.muted = !muted;
-    setMuted((m) => !m);
+  const toggleMute = () => setMuted((m) => !m);
+  const tapPlay = () => {
+    const v = video.current;
+    if (!v) return;
+    v.play().then(() => setBlocked(false), () => setBlocked(true));
   };
 
   if (props.kind === 'file') {
     return (
       <div ref={wrap} className="group relative aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-2xl shadow-brand/20">
-        <video ref={video} className="absolute inset-0 size-full object-cover" src={props.src} poster={props.poster} muted loop playsInline preload="metadata" aria-label={props.title} />
-        <button type="button" onClick={toggleMute} className="absolute top-4 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/60 px-4 py-2 text-sm font-semibold text-white backdrop-blur transition hover:bg-black/75">
-          {muted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />} {muted ? 'Unmute' : 'Mute'}
-        </button>
+        <video
+          ref={video}
+          className="absolute inset-0 size-full object-cover"
+          src={props.src}
+          poster={props.poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          disablePictureInPicture
+          aria-label={props.title}
+          onPlay={() => {
+            started.current = true;
+            setPlaying(true);
+          }}
+          onPause={() => setPlaying(false)}
+        />
+        {blocked && !playing && (
+          <button type="button" onClick={tapPlay} aria-label={`Play: ${props.title}`} className="absolute inset-0 flex items-center justify-center bg-black/25">
+            <span className="flex size-16 items-center justify-center rounded-full bg-white/95 text-brand shadow-2xl sm:size-20">
+              <Play className="ml-1 size-7 fill-current sm:size-8" />
+            </span>
+          </button>
+        )}
+        {!blocked && (
+          <button type="button" onClick={toggleMute} className="absolute top-3 left-1/2 inline-flex min-h-10 -translate-x-1/2 items-center gap-2 rounded-full bg-black/60 px-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-black/75">
+            {muted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />} {muted ? 'Unmute' : 'Mute'}
+          </button>
+        )}
       </div>
     );
   }

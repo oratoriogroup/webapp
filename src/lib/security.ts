@@ -41,3 +41,16 @@ export const newRefCode = () => {
   const bytes = crypto.getRandomValues(new Uint8Array(8));
   return 'OR26-' + Array.from(bytes, (b) => REF_ALPHABET[b % REF_ALPHABET.length]).join('');
 };
+
+// Server-side text cleaning for anything people type. Removes HTML tags,
+// control characters and zero-width characters, then trims and caps length.
+// Output is still escaped wherever it is rendered (React and the email
+// template both escape), so this is a second layer, not the only one.
+export const cleanText = (raw: unknown, max: number) =>
+  String(raw ?? '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u200B-\u200F\u2028\u2029\uFEFF]/g, '')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+    .slice(0, max);

@@ -11,7 +11,8 @@ const csp = [
   "font-src 'self'",
   "connect-src 'self'",
   'frame-src https://www.youtube-nocookie.com https://www.youtube.com https://www.google.com https://maps.google.com',
-  "frame-ancestors 'self'",
+  "media-src 'self'",
+  "frame-ancestors 'none'",
   "form-action 'self'",
   "base-uri 'self'",
   "object-src 'none'",
@@ -23,7 +24,8 @@ const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  { key: 'X-Frame-Options', value: 'DENY' },
+  { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
 ];
 
@@ -32,6 +34,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
   images: { unoptimized: true },
+  async redirects() {
+    return [{ source: '/live', destination: '/livestream', permanent: true }];
+  },
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },

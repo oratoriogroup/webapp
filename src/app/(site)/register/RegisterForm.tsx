@@ -111,14 +111,14 @@ export default function RegisterForm() {
   };
 
   return (
-    <div ref={topRef} className="card scroll-mt-24 overflow-hidden">
-      <div className="border-b border-line px-5 py-4 sm:px-8">
+    <div ref={topRef} className="glass-card scroll-mt-24 overflow-hidden">
+      <div className="border-b border-line px-6 py-5 sm:px-10">
         <div className="flex items-center justify-between text-xs font-semibold tracking-wider text-muted uppercase">
           <span>Step {step + 1} of {totalSteps}</span>
           <span>{section.title}</span>
         </div>
-        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-2">
-          <div className="h-full rounded-full bg-gradient-to-r from-brand via-gold to-brand-2 transition-all duration-300" style={{ width: `${((step + 1) / totalSteps) * 100}%` }} />
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface-2">
+          <div className="h-full rounded-full bg-gradient-to-r from-[#DC2626] to-[#991B1B] shadow-[0_0_14px_rgba(220,38,38,0.55)] transition-all duration-300" style={{ width: `${((step + 1) / totalSteps) * 100}%` }} />
         </div>
       </div>
 
@@ -128,7 +128,7 @@ export default function RegisterForm() {
           e.preventDefault();
           void next();
         }}
-        className="px-5 py-6 sm:px-8 sm:py-8"
+        className="px-6 py-6 sm:px-10 sm:py-10"
       >
         <h2 className="h-display text-3xl">{section.title}</h2>
         {section.description && <p className="mt-2 whitespace-pre-line text-[15px] text-muted">{section.description}</p>}
@@ -155,13 +155,13 @@ export default function RegisterForm() {
 
         <div className="mt-8 flex items-center justify-between gap-3 border-t border-line pt-6">
           {step > 0 ? (
-            <button type="button" onClick={back} className="btn-outline" disabled={submitting}>
+            <button type="button" onClick={back} className="btn-outline min-h-12" disabled={submitting}>
               <ArrowLeft className="size-4" /> Back
             </button>
           ) : (
             <span />
           )}
-          <button type="submit" className="btn-brand min-w-36 whitespace-nowrap" disabled={submitting}>
+          <button type="submit" className="btn-brand min-h-12 min-w-36 whitespace-nowrap" disabled={submitting}>
             {submitting ? (
               <>
                 <Loader2 className="size-4 animate-spin" /> Submitting
@@ -226,8 +226,8 @@ function Field({ q, answers, error, onChange }: { q: Question; answers: Answers;
         {opts.map((o) => {
           const on = picked.includes(o);
           return (
-            <label key={o} className={`flex cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 text-[15px] transition-colors ${on ? 'border-brand bg-brand-soft' : 'border-line bg-surface hover:bg-surface-2'}`}>
-              <input type={multi ? 'checkbox' : 'radio'} name={id} checked={on} onChange={() => toggle(o)} className="mt-0.5 size-4 shrink-0 accent-[var(--brand)]" />
+            <label key={o} className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-[15px] transition-all duration-200 ${on ? 'border-brand bg-brand-soft shadow-sm' : 'border-line bg-surface-2/60 hover:border-brand/40 hover:bg-surface'}`}>
+              <input type={multi ? 'checkbox' : 'radio'} name={id} checked={on} onChange={() => toggle(o)} className="size-5 shrink-0 accent-[var(--brand)]" />
               <span>{o === OTHER ? 'Other' : optionLabel(o)}</span>
             </label>
           );

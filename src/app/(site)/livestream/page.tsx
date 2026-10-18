@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CalendarPlus, Download, MessageCircle, Phone } from 'lucide-react';
-import VideoEmbed from '@/components/VideoEmbed';
 import Backdrop from '@/components/Backdrop';
 import StageLights from '@/components/StageLights';
 import { SOCIAL_ICON, WhatsAppIcon } from '@/components/icons';
@@ -9,7 +8,9 @@ import { EVENT, SOCIALS, CONTACTS, WHATSAPP_GROUP_URL } from '@/lib/event';
 import { googleCalendarUrl } from '@/lib/calendar';
 import { getSettings } from '@/lib/settings';
 import { youtubeId } from '@/lib/youtube';
-import ChannelPlayer from './ChannelPlayer';
+import PlayerLoader from './PlayerLoader';
+import TestimonyModal from './TestimonyModal';
+import { sql } from '@/lib/db';
 
 export const metadata: Metadata = {
   title: 'Livestream',
@@ -23,12 +24,14 @@ export default async function LivePage() {
   const settings = await getSettings();
   // A specific video link set in the admin wins; otherwise the channel plays.
   const id = youtubeId(settings.livestream_url);
+  const testimonies = await sql<{ id: string; name: string; location: string | null; message: string }[]>`
+    select id, name, location, message from public.testimonies where approved order by approved_at desc nulls last limit 6`.catch(() => []);
 
   return (
-    <section className="relative isolate overflow-hidden bg-bg">
+    <section className="relative isolate overflow-hidden">
       <Backdrop className="opacity-70" />
       <StageLights />
-      <div className="container-x relative py-10 sm:py-14">
+      <div className="container-x relative section-y">
         <div data-reveal>
           <p className="inline-flex items-center gap-2 rounded-full bg-brand px-3 py-1 text-xs font-bold tracking-wider text-white uppercase shadow-lg shadow-brand/30">
             <span className="size-2 animate-pulse rounded-full bg-white" /> Livestream
@@ -40,7 +43,7 @@ export default async function LivePage() {
         </div>
 
         <div data-reveal className="mt-8">
-          {id ? <VideoEmbed id={id} title={`${EVENT.name} livestream`} eager /> : <ChannelPlayer />}
+          <PlayerLoader pinnedVideoId={id} />
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
@@ -78,7 +81,29 @@ export default async function LivePage() {
           </div>
         </div>
 
-        <p className="mt-8 text-center text-sm text-muted">
+        <div data-reveal className="mt-10">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow">Testimonies</p>
+              <h2 className="h-display mt-2 text-3xl sm:text-4xl">Sounds of thanks</h2>
+            </div>
+            <TestimonyModal />
+          </div>
+          {testimonies.length > 0 ? (
+            <ul className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {testimonies.map((t) => (
+                <li key={t.id} className="card p-5">
+                  <p className="text-[15px] leading-relaxed whitespace-pre-line">&ldquo;{t.message}&rdquo;</p>
+                  <p className="mt-4 text-sm font-semibold">{t.name}{t.location ? <span className="font-normal text-muted">, {t.location}</span> : null}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-4 text-muted">Be the first to share what God has done for you.</p>
+          )}
+        </div>
+
+        <p className="mt-10 text-center text-sm text-muted">
           Not registered yet?{' '}
           <Link href="/register" className="font-semibold text-brand underline-offset-4 hover:underline">Register for free</Link>
         </p>

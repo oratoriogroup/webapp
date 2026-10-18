@@ -67,7 +67,7 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
     <div className="relative isolate overflow-hidden">
       <Backdrop className="opacity-60" />
       <StageLights />
-    <div className="container-x relative py-12 sm:py-16">
+    <div className="container-x relative section-y">
       <div className="mx-auto max-w-2xl">
         <div className="text-center">
           <div className="pop-in mx-auto flex size-20 items-center justify-center rounded-full bg-brand text-white shadow-lg shadow-brand/30">
@@ -103,7 +103,7 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
               <a href={DIRECTIONS_URL} target="_blank" rel="noopener noreferrer" className="btn !py-3 text-white/85 hover:!bg-white/10">
                 <Navigation className="size-4" /> Get directions
               </a>
-              <Link href="/live" className="btn !py-3 text-white/85 hover:!bg-white/10">
+              <Link href="/livestream" className="btn !py-3 text-white/85 hover:!bg-white/10">
                 <Radio className="size-4" /> Livestream page
               </Link>
             </div>

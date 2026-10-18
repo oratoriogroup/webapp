@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from 'next';
-import { Anton, Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
+import { Anton, Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
 import { EVENT, SITE_URL } from '@/lib/event';
 import './globals.css';
 
-const display = Cormorant_Garamond({
+const display = Playfair_Display({
   subsets: ['latin'],
   weight: ['500', '600', '700'],
+  style: ['normal', 'italic'],
   variable: '--font-display-face',
   display: 'swap',
 });
@@ -43,7 +44,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: 'cover',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#faf7f2' },
+    { media: '(prefers-color-scheme: light)', color: '#fffbf7' },
     { media: '(prefers-color-scheme: dark)', color: '#0d0a08' },
   ],
 };

@@ -2,7 +2,7 @@ import { EVENT, SITE_URL, VENUE_QUERY } from './event';
 
 const utcStamp = (iso: string) => new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 
-const DESCRIPTION = `${EVENT.tagline}. Live in Lagos and streaming worldwide. Watch live: ${SITE_URL}/live`;
+const DESCRIPTION = `${EVENT.tagline}. Live in Lagos and streaming worldwide. Watch live: ${SITE_URL}/livestream`;
 
 export const googleCalendarUrl = () => {
   const p = new URLSearchParams({

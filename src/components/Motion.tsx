@@ -42,7 +42,7 @@ export function BackToTop() {
       type="button"
       aria-label="Back to top"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      className={`fixed right-5 bottom-44 z-40 inline-flex size-12 items-center justify-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-all duration-300 hover:-translate-y-1 md:right-9 md:bottom-28 ${
+      className={`fixed right-5 bottom-48 z-40 inline-flex size-12 items-center justify-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-all duration-300 hover:-translate-y-1 md:right-9 md:bottom-28 ${
         show ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
       }`}
     >

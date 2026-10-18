@@ -86,3 +86,13 @@ export async function toggleCheckIn(id: string): Promise<ActionState> {
   revalidatePath('/admin/registrations');
   return { ok: 'Updated.' };
 }
+
+export async function moderateTestimony(id: string, action: 'approve' | 'hide' | 'delete'): Promise<ActionState> {
+  await requireAdmin();
+  if (!/^[0-9a-f-]{36}$/i.test(id) || !['approve', 'hide', 'delete'].includes(action)) return { error: 'Invalid request.' };
+  if (action === 'delete') await sql`delete from public.testimonies where id = ${id}`;
+  else await sql`update public.testimonies set approved = ${action === 'approve'}, approved_at = ${action === 'approve' ? sql`now()` : null} where id = ${id}`;
+  revalidatePath('/admin/testimonies');
+  revalidatePath('/livestream');
+  return { ok: 'Updated.' };
+}

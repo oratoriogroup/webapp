@@ -5,24 +5,25 @@
 /* Palette taken from the Oratorio artwork: crimson, gold and the purple of the
    convener's attire, on a bright warm white in light mode. */
 :root {
-  --bg: #fffcf8;
+  --bg: #fffbf7;
   --surface: #ffffff;
-  --surface-2: #fdf3ec;
-  --text: #1c1220;
-  --muted: #6a5d6c;
-  --border: #f0e2d8;
-  --brand: #c8202f;
+  --surface-2: #faf5ef;
+  --text: #1a1114;
+  --muted: #64585c;
+  --border: #eee3d8;
+  --brand: #dc2626;
+  --brand-deep: #991b1b;
   --brand-2: #7a2a8f;
   --gold: #c98a12;
   --gold-soft: #fff1d6;
-  --brand-soft: #fde8ea;
-  --red: #c8202f;
+  --brand-soft: #fdeceb;
+  --red: #dc2626;
   --green: #4f8f1c;
   --ink: #12090f;
-  --ring: rgba(200, 32, 47, 0.25);
-  --band-a: #c8202f;
-  --band-b: #7a2a8f;
-  --hero-ring: rgba(200, 32, 47, 0.1);
+  --ring: rgba(220, 38, 38, 0.18);
+  --band-a: #dc2626;
+  --band-b: #991b1b;
+  --hero-ring: rgba(220, 38, 38, 0.1);
   --hero-ring-2: rgba(201, 138, 18, 0.14);
   color-scheme: light;
 }
@@ -34,7 +35,8 @@
   --text: #f6eff4;
   --muted: #b3a3b0;
   --border: #33242f;
-  --brand: #ff4d5e;
+  --brand: #f05252;
+  --brand-deep: #b91c1c;
   --brand-2: #c069d6;
   --gold: #f0bd4f;
   --gold-soft: #2c2113;
@@ -42,8 +44,8 @@
   --red: #ff5a67;
   --green: #8cc63f;
   --ring: rgba(255, 77, 94, 0.35);
-  --band-a: #5b0f1d;
-  --band-b: #3a1446;
+  --band-a: #7f1d1d;
+  --band-b: #450a0a;
   --hero-ring: rgba(255, 77, 94, 0.12);
   --hero-ring-2: rgba(240, 189, 79, 0.12);
   color-scheme: dark;
@@ -58,6 +60,7 @@
   --color-line: var(--border);
   --color-brand: var(--brand);
   --color-brand-2: var(--brand-2);
+  --color-brand-deep: var(--brand-deep);
   --color-brand-soft: var(--brand-soft);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
@@ -75,7 +78,11 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(60rem 40rem at 100% -10%, rgba(220, 38, 38, 0.06), transparent 60%),
+    radial-gradient(50rem 36rem at -10% 30%, rgba(224, 162, 27, 0.07), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -94,7 +101,7 @@ body {
 }
 
 @utility container-x {
-  @apply mx-auto w-full max-w-[1600px] px-4 sm:px-8 lg:px-12 xl:px-16;
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
 }
 
 @utility eyebrow {
@@ -106,7 +113,7 @@ body {
 }
 
 @utility text-gradient {
-  background: linear-gradient(100deg, var(--brand) 0%, var(--gold) 55%, var(--brand-2) 100%);
+  background: linear-gradient(100deg, var(--brand-deep) 0%, var(--brand) 35%, var(--gold) 70%, var(--brand) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -137,7 +144,20 @@ body {
 }
 
 @utility field {
-  @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-[15px] text-text placeholder:text-muted/70 focus:border-brand focus:ring-4 focus:ring-(--ring) focus:outline-none;
+  @apply min-h-12 w-full rounded-xl border border-line bg-surface-2/60 px-4 py-3 text-base text-text transition-all duration-200 placeholder:text-muted/70 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none sm:text-[15px];
+}
+
+@utility section-y {
+  @apply py-8 sm:py-12 lg:py-16;
+}
+
+@utility glass-card {
+  @apply rounded-3xl border border-line/80 bg-surface/90 shadow-2xl shadow-brand/5 backdrop-blur-xl;
+}
+
+/* Soft red halo behind the flyer and portrait imagery. */
+@utility halo {
+  filter: drop-shadow(0 20px 40px rgba(220, 38, 38, 0.25));
 }
 
 /* Coloured band (CTA strips, save-the-date card): crimson to purple in light

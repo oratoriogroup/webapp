@@ -32,7 +32,7 @@ const row = (label: string, value: string, last = false) => {
 export const registrationEmail = (r: { fullName: string; refCode: string; connect: ConnectType }) => {
   // Full name as typed: many people write the surname first.
   const first = esc(r.fullName.trim().replace(/\s+/g, ' ') || 'there');
-  const live = `${SITE_URL}/live`;
+  const live = `${SITE_URL}/livestream`;
   const img = (p: string) => `${SITE_URL}/images/${p}`;
 
   const contacts = CONTACTS.map(
@@ -105,7 +105,7 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
 </td></tr>
 
 <tr><td align="center" style="padding:18px 32px 6px">
-  <p style="margin:0;font-family:${FONT};font-size:14px;line-height:1.6;color:#3d3240">Cannot make it to Lagos? Watch live on <a href="${live}" target="_blank" style="color:${RED};font-weight:700">oratoriogroup.org/live</a> or on <a href="${YOUTUBE_CHANNEL_URL}" target="_blank" style="color:${RED};font-weight:700">YouTube</a>.</p>
+  <p style="margin:0;font-family:${FONT};font-size:14px;line-height:1.6;color:#3d3240">Cannot make it to Lagos? Watch live on <a href="${live}" target="_blank" style="color:${RED};font-weight:700">oratoriogroup.org/livestream</a> or on <a href="${YOUTUBE_CHANNEL_URL}" target="_blank" style="color:${RED};font-weight:700">YouTube</a>.</p>
 </td></tr>
 
 <tr><td style="padding:22px 32px 26px">

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Settings, LogOut, ExternalLink, Radio } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, LogOut, ExternalLink, Radio, Heart } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Logo } from '@/components/SiteHeader';
 import { signOut } from '../actions';
@@ -10,6 +10,7 @@ import { signOut } from '../actions';
 const NAV = [
   { href: '/admin', label: 'Overview', icon: LayoutDashboard, exact: true },
   { href: '/admin/registrations', label: 'Registrations', icon: Users },
+  { href: '/admin/testimonies', label: 'Testimonies', icon: Heart },
   { href: '/admin/settings', label: 'Livestream & settings', short: 'Settings', icon: Settings },
 ];
 
@@ -32,8 +33,8 @@ export default function AdminShell({ email, children }: { email: string; childre
               <n.icon className="size-[18px]" /> {n.label}
             </Link>
           ))}
-          <a href="/live" target="_blank" rel="noopener" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-text">
-            <Radio className="size-[18px]" /> View live page <ExternalLink className="ml-auto size-3.5" />
+          <a href="/livestream" target="_blank" rel="noopener" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-text">
+            <Radio className="size-[18px]" /> View livestream <ExternalLink className="ml-auto size-3.5" />
           </a>
         </nav>
         <div className="border-t border-line p-4">

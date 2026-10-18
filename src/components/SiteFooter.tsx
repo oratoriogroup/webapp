@@ -16,7 +16,7 @@ export default function SiteFooter() {
           <p className="text-sm font-semibold text-white">Explore</p>
           <ul className="mt-4 space-y-2.5 text-sm">
             <li><Link className="hover:text-white" href="/register">Register</Link></li>
-            <li><Link className="hover:text-white" href="/live">Livestream</Link></li>
+            <li><Link className="hover:text-white" href="/livestream">Livestream</Link></li>
             <li><Link className="hover:text-white" href="/#lineup">Lineup</Link></li>
             <li><Link className="hover:text-white" href="/#venue">Venue & directions</Link></li>
           </ul>
