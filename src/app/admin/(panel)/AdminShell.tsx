@@ -2,15 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Settings, LogOut, ExternalLink, Radio, Heart } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, LogOut, ExternalLink, Radio, Heart, ScanLine } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Logo } from '@/components/SiteHeader';
 import { signOut } from '../actions';
 
 const NAV = [
   { href: '/admin', label: 'Overview', icon: LayoutDashboard, exact: true },
+  { href: '/admin/checkin', label: 'Check-in', icon: ScanLine },
   { href: '/admin/registrations', label: 'Registrations', icon: Users },
-  { href: '/admin/testimonies', label: 'Testimonies', icon: Heart },
+  { href: '/admin/testimonies', label: 'Testimonies', short: 'Stories', icon: Heart },
   { href: '/admin/settings', label: 'Livestream & settings', short: 'Settings', icon: Settings },
 ];
 

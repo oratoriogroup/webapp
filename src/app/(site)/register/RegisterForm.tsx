@@ -179,7 +179,7 @@ export default function RegisterForm() {
         return;
       }
       try {
-        sessionStorage.setItem('oratorio-reg-done', JSON.stringify({ ref: data.ref, name: data.name, email: data.email, connect: data.connect }));
+        sessionStorage.setItem('oratorio-reg-done', JSON.stringify({ ref: data.ref, name: data.name, email: data.email, connect: data.connect, pass: data.pass, emailed: data.emailed }));
         sessionStorage.removeItem(DRAFT_KEY);
         localStorage.removeItem(RESUME_KEY);
       } catch {}

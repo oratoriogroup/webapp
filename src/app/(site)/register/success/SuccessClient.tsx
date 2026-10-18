@@ -6,10 +6,11 @@ import { Check, CalendarPlus, Download, Navigation, Radio, Copy, Mail, ExternalL
 import { EVENT, SITE_URL, DIRECTIONS_URL } from '@/lib/event';
 import { FacebookIcon, LinkedInIcon, WhatsAppIcon, XIcon } from '@/components/icons';
 import DpMaker from './DpMaker';
+import PassCard from '@/components/PassCard';
 import StageLights from '@/components/StageLights';
 import Backdrop from '@/components/Backdrop';
 
-type Done = { ref: string; name: string; email: string; connect: 'attend' | 'online' | 'volunteer' | 'partner' };
+type Done = { ref: string; name: string; email: string; connect: 'attend' | 'online' | 'volunteer' | 'partner'; pass?: string; emailed?: boolean };
 
 const LINES: Record<Done['connect'], string> = {
   attend: 'Your seat is noted. Please arrive early, as seating is limited.',
@@ -76,15 +77,25 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
           <p className="eyebrow mt-6">Registration confirmed</p>
           <h1 className="h-display mt-3 text-4xl leading-tight sm:text-5xl">You&apos;re in, {first}.</h1>
           <p className="mx-auto mt-4 max-w-lg text-[17px] text-muted">
-            {LINES[done.connect]} A confirmation is on its way to <span className="font-semibold text-text underline decoration-brand underline-offset-4">{done.email}</span>.
+            {LINES[done.connect]} {done.emailed === false ? 'Your details are saved under' : 'A confirmation is on its way to'} <span className="font-semibold text-text underline decoration-brand underline-offset-4">{done.email}</span>.
           </p>
           <p className="mt-3 text-sm text-muted">
             Reference <span className="font-mono font-semibold text-text">{done.ref}</span>
           </p>
         </div>
 
+        {/* Check-in pass */}
+        {done.pass && (
+          <div className="card mt-10 p-6 text-center sm:p-8">
+            <p className="eyebrow">Your check-in pass</p>
+            <h2 className="h-display mt-2 text-3xl">Save this to your phone</h2>
+            <p className="mx-auto mt-2 max-w-md text-muted">Show this QR code at the registration stand on the day. We scan it and you are in, no queue for forms.{done.emailed ? ' A copy is also in your email.' : ''}</p>
+            <div className="mt-6"><PassCard code={done.pass} name={done.name} refCode={done.ref} /></div>
+          </div>
+        )}
+
         {/* Save the date */}
-        <div className="band relative mt-10 overflow-hidden rounded-3xl p-6 sm:p-8">
+        <div className="band relative mt-6 overflow-hidden rounded-3xl p-6 sm:p-8">
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(70% 90% at 100% 0%, rgba(255,255,255,.18), transparent 70%)' }} />
           <div className="relative">
             <p className="text-xs font-semibold tracking-[0.2em] text-white/85 uppercase">Save the date</p>
@@ -114,7 +125,7 @@ export default function SuccessClient({ getdpUrl, calendarUrl }: { getdpUrl: str
         <div className="card mt-6 p-6 sm:p-8">
           <p className="eyebrow">Your Oratorio DP</p>
           <h2 className="h-display mt-2 text-3xl">Tell everyone you&apos;ll be there.</h2>
-          <p className="mt-2 text-muted">Add your photo to the official Oratorio 2026 card, then download it or share it to your status.</p>
+          <p className="mt-2 text-muted">Add your photo to the official Oratorio 2026 card, then download it or share it to your status. On WhatsApp, tap <strong>HD</strong> at the top before sending so it stays sharp.</p>
           <DpMaker name={done.name} />
           {getdpUrl && (
             <a href={getdpUrl} target="_blank" rel="noopener noreferrer" className="btn-outline mt-4 w-full">

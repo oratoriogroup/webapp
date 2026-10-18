@@ -5,6 +5,7 @@ import { clientIp, sameOrigin, rateLimited, newRefCode } from '@/lib/security';
 import { getSettings } from '@/lib/settings';
 import { mailConfigured, sendRegistrationEmail } from '@/lib/mailer';
 import { createHash } from 'node:crypto';
+import { newCheckinCode } from '@/lib/checkin-server';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,13 +68,14 @@ export async function POST(req: Request) {
   if (existing[0]) return alreadyRegistered(existing[0].email.toLowerCase() === email ? 'email' : 'phone');
 
   const refCode = newRefCode();
+  const checkinCode = newCheckinCode();
   let row: { id: string } | undefined;
   try {
   [row] = await sql<{ id: string }[]>`
     insert into public.registrations
-      (ref_code, full_name, whatsapp, phone_norm, email, age_range, location, church, connect_type, party_size, volunteer_kind, answers, ip, user_agent)
+      (ref_code, checkin_code, full_name, whatsapp, phone_norm, email, age_range, location, church, connect_type, party_size, volunteer_kind, answers, ip, user_agent)
     values
-      (${refCode}, ${fullName}, ${String(clean[ENTRY.whatsapp])}, ${phoneNorm}, ${email}, ${(clean[ENTRY.age] as string) ?? null},
+      (${refCode}, ${checkinCode}, ${fullName}, ${String(clean[ENTRY.whatsapp])}, ${phoneNorm}, ${email}, ${(clean[ENTRY.age] as string) ?? null},
        ${(clean[ENTRY.location] as string) ?? null}, ${(clean[ENTRY.church] as string) ?? null}, ${connect},
        ${(clean[ENTRY.partySize] as string) ?? null}, ${(clean[ENTRY.volunteerKind] as string) ?? null},
        ${sql.json(clean)}, ${ip}, ${(h.get('user-agent') || '').slice(0, 300)})
@@ -86,7 +88,7 @@ export async function POST(req: Request) {
 
   const mail = await (
     mailConfigured()
-      ? sendRegistrationEmail({ fullName, email, refCode, connect }).then(
+      ? sendRegistrationEmail({ fullName, email, refCode, connect, checkinCode }).then(
           () => ({ ok: true as const }),
           (e: unknown) => ({ ok: false as const, error: e instanceof Error ? e.message : 'send failed' }),
         )
@@ -103,5 +105,5 @@ export async function POST(req: Request) {
     await sql`delete from public.registration_drafts where token_hash = ${createHash('sha256').update(body.draftToken).digest('hex')}`.catch(() => {});
   }
 
-  return NextResponse.json({ ok: true, ref: refCode, name: fullName, email, connect });
+  return NextResponse.json({ ok: true, ref: refCode, name: fullName, email, connect, pass: checkinCode, emailed: mail.ok });
 }

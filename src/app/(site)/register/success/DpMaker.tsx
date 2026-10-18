@@ -6,6 +6,8 @@ import { EVENT } from '@/lib/event';
 
 const W = 1080;
 const H = 1350;
+// Drawn at 2x (2160 x 2700) so it stays sharp when sent in HD on WhatsApp.
+const S = 2;
 const MAX_BYTES = 15 * 1024 * 1024;
 
 const RED = '#c8202f';
@@ -49,6 +51,8 @@ export default function DpMaker({ name }: { name: string }) {
     const c = canvasRef.current;
     if (!c) return;
     const ctx = c.getContext('2d')!;
+    ctx.setTransform(S, 0, 0, S, 0, 0);
+    ctx.imageSmoothingQuality = 'high';
     const css = getComputedStyle(document.documentElement);
     const impact = css.getPropertyValue('--font-impact-face').trim() || 'Impact, sans-serif';
     const sans = css.getPropertyValue('--font-sans-face').trim() || 'system-ui, sans-serif';
@@ -248,7 +252,7 @@ export default function DpMaker({ name }: { name: string }) {
     }
   };
 
-  const blob = () => new Promise<Blob | null>((res) => canvasRef.current?.toBlob(res, 'image/jpeg', 0.94));
+  const blob = () => new Promise<Blob | null>((res) => canvasRef.current?.toBlob(res, 'image/jpeg', 0.95));
 
   const download = async () => {
     const b = await blob();
@@ -274,7 +278,7 @@ export default function DpMaker({ name }: { name: string }) {
   return (
     <div className="mt-6">
       <div className="mx-auto max-w-sm overflow-hidden rounded-2xl border border-line shadow-xl">
-        <canvas ref={canvasRef} width={W} height={H} className="block h-auto w-full" aria-label="Your Oratorio 2026 DP preview" role="img" />
+        <canvas ref={canvasRef} width={W * S} height={H * S} className="block h-auto w-full" aria-label="Your Oratorio 2026 DP preview" role="img" />
       </div>
       <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => onFile(e.target.files?.[0])} />
       {error && <p className="mt-3 text-center text-sm font-medium text-brand-red">{error}</p>}

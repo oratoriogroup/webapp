@@ -4,6 +4,7 @@
 import { EVENT, SITE_URL, DIRECTIONS_URL, CONTACTS, WHATSAPP_GROUP_URL, SOCIALS, YOUTUBE_CHANNEL_URL, whatsappLink } from './event';
 import { googleCalendarUrl } from './calendar';
 import type { ConnectType } from './form';
+import { passUrl } from './checkin';
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
@@ -29,7 +30,7 @@ const row = (label: string, value: string, last = false) => {
   return `<tr><td style="padding:10px 0;${b}font-family:${FONT};font-size:12px;letter-spacing:1px;text-transform:uppercase;color:${MUTED};width:110px;vertical-align:top">${label}</td><td style="padding:10px 0;${b}font-family:${FONT};font-size:15px;color:${INK};font-weight:600">${value}</td></tr>`;
 };
 
-export const registrationEmail = (r: { fullName: string; refCode: string; connect: ConnectType }) => {
+export const registrationEmail = (r: { fullName: string; refCode: string; connect: ConnectType; checkinCode?: string | null }) => {
   // Full name as typed: many people write the surname first.
   const first = esc(r.fullName.trim().replace(/\s+/g, ' ') || 'there');
   const live = `${SITE_URL}/livestream`;
@@ -76,6 +77,16 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
     </table>
   </td></tr></table>
 </td></tr>
+
+${r.checkinCode ? `<tr><td style="padding:22px 32px 4px">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px dashed #f08a24;border-radius:16px"><tr><td align="center" style="padding:22px 18px">
+    <p style="margin:0 0 4px;font-family:${FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${RED};font-weight:700">Your check-in pass</p>
+    <img src="${SITE_URL}/api/pass/${r.checkinCode}" width="220" height="220" alt="Your Oratorio 2026 check-in QR code" style="display:block;width:220px;height:220px;margin:10px auto;border:0">
+    <p style="margin:6px 0 2px;font-family:${FONT};font-size:18px;font-weight:700;color:${INK}">${first}</p>
+    <p style="margin:0 0 12px;font-family:${FONT};font-size:13px;color:${MUTED}">Show this QR code at the registration stand for fast entry.</p>
+    ${button(passUrl(r.checkinCode), 'Open and download your pass', INK)}
+  </td></tr></table>
+</td></tr>` : ''}
 
 <tr><td align="center" style="padding:14px 24px 4px">
   ${button(googleCalendarUrl(), 'Add to Google Calendar', RED)}
@@ -130,6 +141,7 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
     `${EVENT.dateLabel}, ${EVENT.timeLabel}`,
     `${EVENT.venueName}, ${EVENT.venueAddress}`,
     `Reference: ${r.refCode}`,
+    ...(r.checkinCode ? ['', `Your check-in pass (show it at the registration stand): ${passUrl(r.checkinCode)}`] : []),
     '',
     `Add to Google Calendar: ${googleCalendarUrl()}`,
     `Directions: ${DIRECTIONS_URL}`,

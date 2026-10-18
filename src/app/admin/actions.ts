@@ -63,11 +63,11 @@ export async function resendEmail(id: string): Promise<ActionState> {
   await requireAdmin();
   if (!/^[0-9a-f-]{36}$/i.test(id)) return { error: 'Invalid registration.' };
   if (!mailConfigured()) return { error: 'Email is not configured yet.' };
-  const [r] = await sql<{ full_name: string; email: string; ref_code: string; connect_type: ConnectType }[]>`
-    select full_name, email, ref_code, connect_type from public.registrations where id = ${id} limit 1`;
+  const [r] = await sql<{ full_name: string; email: string; ref_code: string; connect_type: ConnectType; checkin_code: string | null }[]>`
+    select full_name, email, ref_code, connect_type, checkin_code from public.registrations where id = ${id} limit 1`;
   if (!r) return { error: 'Registration not found.' };
   try {
-    await sendRegistrationEmail({ fullName: r.full_name, email: r.email, refCode: r.ref_code, connect: r.connect_type });
+    await sendRegistrationEmail({ fullName: r.full_name, email: r.email, refCode: r.ref_code, connect: r.connect_type, checkinCode: r.checkin_code });
     await sql`update public.registrations set email_sent_at = now(), email_error = null where id = ${id}`;
     revalidatePath(`/admin/registrations/${id}`);
     return { ok: 'Confirmation email sent.' };
@@ -95,4 +95,21 @@ export async function moderateTestimony(id: string, action: 'approve' | 'hide' |
   revalidatePath('/admin/testimonies');
   revalidatePath('/livestream');
   return { ok: 'Updated.' };
+}
+
+export async function checkInByCode(code: string, undo = false): Promise<ActionState & { at?: string }> {
+  const admin = await requireAdmin();
+  if (!/^[A-Za-z0-9_-]{22}$/.test(code)) return { error: 'Invalid pass.' };
+  if (undo) {
+    await sql`update public.registrations set checked_in_at = null, checked_in_by = null where checkin_code = ${code}`;
+  } else {
+    // Only the first scan checks someone in; a second scan of the same pass
+    // keeps the original time so reuse is obvious to staff.
+    await sql`update public.registrations set checked_in_at = now(), checked_in_by = ${admin.email}
+      where checkin_code = ${code} and checked_in_at is null`;
+  }
+  revalidatePath(`/admin/checkin/${code}`);
+  revalidatePath('/admin/checkin');
+  revalidatePath('/admin');
+  return { ok: undo ? 'Check-in undone.' : 'Checked in.' };
 }

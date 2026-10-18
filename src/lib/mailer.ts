@@ -4,7 +4,9 @@ import { icsContent } from './calendar';
 import { registrationEmail } from './email-template';
 import type { ConnectType } from './form';
 
-export const mailConfigured = () => !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+// Resend (preferred) when RESEND_API_KEY is set, otherwise SMTP.
+const useResend = () => !!process.env.RESEND_API_KEY;
+export const mailConfigured = () => useResend() || !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
 
 let transport: nodemailer.Transporter | null = null;
 const getTransport = () => {
@@ -22,8 +24,27 @@ const getTransport = () => {
   return transport;
 };
 
-export const sendRegistrationEmail = async (r: { fullName: string; email: string; refCode: string; connect: ConnectType }) => {
+const sendViaResend = async (m: { to: string; subject: string; html: string; text: string; ics: string }) => {
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from: process.env.MAIL_FROM,
+      to: [m.to],
+      reply_to: process.env.MAIL_REPLY_TO || undefined,
+      subject: m.subject,
+      html: m.html,
+      text: m.text,
+      attachments: [{ filename: 'oratorio-2026.ics', content: Buffer.from(m.ics).toString('base64') }],
+    }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  if (!res.ok) throw new Error(`Resend ${res.status}: ${(await res.text()).slice(0, 200)}`);
+};
+
+export const sendRegistrationEmail = async (r: { fullName: string; email: string; refCode: string; connect: ConnectType; checkinCode?: string | null }) => {
   const { subject, html, text } = registrationEmail(r);
+  if (useResend()) return sendViaResend({ to: r.email, subject, html, text, ics: icsContent() });
   await getTransport().sendMail({
     from: process.env.MAIL_FROM,
     replyTo: process.env.MAIL_REPLY_TO || undefined,
