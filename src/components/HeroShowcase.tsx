@@ -10,8 +10,9 @@ const INTERVAL_MS = 4500;
 
 // Hero poster showcase: the two official posters cross-fade every 4.5 seconds.
 // Both images are full resolution WebP with a 800px version for phones, and
-// they share the same 4:5 frame, so nothing moves when they switch. Pauses
-// on hover, when the tab is hidden, and for visitors who prefer less motion.
+// they share the same 4:5 frame, so nothing moves when they switch.
+// Moving the mouse onto the poster switches to the other one at once.
+// Pauses while hovered, when the tab is hidden, and for reduced motion.
 export default function HeroShowcase() {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -23,7 +24,15 @@ export default function HeroShowcase() {
   }, [paused]);
 
   return (
-    <div className="relative" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <div
+      className="relative"
+      onMouseEnter={() => {
+        // Mouse over the poster shows the other one straight away.
+        setI((n) => (n + 1) % SLIDES.length);
+        setPaused(true);
+      }}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div aria-hidden className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-gradient-to-br from-[#dc2626]/30 via-[#e0a21b]/20 to-[#991b1b]/30 blur-3xl" />
       <div
         className="relative aspect-[4/5] w-full overflow-hidden rounded-[24px] bg-[#1a0a0d]"

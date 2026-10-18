@@ -73,16 +73,12 @@
     "type": "radio",
     "required": false,
     "options": [
-     "Instagram",
-     "Facebook",
-     "TikTok",
-     "YouTube",
-     "WhatsApp",
-     "A friend / church member",
+     "Social media (Instagram, Facebook, TikTok, YouTube, WhatsApp)",
+     "A friend or church member",
      "Oratorio alumni",
      "One of the guest ministers"
     ],
-    "other": true
+    "other": false
    },
    {
     "entry": "57744516",
@@ -112,21 +108,6 @@
   "description": "The Freudes Place (FP's Event Place), 23 Ikorodu Road, Wasimi, Maryland, Lagos\nThursday 12 November 2026, 4pm WAT\nSeating is limited, so registration helps us prepare for you.",
   "next": -2,
   "questions": [
-   {
-    "entry": "296745361",
-    "title": "How many people are you registering (including yourself)?",
-    "help": "",
-    "type": "radio",
-    "required": true,
-    "options": [
-     "1",
-     "2",
-     "3",
-     "4",
-     "5 or more"
-    ],
-    "other": false
-   },
    {
     "entry": "1763471843",
     "title": "Are you coming with a church or campus group?",

@@ -1,6 +1,18 @@
 import 'server-only';
 import { OTHER, otherKey, type Answers } from './form';
 
+// Site answers that differ from the Google Form's own options. Each entry maps
+// a site value to [Google option value] or to an "Other" text answer.
+const GFORM_MAP: Record<string, Record<string, { value: string } | { other: string }>> = {
+  // How did you hear about Oratorio 2026? (4 merged options on the site)
+  '1707098136': {
+    'Social media (Instagram, Facebook, TikTok, YouTube, WhatsApp)': { other: 'Social media' },
+    'A friend or church member': { value: 'A friend / church member' },
+    'Oratorio alumni': { value: 'Oratorio alumni' },
+    'One of the guest ministers': { value: 'One of the guest ministers' },
+  },
+};
+
 const FORM_RESPONSE_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSdo3_gG6YBSq2bhZMyMAjCsQwIVq4i5R81PuDqVV7FrAnlE-Q/formResponse';
 
@@ -14,8 +26,18 @@ export const forwardToGoogleForm = async (answers: Answers, path: number[]) => {
   for (const [key, value] of Object.entries(answers)) {
     if (key.endsWith('.other')) continue;
     const vals = Array.isArray(value) ? value : [value];
-    for (const v of vals) body.append(`entry.${key}`, v);
-    if (vals.includes(OTHER)) body.append(`entry.${key}.other_option_response`, String(answers[otherKey(key)] ?? ''));
+    const map = GFORM_MAP[key];
+    const others: string[] = [];
+    for (const v of vals) {
+      const m = map?.[v];
+      if (m && 'other' in m) others.push(m.other);
+      else body.append(`entry.${key}`, m && 'value' in m ? m.value : v);
+    }
+    if (vals.includes(OTHER)) others.push(String(answers[otherKey(key)] ?? ''));
+    if (others.length) {
+      body.append(`entry.${key}`, OTHER);
+      body.append(`entry.${key}.other_option_response`, others.join(', '));
+    }
   }
   body.append('pageHistory', path.join(','));
   body.append('fvv', '1');

@@ -2,10 +2,15 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Loader2, Bookmark, Copy, Mail, X, RotateCcw } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/icons';
+import { SITE_URL } from '@/lib/event';
 import { SECTIONS, OTHER, otherKey, optionLabel, pathFor, validateSection, ENTRY, type Answers, type Question } from '@/lib/form';
 
 const DRAFT_KEY = 'oratorio-reg-draft';
+// Resume token for "save and continue later", kept on this device only.
+const RESUME_KEY = 'oratorio-reg-resume';
+const resumeUrl = (t: string) => `${SITE_URL}/register?resume=${t}`;
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -17,14 +22,85 @@ export default function RegisterForm() {
   const startedAt = useRef(Date.now());
   const hpRef = useRef<HTMLInputElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [savedOpen, setSavedOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [offer, setOffer] = useState<string | null>(null); // saved draft found on this device
+  const [resumeMsg, setResumeMsg] = useState('');
 
-  // Keep an unsent draft on this device so a reload does not lose answers.
-  useEffect(() => {
+  const loadDraft = async (t: string) => {
     try {
+      const r = await fetch(`/api/register/draft?token=${encodeURIComponent(t)}`, { cache: 'no-store' });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.ok) {
+        setResumeMsg(d.error || 'We could not open that saved registration.');
+        try { localStorage.removeItem(RESUME_KEY); } catch {}
+        return;
+      }
+      const restored: Answers = d.answers || {};
+      setAnswers(restored);
+      // Land on the furthest step that the saved answers actually reach.
+      setStep(Math.max(0, Math.min(Number(d.step) || 0, pathFor(restored).length - 1)));
+      setToken(t);
+      try { localStorage.setItem(RESUME_KEY, t); } catch {}
+      setResumeMsg('Welcome back. Your saved answers are filled in, continue from here.');
+    } catch {
+      setResumeMsg('Network error while opening your saved registration.');
+    }
+  };
+
+  // On load: a resume link wins; otherwise offer a draft saved on this device;
+  // otherwise restore the unsent answers of this tab.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const fromLink = url.searchParams.get('resume');
+    if (fromLink) {
+      // Remove the token from the address bar so it is not shared by accident.
+      url.searchParams.delete('resume');
+      window.history.replaceState(null, '', url.pathname + url.search);
+      void loadDraft(fromLink);
+      return;
+    }
+    try {
+      const saved = localStorage.getItem(RESUME_KEY);
+      if (saved) setOffer(saved);
       const d = sessionStorage.getItem(DRAFT_KEY);
       if (d) setAnswers(JSON.parse(d));
     } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const saveForLater = async () => {
+    setSaving(true);
+    setFormError('');
+    try {
+      const r = await fetch('/api/register/draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, answers, step }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.ok) return setFormError(d.error || 'Could not save. Please try again.');
+      setToken(d.token);
+      try { localStorage.setItem(RESUME_KEY, d.token); } catch {}
+      setOffer(null);
+      setSavedOpen(true);
+    } catch {
+      setFormError('Network error. Check your connection and try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const copyLink = async () => {
+    if (!token) return;
+    try {
+      await navigator.clipboard.writeText(resumeUrl(token));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {}
+  };
   useEffect(() => {
     try {
       sessionStorage.setItem(DRAFT_KEY, JSON.stringify(answers));
@@ -32,6 +108,10 @@ export default function RegisterForm() {
   }, [answers]);
 
   const path = useMemo(() => pathFor(answers), [answers]);
+  // If an earlier answer changes the route, never point past the last step.
+  useEffect(() => {
+    if (step > path.length - 1) setStep(path.length - 1);
+  }, [path.length, step]);
   // The path can only be extended once the branching question is answered.
   const isVolunteer = path[1] === 4;
   const isLast = step === path.length - 1 && (path.length > 1 ? !isVolunteer || path.length === 4 : false);
@@ -85,7 +165,7 @@ export default function RegisterForm() {
       const res = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers, hp: hpRef.current?.value || '', t: startedAt.current }),
+        body: JSON.stringify({ answers, hp: hpRef.current?.value || '', t: startedAt.current, draftToken: token || undefined }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) {
@@ -101,6 +181,7 @@ export default function RegisterForm() {
       try {
         sessionStorage.setItem('oratorio-reg-done', JSON.stringify({ ref: data.ref, name: data.name, email: data.email, connect: data.connect }));
         sessionStorage.removeItem(DRAFT_KEY);
+        localStorage.removeItem(RESUME_KEY);
       } catch {}
       router.push('/register/success');
     } catch {
@@ -112,6 +193,41 @@ export default function RegisterForm() {
 
   return (
     <div ref={topRef} className="glass-card scroll-mt-24 overflow-hidden">
+      {offer && !token && (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-brand/20 bg-brand-soft px-6 py-4 sm:px-10">
+          <p className="text-sm font-semibold text-text">You have a saved registration on this device.</p>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => { const t = offer; setOffer(null); void loadDraft(t); }} className="btn-brand min-h-11 !py-2">Continue where I left off</button>
+            <button type="button" onClick={() => { setOffer(null); try { localStorage.removeItem(RESUME_KEY); } catch {} }} className="btn-outline min-h-11 !py-2"><RotateCcw className="size-4" /> Start afresh</button>
+          </div>
+        </div>
+      )}
+      {resumeMsg && (
+        <div role="status" className="flex items-start justify-between gap-3 border-b border-line bg-surface-2/70 px-6 py-3 text-sm sm:px-10">
+          <span>{resumeMsg}</span>
+          <button type="button" onClick={() => setResumeMsg('')} aria-label="Dismiss" className="text-muted"><X className="size-4" /></button>
+        </div>
+      )}
+      {savedOpen && token && (
+        <div className="border-b border-line bg-gradient-to-br from-brand-soft to-surface px-6 py-5 sm:px-10">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="font-semibold">Saved. You can continue any time before registration closes.</p>
+              <p className="mt-1 text-sm text-muted">On this device it opens automatically. To continue on another phone or computer, keep this private link:</p>
+            </div>
+            <button type="button" onClick={() => setSavedOpen(false)} aria-label="Close" className="text-muted"><X className="size-5" /></button>
+          </div>
+          <div className="mt-3 flex gap-2 rounded-xl border border-line bg-surface p-1.5">
+            <input readOnly value={resumeUrl(token)} aria-label="Your resume link" onFocus={(e) => e.currentTarget.select()} className="min-w-0 flex-1 bg-transparent px-2 text-sm outline-none" />
+            <button type="button" onClick={copyLink} className="btn-primary min-h-10 !py-2">{copied ? <Check className="size-4" /> : <Copy className="size-4" />} {copied ? 'Copied' : 'Copy'}</button>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <a href={`https://wa.me/?text=${encodeURIComponent(`My Oratorio 2026 registration, continue here: ${resumeUrl(token)}`)}`} target="_blank" rel="noopener noreferrer" className="btn min-h-11 bg-[#25D366] !py-2 text-white"><WhatsAppIcon className="size-4" /> Send to my WhatsApp</a>
+            <a href={`mailto:${typeof answers[ENTRY.email] === 'string' ? encodeURIComponent(String(answers[ENTRY.email])) : ''}?subject=${encodeURIComponent('Continue my Oratorio 2026 registration')}&body=${encodeURIComponent(`Continue your registration here: ${resumeUrl(token)}`)}`} className="btn-outline min-h-11 !py-2"><Mail className="size-4" /> Email it to me</a>
+          </div>
+          <p className="mt-2 text-xs text-muted">Keep this link private. Anyone with it can see and finish this registration.</p>
+        </div>
+      )}
       <div className="border-b border-line px-6 py-5 sm:px-10">
         <div className="flex items-center justify-between text-xs font-semibold tracking-wider text-muted uppercase">
           <span>Step {step + 1} of {totalSteps}</span>
@@ -153,7 +269,7 @@ export default function RegisterForm() {
           </p>
         )}
 
-        <div className="mt-8 flex items-center justify-between gap-3 border-t border-line pt-6">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6">
           {step > 0 ? (
             <button type="button" onClick={back} className="btn-outline min-h-12" disabled={submitting}>
               <ArrowLeft className="size-4" /> Back
@@ -161,6 +277,10 @@ export default function RegisterForm() {
           ) : (
             <span />
           )}
+          <div className="flex flex-wrap items-center justify-end gap-2">
+          <button type="button" onClick={saveForLater} disabled={saving || submitting} className="btn-outline min-h-12 whitespace-nowrap">
+            {saving ? <Loader2 className="size-4 animate-spin" /> : <Bookmark className="size-4" />} <span className="hidden sm:inline">Save and continue later</span><span className="sm:hidden">Save for later</span>
+          </button>
           <button type="submit" className="btn-brand min-h-12 min-w-36 whitespace-nowrap" disabled={submitting}>
             {submitting ? (
               <>
@@ -176,6 +296,7 @@ export default function RegisterForm() {
               </>
             )}
           </button>
+          </div>
         </div>
       </form>
     </div>

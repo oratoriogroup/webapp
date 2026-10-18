@@ -5,6 +5,7 @@ import { clientIp, sameOrigin, rateLimited, newRefCode } from '@/lib/security';
 import { getSettings } from '@/lib/settings';
 import { mailConfigured, sendRegistrationEmail } from '@/lib/mailer';
 import { forwardToGoogleForm } from '@/lib/gform';
+import { createHash } from 'node:crypto';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,7 +36,7 @@ export async function POST(req: Request) {
   const len = Number(h.get('content-length') || 0);
   if (len > 32_000) return fail(413, 'Request too large.');
 
-  let body: { answers?: Answers; hp?: string; t?: number };
+  let body: { answers?: Answers; hp?: string; t?: number; draftToken?: string };
   try {
     body = await req.json();
   } catch {
@@ -101,6 +102,10 @@ export async function POST(req: Request) {
       gform_status = ${gform.ok ? 'sent' : 'failed'},
       gform_error = ${gform.ok ? null : gform.error.slice(0, 300)}
     where id = ${row!.id}`;
+
+  if (typeof body.draftToken === 'string' && /^[A-Za-z0-9_-]{43}$/.test(body.draftToken)) {
+    await sql`delete from public.registration_drafts where token_hash = ${createHash('sha256').update(body.draftToken).digest('hex')}`.catch(() => {});
+  }
 
   return NextResponse.json({ ok: true, ref: refCode, name: fullName, email, connect });
 }

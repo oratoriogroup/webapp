@@ -88,7 +88,6 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
                   <th className="px-4 py-3 font-semibold">Name</th>
                   <th className="px-4 py-3 font-semibold">Contact</th>
                   <th className="px-4 py-3 font-semibold">Type</th>
-                  <th className="px-4 py-3 font-semibold">Party</th>
                   <th className="px-4 py-3 font-semibold">Email</th>
                   <th className="px-4 py-3 font-semibold">Registered</th>
                 </tr>
@@ -102,7 +101,6 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
                     </td>
                     <td className="px-4 py-3"><div className="max-w-56 truncate">{r.email}</div><div className="text-xs text-muted">{r.whatsapp}</div></td>
                     <td className="px-4 py-3"><span className="rounded-full bg-gold-soft px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-brand">{TYPE_LABEL[r.connect_type]}</span></td>
-                    <td className="px-4 py-3 text-muted">{r.party_size || '-'}</td>
                     <td className="px-4 py-3">{r.email_sent_at ? <span className="inline-flex items-center gap-1 text-brand-green"><MailCheck className="size-4" /> Sent</span> : <span className="inline-flex items-center gap-1 text-brand-red"><MailWarning className="size-4" /> Not sent</span>}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-muted">{fmtWAT(r.created_at)}</td>
                   </tr>

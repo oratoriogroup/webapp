@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     title: `${EVENT.name}: ${EVENT.theme}`,
     description,
     url: SITE_URL,
-    images: [{ url: '/images/og.jpg', width: 1200, height: 630, alt: EVENT.name }],
+    images: [{ url: '/images/og-2026.jpg', width: 1200, height: 630, alt: EVENT.name }],
   },
-  twitter: { card: 'summary_large_image', title: `${EVENT.name}: ${EVENT.theme}`, description, images: ['/images/og.jpg'] },
+  twitter: { card: 'summary_large_image', title: `${EVENT.name}: ${EVENT.theme}`, description, images: ['/images/og-2026.jpg'] },
   robots: { index: true, follow: true },
 };
 
