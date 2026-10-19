@@ -1,3 +1,4 @@
+import { checkinOpen } from '@/lib/checkin';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, UserCheck, AlertTriangle, Phone, MessageCircle } from 'lucide-react';
@@ -11,14 +12,14 @@ export const metadata = { title: 'Check-in' };
 
 type Row = {
   id: string; checkin_code: string; full_name: string; whatsapp: string; email: string; ref_code: string; connect_type: string;
-  age_range: string | null; location: string | null; church: string | null; answers: Answers; created_at: Date; checked_in_at: Date | null; checked_in_by: string | null;
+  location: string | null; church: string | null; answers: Answers; created_at: Date; checked_in_at: Date | null; checked_in_by: string | null;
 };
 
 export default async function CheckinDetail({ params }: { params: Promise<{ code: string }> }) {
   await requireAdmin();
   const { code } = await params;
   if (!/^[A-Za-z0-9_-]{22}$/.test(code)) notFound();
-  const [r] = await sql<Row[]>`select id, checkin_code, full_name, whatsapp, email, ref_code, connect_type, age_range, location, church, answers, created_at, checked_in_at, checked_in_by
+  const [r] = await sql<Row[]>`select id, checkin_code, full_name, whatsapp, email, ref_code, connect_type, location, church, answers, created_at, checked_in_at, checked_in_by
     from public.registrations where checkin_code = ${code} limit 1`;
   if (!r) {
     return (
@@ -47,7 +48,7 @@ export default async function CheckinDetail({ params }: { params: Promise<{ code
         <h1 className="h-display mt-3 text-4xl">{r.full_name}</h1>
         <p className="mt-1 text-sm text-muted">{TYPE_LABEL[r.connect_type]} · Ref <span className="font-mono">{r.ref_code}</span> · Registered {fmtWAT(r.created_at)}</p>
         {r.checked_in_at && <p className="mt-3 text-sm font-semibold">Checked in at {fmtWAT(r.checked_in_at)}{r.checked_in_by ? ` by ${r.checked_in_by}` : ''}. If this is a different person, the pass may have been shared.</p>}
-        <div className="mt-5"><CheckinButton code={r.checkin_code} checkedIn={!!r.checked_in_at} /></div>
+        <div className="mt-5"><CheckinButton code={r.checkin_code} checkedIn={!!r.checked_in_at} open={checkinOpen()} /></div>
       </div>
 
       <section className="card mt-4 p-5">
@@ -55,7 +56,6 @@ export default async function CheckinDetail({ params }: { params: Promise<{ code
         <dl className="mt-3 grid gap-3 sm:grid-cols-2">
           <div><dt className="text-xs text-muted">WhatsApp</dt><dd className="font-medium">{r.whatsapp}</dd></div>
           <div><dt className="text-xs text-muted">Email</dt><dd className="truncate font-medium">{r.email}</dd></div>
-          <div><dt className="text-xs text-muted">Age range</dt><dd className="font-medium">{r.age_range || '-'}</dd></div>
           <div><dt className="text-xs text-muted">Location</dt><dd className="font-medium">{r.location || '-'}</dd></div>
           <div className="sm:col-span-2"><dt className="text-xs text-muted">Church, fellowship or campus</dt><dd className="font-medium">{r.church || '-'}</dd></div>
         </dl>

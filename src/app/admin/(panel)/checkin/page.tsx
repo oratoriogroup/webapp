@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Search, UserCheck } from 'lucide-react';
+import { Search, UserCheck, Lock } from 'lucide-react';
+import { checkinOpen, CHECKIN_OPENS_LABEL } from '@/lib/checkin';
 import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
 import { TYPE_LABEL, fmtWAT } from '../shared';
@@ -23,6 +24,12 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
   return (
     <div>
       <AdminHeader title="Check-in" subtitle="Scan an attendee's pass, or search by name, phone, email or reference." />
+      {!checkinOpen() && (
+        <div className="mt-5 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+          <Lock className="mt-0.5 size-4 shrink-0" />
+          <p><strong>Check-in opens {CHECKIN_OPENS_LABEL}.</strong> You can scan a pass now to confirm it is genuine, but nobody can be checked in until then.</p>
+        </div>
+      )}
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
       <div>
       <div className="grid grid-cols-3 gap-3">

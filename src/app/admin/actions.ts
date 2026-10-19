@@ -2,6 +2,7 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { checkinOpen, CHECKIN_OPENS_LABEL } from '@/lib/checkin';
 import { revalidatePath } from 'next/cache';
 import { supabaseServer } from '@/lib/supabase-server';
 import { isAllowedAdmin, requireAdmin } from '@/lib/admin';
@@ -117,9 +118,18 @@ export async function sendPendingEmails(): Promise<ActionState> {
 }
 
 export async function toggleCheckIn(id: string): Promise<ActionState> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!/^[0-9a-f-]{36}$/i.test(id)) return { error: 'Invalid registration.' };
-  await sql`update public.registrations set checked_in_at = case when checked_in_at is null then now() else null end where id = ${id}`;
+  if (!checkinOpen()) {
+    // Before the event only an undo is allowed.
+    const done = await sql`update public.registrations set checked_in_at = null, checked_in_by = null where id = ${id} and checked_in_at is not null`;
+    if (!done.count) return { error: `Check-in opens ${CHECKIN_OPENS_LABEL}.` };
+  } else {
+    await sql`update public.registrations set
+      checked_in_at = case when checked_in_at is null then now() else null end,
+      checked_in_by = case when checked_in_at is null then ${admin.email} else null end
+      where id = ${id}`;
+  }
   revalidatePath(`/admin/registrations/${id}`);
   revalidatePath('/admin/registrations');
   return { ok: 'Updated.' };
@@ -144,6 +154,7 @@ export async function checkInByCode(code: string, undo = false): Promise<ActionS
   if (undo) {
     await sql`update public.registrations set checked_in_at = null, checked_in_by = null where checkin_code = ${code}`;
   } else {
+    if (!checkinOpen()) return { error: `Check-in opens ${CHECKIN_OPENS_LABEL}.` };
     // Only the first scan checks someone in; a second scan of the same pass
     // keeps the original time so reuse is obvious to staff.
     await sql`update public.registrations set checked_in_at = now(), checked_in_by = ${admin.email}

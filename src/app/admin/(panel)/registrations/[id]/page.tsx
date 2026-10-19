@@ -1,3 +1,4 @@
+import { checkinOpen } from '@/lib/checkin';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Mail, Phone, MessageCircle } from 'lucide-react';
@@ -33,7 +34,7 @@ export default async function RegistrationDetail({ params }: { params: Promise<{
           <h1 className="h-display text-4xl">{r.full_name}</h1>
           <p className="mt-1 text-sm text-muted"><span className="font-mono">{r.ref_code}</span> · {TYPE_LABEL[r.connect_type]} · {fmtWAT(r.created_at)}</p>
         </div>
-        <RowActions id={r.id} checkedIn={!!r.checked_in_at} />
+        <RowActions id={r.id} checkedIn={!!r.checked_in_at} open={checkinOpen()} />
       </div>
 
       <div className="mt-5 grid gap-2 sm:grid-cols-3">

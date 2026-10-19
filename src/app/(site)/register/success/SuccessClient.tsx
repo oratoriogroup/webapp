@@ -88,6 +88,14 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
           </div>
         )}
 
+        {/* DP */}
+        <div className="card mt-6 p-6 sm:p-8">
+          <p className="eyebrow">Your Oratorio DP</p>
+          <h2 className="h-display mt-2 text-3xl">Tell everyone you&apos;ll be there.</h2>
+          <p className="mt-2 text-muted">Add your photo, then download it for your status. On WhatsApp, tap <strong>HD</strong> before sending.</p>
+          <DpMaker name={done.name} />
+        </div>
+
         {/* Save the date */}
         <div className="band relative mt-6 overflow-hidden rounded-3xl p-6 sm:p-8">
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(70% 90% at 100% 0%, rgba(255,255,255,.18), transparent 70%)' }} />
@@ -107,14 +115,6 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
               {done.connect === 'online' ? <><Radio className="size-4" /> Livestream page</> : <><Navigation className="size-4" /> Get directions</>}
             </a>
           </div>
-        </div>
-
-        {/* DP */}
-        <div className="card mt-6 p-6 sm:p-8">
-          <p className="eyebrow">Your Oratorio DP</p>
-          <h2 className="h-display mt-2 text-3xl">Tell everyone you&apos;ll be there.</h2>
-          <p className="mt-2 text-muted">Add your photo, then download it for your status. On WhatsApp, tap <strong>HD</strong> before sending.</p>
-          <DpMaker name={done.name} />
         </div>
 
         {/* Share */}
