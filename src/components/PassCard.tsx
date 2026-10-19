@@ -7,7 +7,7 @@ import { EVENT } from '@/lib/event';
 import { checkinUrl } from '@/lib/checkin';
 
 const W = 1080;
-const H = 1620;
+const H = 1460;
 const S = 2; // drawn at 2x so the saved image stays sharp
 const RED = '#dc2626';
 const INK = '#1a1114';
@@ -103,13 +103,9 @@ export default function PassCard({ code, name, refCode }: { code: string; name: 
       ctx.font = `600 28px ${sans}`;
       ctx.fillText(`Ref ${refCode}`, W / 2, 1345);
     }
-    ctx.fillStyle = MUTED;
-    ctx.font = `500 26px ${sans}`;
-    ctx.fillText('Show this code at the registration stand.', W / 2, 1440);
-    ctx.fillText(`${EVENT.venueName}, ${EVENT.venueAddress}`, W / 2, 1482);
     ctx.fillStyle = '#b8adb1';
     ctx.font = `500 22px ${sans}`;
-    ctx.fillText('oratoriogroup.org', W / 2, 1560);
+    ctx.fillText('oratoriogroup.org', W / 2, H - 48);
     setReady(true);
   }, [code, name, refCode]);
 

@@ -110,7 +110,7 @@ export default async function HomePage() {
       <section id="about" className="border-y border-line bg-surface/70">
         <div className="container-x section-y grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <Reveal className="relative mx-auto w-full max-w-sm">
-            <img src={CONVENER.photo} alt={CONVENER.name} width={847} height={1100} loading="lazy" decoding="async" className="halo relative aspect-[4/5] w-full rounded-[2rem] object-cover object-top" />
+            <img src="/images/about-oratorio-800.webp" srcSet="/images/about-oratorio-800.webp 800w, /images/about-oratorio.webp 1601w" sizes="(min-width: 1024px) 384px, (min-width: 640px) 384px, 92vw" alt="Giving thanks in worship" width={1601} height={2000} loading="lazy" decoding="async" className="halo relative aspect-[4/5] w-full rounded-[2rem] object-cover" />
           </Reveal>
           <Reveal delay={0.1}>
             <p className="eyebrow">About Oratorio</p>
