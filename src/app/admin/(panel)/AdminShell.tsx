@@ -130,7 +130,7 @@ export default function AdminShell({ email, children }: { email: string; childre
             <button type="button" onClick={() => setConfirmLogout(true)} aria-label="Log out" className="inline-flex size-10 items-center justify-center rounded-full border border-line"><LogOut className="size-4" /></button>
           </div>
         </header>
-        <main className="mx-auto w-full max-w-7xl px-4 py-6 pb-28 sm:px-6 lg:pb-10">{children}</main>
+        <main className="w-full max-w-none px-4 py-6 pb-28 sm:px-6 lg:px-8 lg:pb-10">{children}</main>
       </div>
 
       {/* Mobile bottom nav */}

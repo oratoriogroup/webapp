@@ -111,39 +111,47 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
             ))}
           </ul>
 
-          {/* Tablet and up: table */}
-          <div className={`${cardCls} mt-5 hidden overflow-x-auto md:block`}>
-            <table className="w-full min-w-[1250px] text-left text-sm">
+          {/* Tablet and up: table. Fits the full workspace on wide screens;
+              only scrolls sideways on narrower tablets. */}
+          <div className={`${cardCls} mt-5 hidden w-full max-w-none overflow-x-auto md:block xl:overflow-visible`}>
+            <table className="w-full table-auto text-left text-xs">
               <thead className="bg-surface-2 text-[11px] font-semibold tracking-wider text-muted uppercase">
                 <tr>
-                  {['Name', 'Reference', 'Pass QR', 'Phone', 'Email', 'City / State / Country', 'Church / fellowship / campus', 'Heard about us', 'Connecting as', 'Email', 'Registered'].map((h, i) => (
-                    <th key={i} className="px-4 py-3.5 whitespace-nowrap">{h}</th>
-                  ))}
+                  <th className="min-w-[140px] px-3 py-3.5">Name & ref</th>
+                  <th className="w-12 px-3 py-3.5">QR</th>
+                  <th className="px-3 py-3.5 whitespace-nowrap">Phone</th>
+                  <th className="min-w-[180px] px-3 py-3.5">Email</th>
+                  <th className="min-w-[100px] px-3 py-3.5">Location</th>
+                  <th className="min-w-[120px] px-3 py-3.5">Church / fellowship</th>
+                  <th className="min-w-[100px] px-3 py-3.5">Heard from</th>
+                  <th className="min-w-[130px] px-3 py-3.5">Connecting as</th>
+                  <th className="min-w-[90px] px-3 py-3.5">Email</th>
+                  <th className="px-3 py-3.5 whitespace-nowrap">Registered</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.id} className="border-t border-line align-middle transition-colors hover:bg-surface-2/60">
-                    <td className="px-4 py-3">
-                      <Link href={`/admin/registrations/${r.id}`} className="font-semibold whitespace-nowrap hover:text-brand">{r.full_name}</Link>
+                    <td className="px-3 py-3">
+                      <Link href={`/admin/registrations/${r.id}`} className="block text-[13px] font-semibold hover:text-brand">{r.full_name}</Link>
+                      <code className="mt-1 inline-block rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[10px] whitespace-nowrap text-muted">{r.ref_code}</code>
                       {r.checked_in_at && <span className="mt-1 flex items-center gap-1 text-[11px] font-semibold text-brand-green"><CheckCircle2 className="size-3.5" /> Checked in</span>}
                     </td>
-                    <td className="px-4 py-3"><code className="rounded bg-surface-2 px-2 py-0.5 font-mono text-[11px] whitespace-nowrap">{r.ref_code}</code></td>
-                    <td className="px-4 py-3">
+                    <td className="w-12 px-3 py-3">
                       {r.checkin_code ? (
-                        <a href={`/pass/${r.checkin_code}`} target="_blank" rel="noopener" title="Open this attendee's pass" className="block size-12 overflow-hidden rounded-lg border border-line bg-white p-0.5 transition hover:border-brand/50">
-                          <img src={`/api/pass/${r.checkin_code}`} alt={`Pass QR for ${r.full_name}`} width={44} height={44} loading="lazy" className="size-full" />
+                        <a href={`/pass/${r.checkin_code}`} target="_blank" rel="noopener" title="Open this attendee's pass" className="block size-10 overflow-hidden rounded-md border border-line bg-white p-0.5 transition hover:border-brand/50">
+                          <img src={`/api/pass/${r.checkin_code}`} alt={`Pass QR for ${r.full_name}`} width={36} height={36} loading="lazy" className="size-full" />
                         </a>
                       ) : '-'}
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap">{r.whatsapp}</td>
-                    <td className="max-w-56 truncate px-4 py-3" title={r.email}>{r.email}</td>
-                    <td className="max-w-44 px-4 py-3">{dash(r.location)}</td>
-                    <td className="max-w-44 px-4 py-3">{dash(r.church)}</td>
-                    <td className="max-w-40 px-4 py-3">{heardFrom(r.answers)}</td>
-                    <td className="px-4 py-3"><span className={`rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span></td>
-                    <td className="px-4 py-3 whitespace-nowrap">{r.email_sent_at ? <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-green"><MailCheck className="size-4" /> Sent</span> : <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-600"><Clock3 className="size-4" /> Pending</span>}</td>
-                    <td className="px-4 py-3 text-xs whitespace-nowrap text-muted">{fmtWAT(r.created_at)}</td>
+                    <td className="px-3 py-3 whitespace-nowrap">{r.whatsapp}</td>
+                    <td className="max-w-[220px] px-3 py-3"><span className="block truncate" title={r.email}>{r.email}</span></td>
+                    <td className="px-3 py-3">{dash(r.location)}</td>
+                    <td className="px-3 py-3">{dash(r.church)}</td>
+                    <td className="px-3 py-3">{heardFrom(r.answers)}</td>
+                    <td className="px-3 py-3"><span className={`inline-block rounded-full px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span></td>
+                    <td className="px-3 py-3 whitespace-nowrap">{r.email_sent_at ? <span className="inline-flex items-center gap-1 font-semibold text-brand-green"><MailCheck className="size-3.5" /> Sent</span> : <span className="inline-flex items-center gap-1 font-semibold text-amber-600"><Clock3 className="size-3.5" /> Pending</span>}</td>
+                    <td className="px-3 py-3 text-[11px] whitespace-nowrap text-muted">{fmtWAT(r.created_at)}</td>
                   </tr>
                 ))}
               </tbody>
