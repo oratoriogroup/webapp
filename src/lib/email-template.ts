@@ -95,8 +95,8 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
 ${r.checkinCode ? `<tr><td class="px" style="padding:22px 44px 4px">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px dashed #f0a24a;border-radius:16px"><tr><td align="center" style="padding:24px 18px">
     <p style="margin:0;font-family:${FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${RED};font-weight:700">Your check-in pass</p>
-    <img src="${SITE_URL}/api/pass/${r.checkinCode}" width="220" height="220" class="qr" alt="Your Oratorio 2026 check-in QR code" style="display:block;width:220px;height:220px;margin:14px auto 10px;border:0">
-    <p style="margin:0 0 14px;font-family:${FONT};font-size:14px;line-height:1.5;color:${MUTED}">Show this QR code at the registration stand for fast entry.</p>
+    <p style="margin:8px 0 0;font-family:${FONT};font-size:14px;line-height:1.5;color:${MUTED}">Save it to your phone and show the QR code at the registration stand.</p>
+    <img src="${SITE_URL}/api/pass/${r.checkinCode}" width="220" height="220" class="qr" alt="Your Oratorio 2026 check-in QR code" style="display:block;width:220px;height:220px;margin:18px auto 16px;border:0">
     ${button(passUrl(r.checkinCode), 'Save your pass to your phone', INK)}
   </td></tr></table>
 </td></tr>` : ''}
