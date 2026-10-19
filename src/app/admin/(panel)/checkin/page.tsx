@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
 import { TYPE_LABEL, fmtWAT } from '../shared';
 import Scanner from './Scanner';
+import AdminHeader, { cardCls } from '../AdminHeader';
 
 export const metadata = { title: 'Check-in' };
 
@@ -20,16 +21,19 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
         where full_name ilike ${like} or email ilike ${like} or whatsapp ilike ${like} or ref_code ilike ${like} order by full_name limit 30`
     : [];
   return (
-    <div className="max-w-3xl">
-      <h1 className="h-display text-4xl">Check-in</h1>
-      <p className="mt-1 text-sm text-muted">Scan an attendee&apos;s pass, or search by name, phone, email or reference.</p>
-      <div className="mt-5 grid grid-cols-3 gap-3">
-        <div className="card p-4"><p className="font-display text-3xl font-semibold">{stats!.inside}</p><p className="text-xs text-muted">Checked in</p></div>
-        <div className="card p-4"><p className="font-display text-3xl font-semibold">{stats!.attend}</p><p className="text-xs text-muted">Registered to attend</p></div>
-        <div className="card p-4"><p className="font-display text-3xl font-semibold">{stats!.total}</p><p className="text-xs text-muted">All registrations</p></div>
+    <div>
+      <AdminHeader title="Check-in" subtitle="Scan an attendee's pass, or search by name, phone, email or reference." />
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <div>
+      <div className="grid grid-cols-3 gap-3">
+        <div className={`${cardCls} p-4`}><p className="text-3xl font-bold">{stats!.inside}</p><p className="text-xs text-muted">Checked in</p></div>
+        <div className={`${cardCls} p-4`}><p className="text-3xl font-bold">{stats!.attend}</p><p className="text-xs text-muted">Registered to attend</p></div>
+        <div className={`${cardCls} p-4`}><p className="text-3xl font-bold">{stats!.total}</p><p className="text-xs text-muted">All registrations</p></div>
       </div>
-      <div className="mt-5"><Scanner /></div>
-      <form className="mt-5 flex gap-2" role="search">
+      <div className="mt-4"><Scanner /></div>
+      </div>
+      <div>
+      <form className="flex gap-2" role="search">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" />
           <input name="q" defaultValue={q} placeholder="Name, phone, email or reference" className="field !pl-11" aria-label="Search attendees" />
@@ -56,6 +60,8 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
           ))}
         </ul>
       )}
+      </div>
+      </div>
     </div>
   );
 }

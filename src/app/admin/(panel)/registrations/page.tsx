@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { Search, Download, FileText, ChevronLeft, ChevronRight, MailCheck, MailWarning, CheckCircle2 } from 'lucide-react';
+import { Search, Download, FileText, ChevronLeft, ChevronRight, MailCheck, Clock3, CheckCircle2 } from 'lucide-react';
 import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
 import type { Answers } from '@/lib/form';
-import { TYPE_LABEL, fmtWAT, heardFrom } from '../shared';
+import { TYPE_LABEL, TYPE_BADGE, fmtWAT, heardFrom } from '../shared';
+import AdminHeader, { actionBtn, inputCls, cardCls } from '../AdminHeader';
 import { filterSql, TYPES } from './filter';
 
 export const metadata = { title: 'Registrations' };
@@ -12,7 +13,7 @@ const PAGE = 25;
 
 type Row = {
   id: string; ref_code: string; full_name: string; email: string; whatsapp: string; connect_type: string;
-  location: string | null; church: string | null; answers: Answers; created_at: Date; email_sent_at: Date | null; checked_in_at: Date | null;
+  location: string | null; church: string | null; answers: Answers; created_at: Date; email_sent_at: Date | null; checked_in_at: Date | null; checkin_code: string | null;
 };
 
 const dash = (v: string | null | undefined) => (v && v.trim() ? v : '-');
@@ -26,7 +27,7 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
 
   const where = filterSql(q, type);
   const [rows, [{ n }]] = await Promise.all([
-    sql<Row[]>`select id, ref_code, full_name, email, whatsapp, connect_type, location, church, answers, created_at, email_sent_at, checked_in_at
+    sql<Row[]>`select id, ref_code, full_name, email, whatsapp, connect_type, location, church, answers, created_at, email_sent_at, checked_in_at, checkin_code
       from public.registrations ${where} order by created_at desc limit ${PAGE} offset ${(page - 1) * PAGE}`,
     sql<{ n: number }[]>`select count(*)::int n from public.registrations ${where}`,
   ]);
@@ -41,38 +42,53 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
 
   return (
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="h-display text-4xl">Registrations</h1>
-          <p className="mt-1 text-sm text-muted">{n.toLocaleString()} {n === 1 ? 'person' : 'people'}{type ? `, ${TYPE_LABEL[type]}` : ''}{q ? `, matching "${q}"` : ''}</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <a href={`/admin/export/pdf${qs({})}`} className="btn-outline !py-2.5"><FileText className="size-4" /> Export PDF</a>
-          <a href={`/admin/export${qs({})}`} className="btn-outline !py-2.5"><Download className="size-4" /> Export CSV</a>
+      <AdminHeader title="Registrations" subtitle={`${n.toLocaleString()} ${n === 1 ? 'person' : 'people'}${type ? `, ${TYPE_LABEL[type]}` : ''}${q ? `, matching "${q}"` : ''}`}>
+        <a href={`/admin/export/pdf${qs({})}`} className={actionBtn}><FileText className="size-4" /> Export PDF</a>
+        <a href={`/admin/export${qs({})}`} className={actionBtn}><Download className="size-4" /> Export CSV</a>
+      </AdminHeader>
+
+      <div className={`${cardCls} mt-6 p-3`}>
+        <form className="flex flex-col gap-2 sm:flex-row" role="search">
+          <div className="relative flex-1">
+            <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" />
+            <input name="q" defaultValue={q} placeholder="Search name, email, phone or reference" className={`${inputCls} !pl-11`} aria-label="Search registrations" />
+          </div>
+          <select name="type" defaultValue={type} className={`${inputCls} sm:w-52`} aria-label="Filter by type">
+            <option value="">All types</option>
+            {TYPES.map((t) => <option key={t} value={t}>{TYPE_LABEL[t]}</option>)}
+          </select>
+          <button className="inline-flex h-11 items-center justify-center rounded-xl bg-brand px-6 text-sm font-semibold text-white shadow-lg shadow-brand/25 hover:bg-brand-deep">Apply</button>
+        </form>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {[
+            { label: 'All attendees', t: '' },
+            { label: 'Lagos in-person', t: 'attend' },
+            { label: 'Online streams', t: 'online' },
+            { label: 'Volunteers', t: 'volunteer' },
+            { label: 'Partners', t: 'partner' },
+          ].map((p) => {
+            const u = new URLSearchParams();
+            if (q) u.set('q', q);
+            if (p.t) u.set('type', p.t);
+            const on = type === p.t;
+            return (
+              <Link key={p.label} href={`?${u.toString()}`} className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${on ? 'bg-brand text-white shadow-md shadow-brand/25' : 'bg-surface-2 text-muted hover:text-brand'}`}>
+                {p.label}
+              </Link>
+            );
+          })}
         </div>
       </div>
 
-      <form className="mt-5 flex flex-col gap-2 sm:flex-row" role="search">
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" />
-          <input name="q" defaultValue={q} placeholder="Search name, email, phone or reference" className="field !pl-11" aria-label="Search registrations" />
-        </div>
-        <select name="type" defaultValue={type} className="field sm:w-56" aria-label="Filter by type">
-          <option value="">All types</option>
-          {TYPES.map((t) => <option key={t} value={t}>{TYPE_LABEL[t]}</option>)}
-        </select>
-        <button className="btn-primary min-h-12">Apply</button>
-      </form>
-
       {rows.length === 0 ? (
-        <div className="card mt-6 p-10 text-center text-muted">No registrations found.</div>
+        <div className={`${cardCls} mt-6 p-10 text-center text-muted`}>No registrations found.</div>
       ) : (
         <>
           {/* Phones: cards */}
           <ul className="mt-5 space-y-2 md:hidden">
             {rows.map((r) => (
               <li key={r.id}>
-                <Link href={`/admin/registrations/${r.id}`} className="card block p-4">
+                <Link href={`/admin/registrations/${r.id}`} className={`${cardCls} block p-4`}>
                   <div className="flex items-start justify-between gap-3">
                     <p className="font-semibold">{r.full_name}</p>
                     <span className="shrink-0 text-xs text-muted">{fmtWAT(r.created_at)}</span>
@@ -85,8 +101,9 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
                     <dt className="text-muted">Heard via</dt><dd>{heardFrom(r.answers)}</dd>
                   </dl>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                    <span className="rounded-full bg-brand-soft px-2.5 py-1 font-semibold text-brand">{TYPE_LABEL[r.connect_type]}</span>
-                    {r.email_sent_at ? <MailCheck className="size-4 text-brand-green" aria-label="Email sent" /> : <MailWarning className="size-4 text-brand-red" aria-label="Email not sent" />}
+                    <code className="rounded bg-surface-2 px-2 py-0.5 font-mono text-[11px]">{r.ref_code}</code>
+                    <span className={`rounded-full px-2.5 py-1 font-semibold ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span>
+                    {r.email_sent_at ? <MailCheck className="size-4 text-brand-green" aria-label="Email sent" /> : <Clock3 className="size-4 text-amber-600" aria-label="Email pending" />}
                     {r.checked_in_at && <CheckCircle2 className="size-4 text-brand-green" aria-label="Checked in" />}
                   </div>
                 </Link>
@@ -95,36 +112,38 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
           </ul>
 
           {/* Tablet and up: table */}
-          <div className="card mt-5 hidden overflow-x-auto md:block">
-            <table className="w-full min-w-[1100px] text-left text-sm">
-              <thead className="border-b border-line text-xs tracking-wider text-muted uppercase">
+          <div className={`${cardCls} mt-5 hidden overflow-x-auto md:block`}>
+            <table className="w-full min-w-[1250px] text-left text-sm">
+              <thead className="bg-surface-2 text-[11px] font-semibold tracking-wider text-muted uppercase">
                 <tr>
-                  <th className="px-4 py-3 font-semibold">Name</th>
-                  <th className="px-4 py-3 font-semibold">Phone</th>
-                  <th className="px-4 py-3 font-semibold">Email</th>
-                  <th className="px-4 py-3 font-semibold">City / State / Country</th>
-                  <th className="px-4 py-3 font-semibold">Church / fellowship / campus</th>
-                  <th className="px-4 py-3 font-semibold">Heard about us</th>
-                  <th className="px-4 py-3 font-semibold">Connecting as</th>
-                  <th className="px-4 py-3 font-semibold">Email sent</th>
-                  <th className="px-4 py-3 font-semibold">Registered</th>
+                  {['Name', 'Reference', 'Pass QR', 'Phone', 'Email', 'City / State / Country', 'Church / fellowship / campus', 'Heard about us', 'Connecting as', 'Email', 'Registered'].map((h, i) => (
+                    <th key={i} className="px-4 py-3.5 whitespace-nowrap">{h}</th>
+                  ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody>
                 {rows.map((r) => (
-                  <tr key={r.id} className="align-top hover:bg-surface-2">
+                  <tr key={r.id} className="border-t border-line align-middle transition-colors hover:bg-surface-2/60">
                     <td className="px-4 py-3">
-                      <Link href={`/admin/registrations/${r.id}`} className="font-semibold hover:text-brand">{r.full_name}</Link>
-                      <div className="font-mono text-xs text-muted">{r.ref_code}</div>
+                      <Link href={`/admin/registrations/${r.id}`} className="font-semibold whitespace-nowrap hover:text-brand">{r.full_name}</Link>
+                      {r.checked_in_at && <span className="mt-1 flex items-center gap-1 text-[11px] font-semibold text-brand-green"><CheckCircle2 className="size-3.5" /> Checked in</span>}
+                    </td>
+                    <td className="px-4 py-3"><code className="rounded bg-surface-2 px-2 py-0.5 font-mono text-[11px] whitespace-nowrap">{r.ref_code}</code></td>
+                    <td className="px-4 py-3">
+                      {r.checkin_code ? (
+                        <a href={`/pass/${r.checkin_code}`} target="_blank" rel="noopener" title="Open this attendee's pass" className="block size-12 overflow-hidden rounded-lg border border-line bg-white p-0.5 transition hover:border-brand/50">
+                          <img src={`/api/pass/${r.checkin_code}`} alt={`Pass QR for ${r.full_name}`} width={44} height={44} loading="lazy" className="size-full" />
+                        </a>
+                      ) : '-'}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">{r.whatsapp}</td>
                     <td className="max-w-56 truncate px-4 py-3" title={r.email}>{r.email}</td>
-                    <td className="max-w-48 px-4 py-3">{dash(r.location)}</td>
-                    <td className="max-w-48 px-4 py-3">{dash(r.church)}</td>
-                    <td className="max-w-44 px-4 py-3">{heardFrom(r.answers)}</td>
-                    <td className="px-4 py-3"><span className="rounded-full bg-brand-soft px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-brand">{TYPE_LABEL[r.connect_type]}</span></td>
-                    <td className="px-4 py-3 whitespace-nowrap">{r.email_sent_at ? <span className="inline-flex items-center gap-1 text-brand-green"><MailCheck className="size-4" /> Sent</span> : <span className="inline-flex items-center gap-1 text-brand-red"><MailWarning className="size-4" /> Not sent</span>}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-muted">{fmtWAT(r.created_at)}</td>
+                    <td className="max-w-44 px-4 py-3">{dash(r.location)}</td>
+                    <td className="max-w-44 px-4 py-3">{dash(r.church)}</td>
+                    <td className="max-w-40 px-4 py-3">{heardFrom(r.answers)}</td>
+                    <td className="px-4 py-3"><span className={`rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span></td>
+                    <td className="px-4 py-3 whitespace-nowrap">{r.email_sent_at ? <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-green"><MailCheck className="size-4" /> Sent</span> : <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-600"><Clock3 className="size-4" /> Pending</span>}</td>
+                    <td className="px-4 py-3 text-xs whitespace-nowrap text-muted">{fmtWAT(r.created_at)}</td>
                   </tr>
                 ))}
               </tbody>

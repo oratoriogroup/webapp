@@ -1,23 +1,61 @@
+import { CheckCircle2, CircleAlert, Mail } from 'lucide-react';
 import { requireAdmin } from '@/lib/admin';
 import { getSettings } from '@/lib/settings';
-import { mailConfigured } from '@/lib/mailer';
 import SettingsForm from './SettingsForm';
+import AdminHeader, { cardCls } from '../AdminHeader';
 
 export const metadata = { title: 'Livestream & settings' };
+
+// What the confirmation email needs, checked from the server's environment.
+const emailChecks = () => {
+  const from = process.env.MAIL_FROM || '';
+  const resend = !!process.env.RESEND_API_KEY;
+  const smtp = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+  return [
+    { ok: true, label: 'Sending domain oratoriogroup.org verified in Resend' },
+    { ok: !!from, label: from ? `Sender: ${from.replace(/"/g, '')}` : 'Sender name and address not set' },
+    { ok: !!process.env.MAIL_REPLY_TO, label: process.env.MAIL_REPLY_TO ? `Replies go to ${process.env.MAIL_REPLY_TO}` : 'Reply-to address not set' },
+    { ok: resend || smtp, label: resend ? 'Resend API key installed' : smtp ? 'SMTP account installed' : 'Resend API key not installed on the server yet' },
+  ];
+};
 
 export default async function SettingsPage() {
   await requireAdmin();
   const s = await getSettings();
+  const checks = emailChecks();
+  const ready = checks.every((c) => c.ok);
   return (
-    <div className="max-w-2xl">
-      <h1 className="h-display text-4xl">Livestream & settings</h1>
-      <p className="mt-1 text-sm text-muted">Changes show on the website within a few seconds.</p>
-      <SettingsForm initial={s} />
-      <div className="card mt-6 p-5 text-sm">
-        <p className="font-semibold">Confirmation emails</p>
-        <p className={`mt-1 ${mailConfigured() ? 'text-brand-green' : 'text-brand-red'}`}>
-          {mailConfigured() ? 'Email sending is configured.' : 'Email sending is not configured yet. Registrations are saved, and emails can be resent from each registration once it is set up.'}
-        </p>
+    <div>
+      <AdminHeader title="Livestream & settings" subtitle="Changes show on the website within a few seconds." />
+      <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_380px]">
+        <SettingsForm initial={s} />
+        <aside className="space-y-4 xl:sticky xl:top-6 xl:self-start">
+          <section className={`${cardCls} p-5`}>
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-xl bg-brand-soft text-brand"><Mail className="size-5" /></span>
+              <div>
+                <h2 className="font-semibold">Email automation</h2>
+                <p className="text-xs text-muted">Confirmation email with the QR pass after every registration.</p>
+              </div>
+            </div>
+            <div className={`mt-4 rounded-xl border p-3 text-sm ${ready ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300' : 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200'}`}>
+              {ready ? 'Emails are sending. Every new registration gets the confirmation and QR pass.' : 'Emails are not sending yet. Registrations are saved and can be emailed from each registration once the item below is done.'}
+            </div>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              {checks.map((c) => (
+                <li key={c.label} className="flex items-start gap-2.5">
+                  {c.ok ? <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-brand-green" /> : <CircleAlert className="mt-0.5 size-4 shrink-0 text-amber-600" />}
+                  <span className={c.ok ? '' : 'font-semibold'}>{c.label}</span>
+                </li>
+              ))}
+            </ul>
+            {!ready && (
+              <p className="mt-4 rounded-xl bg-surface-2 p-3 text-xs leading-relaxed text-muted">
+                To finish: in Resend open <strong>API Keys</strong>, create a key with <strong>Sending access</strong> for oratoriogroup.org, and send it to your developer to install on the server.
+              </p>
+            )}
+          </section>
+        </aside>
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ export default async function LivePage() {
   // A specific video link set in the admin wins; otherwise the channel plays.
   const id = youtubeId(settings.livestream_url);
   const testimonies = await sql<{ id: string; name: string; location: string | null; message: string }[]>`
-    select id, name, location, message from public.testimonies where approved order by approved_at desc nulls last limit 6`.catch(() => []);
+    select id, name, location, message from public.testimonies where approved and not archived order by approved_at desc nulls last limit 6`.catch(() => []);
 
   return (
     <section className="relative isolate overflow-hidden">

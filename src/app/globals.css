@@ -390,3 +390,23 @@ body {
     opacity: 0;
   }
 }
+
+/* Admin workspace: warm canvas, white cards, cool slate borders. */
+.admin-ui {
+  --bg: #faf5ef;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: #e2e8f0;
+  --muted: #64748b;
+}
+[data-theme='dark'] .admin-ui {
+  --bg: #0e080d;
+  --surface: #181016;
+  --surface-2: #22171f;
+  --border: #33242f;
+  --muted: #b3a3b0;
+}
+.admin-ui body,
+.admin-ui {
+  background: var(--bg);
+}

@@ -87,11 +87,14 @@ export async function toggleCheckIn(id: string): Promise<ActionState> {
   return { ok: 'Updated.' };
 }
 
-export async function moderateTestimony(id: string, action: 'approve' | 'hide' | 'delete'): Promise<ActionState> {
+export async function moderateTestimony(id: string, action: 'approve' | 'hide' | 'reject' | 'restore' | 'delete'): Promise<ActionState> {
   await requireAdmin();
-  if (!/^[0-9a-f-]{36}$/i.test(id) || !['approve', 'hide', 'delete'].includes(action)) return { error: 'Invalid request.' };
+  if (!/^[0-9a-f-]{36}$/i.test(id) || !['approve', 'hide', 'reject', 'restore', 'delete'].includes(action)) return { error: 'Invalid request.' };
   if (action === 'delete') await sql`delete from public.testimonies where id = ${id}`;
-  else await sql`update public.testimonies set approved = ${action === 'approve'}, approved_at = ${action === 'approve' ? sql`now()` : null} where id = ${id}`;
+  else if (action === 'approve') await sql`update public.testimonies set approved = true, archived = false, approved_at = now() where id = ${id}`;
+  else if (action === 'reject') await sql`update public.testimonies set approved = false, archived = true, approved_at = null where id = ${id}`;
+  else if (action === 'restore') await sql`update public.testimonies set archived = false where id = ${id}`;
+  else await sql`update public.testimonies set approved = false, approved_at = null where id = ${id}`;
   revalidatePath('/admin/testimonies');
   revalidatePath('/livestream');
   return { ok: 'Updated.' };

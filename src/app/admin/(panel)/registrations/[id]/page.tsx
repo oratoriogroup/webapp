@@ -26,7 +26,7 @@ export default async function RegistrationDetail({ params }: { params: Promise<{
 
   let lastSection = '';
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
       <Link href="/admin/registrations" className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-text"><ArrowLeft className="size-4" /> Registrations</Link>
       <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
         <div>

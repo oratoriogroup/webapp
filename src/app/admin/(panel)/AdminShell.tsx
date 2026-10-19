@@ -68,7 +68,7 @@ export default function AdminShell({ email, children }: { email: string; childre
 
   const item = (n: { label: string }, isActive: boolean) =>
     `group relative flex items-center gap-3 rounded-xl py-2.5 text-sm font-medium transition-colors ${collapsed ? 'justify-center px-0' : 'px-3'} ${
-      isActive ? 'bg-brand-soft text-brand' : 'text-muted hover:bg-surface-2 hover:text-text'
+      isActive ? 'bg-brand text-white shadow-lg shadow-brand/30' : 'text-muted hover:bg-brand-soft hover:text-brand'
     }`;
   const tip = (label: string) =>
     collapsed ? (
@@ -76,9 +76,9 @@ export default function AdminShell({ email, children }: { email: string; childre
     ) : null;
 
   return (
-    <div className={`min-h-dvh bg-bg md:grid md:transition-[grid-template-columns] md:duration-300 ${collapsed ? 'md:grid-cols-[80px_1fr]' : 'md:grid-cols-[264px_1fr]'}`}>
+    <div className={`admin-ui min-h-dvh bg-bg lg:grid lg:transition-[grid-template-columns] lg:duration-300 ${collapsed ? 'lg:grid-cols-[80px_1fr]' : 'lg:grid-cols-[264px_1fr]'}`}>
       {/* Desktop sidebar */}
-      <aside className="sticky top-0 hidden h-dvh flex-col border-r border-line bg-surface md:flex">
+      <aside className="sticky top-0 hidden h-dvh flex-col border-r border-line bg-surface lg:flex">
         <div className={`flex h-16 items-center border-b border-line ${collapsed ? 'justify-center px-2' : 'justify-between px-5'}`}>
           {collapsed ? <img src="/images/mark.png" alt="Oratorio" width={36} height={36} className="size-9 object-contain" /> : <Logo className="h-8" />}
           {!collapsed && (
@@ -123,18 +123,18 @@ export default function AdminShell({ email, children }: { email: string; childre
 
       <div className="min-w-0">
         {/* Mobile top bar */}
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-surface/95 px-4 backdrop-blur md:hidden">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-surface/95 px-4 backdrop-blur lg:hidden">
           <Logo className="h-7" />
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <button type="button" onClick={() => setConfirmLogout(true)} aria-label="Log out" className="inline-flex size-10 items-center justify-center rounded-full border border-line"><LogOut className="size-4" /></button>
           </div>
         </header>
-        <main className="mx-auto w-full max-w-[1400px] px-4 py-6 pb-28 sm:px-6 md:py-8 md:pb-10">{children}</main>
+        <main className="mx-auto w-full max-w-7xl px-4 py-6 pb-28 sm:px-6 lg:pb-10">{children}</main>
       </div>
 
       {/* Mobile bottom nav */}
-      <nav aria-label="Admin" className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur md:hidden">
+      <nav aria-label="Admin" className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur lg:hidden">
         <div className="flex px-2 pt-1.5">
           {NAV.map((n) => (
             <Link key={n.href} href={n.href} className={`flex flex-1 flex-col items-center gap-1 py-1.5 text-[11px] font-medium ${active(n) ? 'text-brand' : 'text-muted'}`}>

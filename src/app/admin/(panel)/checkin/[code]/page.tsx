@@ -35,7 +35,7 @@ export default async function CheckinDetail({ params }: { params: Promise<{ code
   const wa = r.whatsapp.replace(/[^\d]/g, '').replace(/^0/, '234');
   const details = describe(r.answers).filter((x) => !/full name|whatsapp|email address/i.test(x.question));
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-5xl">
       <Link href="/admin/checkin" className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-text"><ArrowLeft className="size-4" /> Scan next</Link>
 
       <div className={`mt-4 rounded-3xl p-6 sm:p-8 ${r.checked_in_at ? 'border-2 border-amber-400 bg-amber-50 dark:bg-amber-950/30' : 'border-2 border-brand-green/50 bg-brand-green/10'}`}>
