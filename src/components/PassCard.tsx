@@ -7,7 +7,7 @@ import { EVENT } from '@/lib/event';
 import { checkinUrl } from '@/lib/checkin';
 
 const W = 1080;
-const H = 1460;
+const H = 1380;
 const S = 2; // drawn at 2x so the saved image stays sharp
 const RED = '#dc2626';
 const INK = '#1a1114';
@@ -63,20 +63,15 @@ export default function PassCard({ code, name, refCode }: { code: string; name: 
       ctx.drawImage(logo, (W - lw) / 2, 70, lw, lh);
     } catch {}
 
-    ctx.fillStyle = RED;
-    ctx.font = `800 26px ${sans}`;
-    ctx.letterSpacing = '6px';
-    ctx.fillText('ORATORIO MUSIC FOUNDATION', W / 2, 250);
-    ctx.letterSpacing = '0px';
     ctx.fillStyle = INK;
     fit(ctx, `${EVENT.name}: ${EVENT.theme}`, W - 140, 54, (s) => `800 ${s}px ${sans}`);
-    ctx.fillText(`${EVENT.name}: ${EVENT.theme}`, W / 2, 330);
+    ctx.fillText(`${EVENT.name}: ${EVENT.theme}`, W / 2, 290);
     ctx.fillStyle = MUTED;
     ctx.font = `600 30px ${sans}`;
-    ctx.fillText(`${EVENT.dateShort}  |  ${EVENT.timeLabel}  |  Maryland, Lagos`, W / 2, 385);
+    ctx.fillText(`${EVENT.dateShort}  |  ${EVENT.timeLabel}  |  Maryland, Lagos`, W / 2, 345);
 
     // Dashed frame + QR
-    const box = 660, bx = (W - box) / 2, by = 450;
+    const box = 660, bx = (W - box) / 2, by = 410;
     ctx.strokeStyle = '#f08a24';
     ctx.lineWidth = 6;
     ctx.setLineDash([26, 18]);
@@ -93,19 +88,16 @@ export default function PassCard({ code, name, refCode }: { code: string; name: 
     ctx.fillStyle = RED;
     ctx.font = `800 24px ${sans}`;
     ctx.letterSpacing = '6px';
-    ctx.fillText('CHECK-IN PASS', W / 2, 1210);
+    ctx.fillText('CHECK-IN PASS', W / 2, 1170);
     ctx.letterSpacing = '0px';
     ctx.fillStyle = INK;
     fit(ctx, name, W - 160, 60, (s) => `800 ${s}px ${sans}`);
-    ctx.fillText(name, W / 2, 1290);
+    ctx.fillText(name, W / 2, 1250);
     if (refCode) {
       ctx.fillStyle = MUTED;
       ctx.font = `600 28px ${sans}`;
-      ctx.fillText(`Ref ${refCode}`, W / 2, 1345);
+      ctx.fillText(`Ref ${refCode}`, W / 2, 1305);
     }
-    ctx.fillStyle = '#b8adb1';
-    ctx.font = `500 22px ${sans}`;
-    ctx.fillText('oratoriogroup.org', W / 2, H - 48);
     setReady(true);
   }, [code, name, refCode]);
 
