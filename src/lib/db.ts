@@ -2,7 +2,8 @@ import 'server-only';
 import postgres from 'postgres';
 
 // One pool per process. The Supabase session pooler caps connections per
-// project, so keep this small; the app is a single long-running Node process.
+// project (15 on the free plan), and the site runs 3 workers, so 4 each
+// leaves room for admin scripts.
 const globalForDb = globalThis as unknown as { __oratorioSql?: postgres.Sql };
 
 export const sql =
@@ -14,7 +15,7 @@ export const sql =
     password: process.env.SUPABASE_DB_PASSWORD,
     database: 'postgres',
     ssl: 'require',
-    max: 5,
+    max: 4,
     idle_timeout: 30,
     connect_timeout: 10,
   });

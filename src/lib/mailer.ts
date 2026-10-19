@@ -8,7 +8,7 @@ import type { ConnectType } from './form';
 const useResend = () => !!process.env.RESEND_API_KEY;
 export const mailConfigured = () => useResend() || !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
 
-let transport: nodemailer.Transporter | null = null;
+let transport: ReturnType<typeof nodemailer.createTransport> | null = null;
 const getTransport = () => {
   if (!transport) {
     const port = Number(process.env.SMTP_PORT || 465);

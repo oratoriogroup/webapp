@@ -78,6 +78,44 @@ export async function resendEmail(id: string): Promise<ActionState> {
   }
 }
 
+// Sends confirmations that failed earlier (for example on a day the email
+// provider's daily limit was reached). Oldest first, in batches, one at a
+// time, and it stops at the first limit error so nothing is hammered.
+let sendingPending = false;
+export async function sendPendingEmails(): Promise<ActionState> {
+  await requireAdmin();
+  if (!mailConfigured()) return { error: 'Email is not configured yet.' };
+  if (sendingPending) return { error: 'Already sending. Give it a minute.' };
+  sendingPending = true;
+  let sent = 0;
+  try {
+    const rows = await sql<{ id: string; full_name: string; email: string; ref_code: string; connect_type: ConnectType; checkin_code: string | null }[]>`
+      select id, full_name, email, ref_code, connect_type, checkin_code from public.registrations
+      where email_sent_at is null order by created_at limit 40`;
+    if (!rows.length) return { ok: 'No pending emails.' };
+    for (const r of rows) {
+      try {
+        await sendRegistrationEmail({ fullName: r.full_name, email: r.email, refCode: r.ref_code, connect: r.connect_type, checkinCode: r.checkin_code });
+        await sql`update public.registrations set email_sent_at = now(), email_error = null where id = ${r.id}`;
+        sent++;
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : 'send failed';
+        await sql`update public.registrations set email_error = ${msg.slice(0, 300)} where id = ${r.id}`;
+        if (/quota|limit|429|too many/i.test(msg)) {
+          revalidatePath('/admin', 'layout');
+          return { error: `Sent ${sent}. Stopped: the email provider's limit was reached (${msg.slice(0, 120)}). Try again later.` };
+        }
+      }
+      await new Promise((res) => setTimeout(res, 600));
+    }
+    revalidatePath('/admin', 'layout');
+    const [{ n }] = await sql<{ n: number }[]>`select count(*)::int n from public.registrations where email_sent_at is null`;
+    return { ok: `Sent ${sent} of ${rows.length}.${n ? ` ${n} still pending, press again to continue.` : ' All caught up.'}` };
+  } finally {
+    sendingPending = false;
+  }
+}
+
 export async function toggleCheckIn(id: string): Promise<ActionState> {
   await requireAdmin();
   if (!/^[0-9a-f-]{36}$/i.test(id)) return { error: 'Invalid registration.' };

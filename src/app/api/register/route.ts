@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   const h = req.headers;
   if (!sameOrigin(h)) return fail(403, 'Request not allowed.');
   const ip = clientIp(h);
-  if (rateLimited(`reg:${ip}`, 6, 10 * 60_000)) return fail(429, 'Too many attempts. Please wait a few minutes and try again.');
+  if (rateLimited(`reg:${ip}`, 40, 10 * 60_000)) return fail(429, 'Too many attempts. Please wait a few minutes and try again.');
 
   const len = Number(h.get('content-length') || 0);
   if (len > 32_000) return fail(413, 'Request too large.');

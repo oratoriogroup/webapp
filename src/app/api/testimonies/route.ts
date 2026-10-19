@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const h = req.headers;
   if (!sameOrigin(h)) return fail(403, 'Request not allowed.');
   const ip = clientIp(h);
-  if (rateLimited(`testimony:${ip}`, 3, 10 * 60_000)) return fail(429, 'You have shared a few already. Please try again later.');
+  if (rateLimited(`testimony:${ip}`, 12, 10 * 60_000)) return fail(429, 'You have shared a few already. Please try again later.');
   if (Number(h.get('content-length') || 0) > 8_000) return fail(413, 'Request too large.');
 
   let body: { name?: unknown; location?: unknown; message?: unknown; hp?: unknown; t?: unknown };

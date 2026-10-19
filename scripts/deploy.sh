@@ -23,5 +23,5 @@ chmod -R u+rwX,go+rX,go-w "$D"
 # the site open during an update can still load the files their page expects.
 rsync -az -e "ssh -p 1993" "$D/.next/static/" root@83.171.249.122:/var/www/oratoriogroup/app/.next/static/
 rsync -az --delete -e "ssh -p 1993" --exclude .env --exclude .next/static "$D/" root@83.171.249.122:/var/www/oratoriogroup/app/
-ssh -p 1993 root@83.171.249.122 'pm2 restart oratorio-web --update-env >/dev/null && sleep 4 && for p in / /register /livestream /images/logo-color.webp /videos/glimpse.mp4; do curl -sk -o /dev/null -w "$p %{http_code}\n" --resolve oratoriogroup.org:443:127.0.0.1 https://oratoriogroup.org$p; done'
+ssh -p 1993 root@83.171.249.122 'pm2 reload /var/www/oratoriogroup/ecosystem.config.cjs --update-env >/dev/null && sleep 4 && for p in / /register /livestream /images/logo-color.webp /videos/glimpse.mp4; do curl -sk -o /dev/null -w "$p %{http_code}\n" --resolve oratoriogroup.org:443:127.0.0.1 https://oratoriogroup.org$p; done'
 rm -rf "$D"

@@ -2,6 +2,8 @@ import { CheckCircle2, CircleAlert, Mail } from 'lucide-react';
 import { requireAdmin } from '@/lib/admin';
 import { getSettings } from '@/lib/settings';
 import SettingsForm from './SettingsForm';
+import PendingEmails from './PendingEmails';
+import { sql } from '@/lib/db';
 import AdminHeader, { cardCls } from '../AdminHeader';
 
 export const metadata = { title: 'Livestream & settings' };
@@ -21,7 +23,10 @@ const emailChecks = () => {
 
 export default async function SettingsPage() {
   await requireAdmin();
-  const s = await getSettings();
+  const [s, [{ pending }]] = await Promise.all([
+    getSettings(),
+    sql<{ pending: number }[]>`select count(*)::int pending from public.registrations where email_sent_at is null`,
+  ]);
   const checks = emailChecks();
   const ready = checks.every((c) => c.ok);
   return (
@@ -49,6 +54,7 @@ export default async function SettingsPage() {
                 </li>
               ))}
             </ul>
+            <PendingEmails pending={pending} />
             {!ready && (
               <p className="mt-4 rounded-xl bg-surface-2 p-3 text-xs leading-relaxed text-muted">
                 To finish: in Resend open <strong>API Keys</strong>, create a key with <strong>Sending access</strong> for oratoriogroup.org, and send it to your developer to install on the server.

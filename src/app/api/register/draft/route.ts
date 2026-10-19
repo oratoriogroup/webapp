@@ -29,7 +29,7 @@ const sanitise = (input: unknown): Answers => {
 export async function POST(req: Request) {
   const h = req.headers;
   if (!sameOrigin(h)) return fail(403, 'Request not allowed.');
-  if (rateLimited(`draft-save:${clientIp(h)}`, 30, 10 * 60_000)) return fail(429, 'Too many saves. Please wait a few minutes.');
+  if (rateLimited(`draft-save:${clientIp(h)}`, 150, 10 * 60_000)) return fail(429, 'Too many saves. Please wait a few minutes.');
   if (Number(h.get('content-length') || 0) > 32_000) return fail(413, 'Request too large.');
   if ((await getSettings()).registration_open !== 'true') return fail(403, 'Registration is closed.');
 
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
 // Load a draft by its resume token.
 export async function GET(req: Request) {
-  if (rateLimited(`draft-load:${clientIp(req.headers)}`, 30, 10 * 60_000)) return fail(429, 'Too many attempts. Please wait a few minutes.');
+  if (rateLimited(`draft-load:${clientIp(req.headers)}`, 150, 10 * 60_000)) return fail(429, 'Too many attempts. Please wait a few minutes.');
   const token = new URL(req.url).searchParams.get('token') || '';
   if (!TOKEN_RE.test(token)) return fail(400, 'This link is not valid.');
   const [d] = await sql<{ answers: Answers; step: number }[]>`
