@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { footerInView } from './FloatingWhatsApp';
 import { ArrowUp } from 'lucide-react';
 
 // Fades [data-reveal] elements up as they scroll into view.
@@ -32,7 +33,7 @@ export function RevealObserver() {
 export function BackToTop() {
   const [show, setShow] = useState(false);
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > 700);
+    const onScroll = () => setShow(window.scrollY > 700 && !footerInView());
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);

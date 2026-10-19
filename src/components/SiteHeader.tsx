@@ -19,7 +19,7 @@ export function Logo({ className = 'h-9' }: { className?: string }) {
 
 export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70">
+    <header className="sticky top-0 z-40 border-b border-line/70 no-blur-touch bg-bg/95 backdrop-blur-md lg:supports-[backdrop-filter]:bg-bg/75">
       <div className="container-x flex h-16 items-center justify-between gap-4">
         <Link href="/" aria-label="Oratorio home" className="shrink-0">
           <Logo className="h-8 sm:h-9" />

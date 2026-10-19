@@ -74,7 +74,7 @@ export default async function HomePage() {
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="mt-8 max-w-md rounded-2xl border border-line bg-surface/80 p-4 backdrop-blur">
+              <div className="mt-8 max-w-md rounded-2xl border border-line no-blur-touch bg-surface/90 p-4 backdrop-blur">
                 <p className="mb-3 text-[11px] font-bold tracking-[0.2em] text-muted uppercase">Counting down to 12 November</p>
                 <Countdown tone="auto" />
               </div>

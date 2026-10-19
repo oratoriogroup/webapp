@@ -42,7 +42,7 @@ export default function BottomNav() {
 
   return (
     <nav aria-label="Primary" className="pb-safe fixed inset-x-0 bottom-0 z-50 px-3 md:hidden">
-      <div className="mx-auto mb-2 flex max-w-md items-stretch rounded-2xl border border-line/80 bg-surface/90 p-1.5 shadow-2xl shadow-black/10 backdrop-blur-xl">
+      <div className="mx-auto mb-2 flex max-w-md items-stretch rounded-2xl border border-line/80 no-blur-touch bg-surface/[.97] p-1.5 shadow-2xl shadow-black/10 backdrop-blur-xl lg:bg-surface/90">
         {TABS.map((t) => {
           const active = isActive(t);
           const cta = t.href === '/register';
