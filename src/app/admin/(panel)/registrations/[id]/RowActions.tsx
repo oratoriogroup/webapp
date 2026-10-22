@@ -10,7 +10,7 @@ export default function RowActions({ id, checkedIn, open }: { id: string; checke
   const [msg, setMsg] = useState<{ ok?: string; error?: string }>({});
   const run = (fn: () => Promise<{ ok?: string; error?: string }>) => start(async () => setMsg(await fn()));
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="flex w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
       <div className="flex flex-wrap gap-2">
         {checkedIn || open ? (
           <button type="button" disabled={pending} onClick={() => run(() => toggleCheckIn(id))} className="inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-4 py-2 text-xs font-semibold text-slate-800 shadow-sm transition hover:shadow-md disabled:opacity-60">
@@ -18,7 +18,7 @@ export default function RowActions({ id, checkedIn, open }: { id: string; checke
           </button>
         ) : (
           <span title={`Check-in opens ${CHECKIN_OPENS_LABEL}`} className="inline-flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-xs font-semibold text-amber-800">
-            <Lock className="size-4" /> Check-in opens 12 Nov, 2 PM
+            <Lock className="size-4" /> <span className="sm:hidden">Check-in 12 Nov, 2 PM</span><span className="hidden sm:inline">Check-in opens 12 Nov, 2 PM</span>
           </span>
         )}
         <button type="button" disabled={pending} onClick={() => run(() => resendEmail(id))} className="inline-flex items-center gap-2 rounded-xl bg-[#DC2626] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[#B91C1C] disabled:opacity-60">

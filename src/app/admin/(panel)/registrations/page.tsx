@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FileText, FileSpreadsheet, ChevronLeft, ChevronRight, MailCheck, Clock3, CheckCircle2 } from 'lucide-react';
+import { FileText, FileSpreadsheet, ChevronLeft, ChevronRight, MailCheck, Clock3, CheckCircle2, Phone, MessageCircle, Mail, MapPin } from 'lucide-react';
 import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
 import type { Answers } from '@/lib/form';
@@ -61,31 +61,50 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
         <div className={`${cardCls} mt-6 p-10 text-center text-muted`}>No registrations found.</div>
       ) : (
         <>
-          {/* Phones: cards */}
-          <ul className="mt-5 space-y-2 md:hidden">
-            {rows.map((r) => (
-              <li key={r.id}>
-                <Link href={`/admin/registrations/${r.id}`} className={`${cardCls} block p-4`}>
-                  <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold">{r.full_name}</p>
-                    <span className="shrink-0 text-xs text-muted">{fmtWAT(r.created_at)}</span>
+          {/* Phones: compact cards (MOBILE_CARDS_22OCT2026). Name, ref and status
+              up top, then one-tap call / WhatsApp / email, then where they are
+              from. Tapping the card body opens the full record. */}
+          <ul className="mt-4 space-y-3 md:hidden">
+            {rows.map((r) => {
+              const wa = r.whatsapp.replace(/[^\d]/g, '').replace(/^0/, '234');
+              const initials = r.full_name.trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() || '').join('');
+              const where = [r.location, r.church].filter((v) => v && v.trim()).join(' · ');
+              return (
+                <li key={r.id} className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+                  <Link href={`/admin/registrations/${r.id}`} className="flex gap-3 p-4 pb-3 active:bg-slate-50">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-bold text-brand">{initials}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="text-[15px] leading-snug font-semibold text-slate-900">{r.full_name}</p>
+                        <ChevronRight className="mt-0.5 size-4 shrink-0 text-slate-400" />
+                      </div>
+                      <p className="mt-0.5 text-[11px] text-slate-500"><span className="font-mono">{r.ref_code}</span> · {fmtWAT(r.created_at)}</p>
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] font-semibold">
+                        <span className={`rounded-full px-2.5 py-0.5 ${TYPE_BADGE[r.connect_type] || 'bg-slate-100 text-slate-700'}`}>{TYPE_LABEL[r.connect_type] || r.connect_type}</span>
+                        {r.email_sent_at ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-emerald-700"><MailCheck className="size-3" /> Email sent</span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-amber-800"><Clock3 className="size-3" /> Email pending</span>
+                        )}
+                        {r.checked_in_at && <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-emerald-700"><CheckCircle2 className="size-3" /> Checked in</span>}
+                      </div>
+                      {(where || heardFrom(r.answers) !== '-') && (
+                        <p className="mt-2 truncate text-xs text-slate-500">
+                          {where && <span className="inline-flex items-center gap-1"><MapPin className="size-3 shrink-0" />{where}</span>}
+                          {where && heardFrom(r.answers) !== '-' ? ' · ' : ''}
+                          {heardFrom(r.answers) !== '-' && <span>via {heardFrom(r.answers)}</span>}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                  <div className="grid grid-cols-3 border-t border-slate-100 text-xs font-semibold text-slate-700">
+                    <a href={`tel:+${wa}`} className="flex min-h-11 items-center justify-center gap-1.5 active:bg-slate-50"><Phone className="size-3.5" /> Call</a>
+                    <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-1.5 border-x border-slate-100 text-emerald-700 active:bg-slate-50"><MessageCircle className="size-3.5" /> WhatsApp</a>
+                    <a href={`mailto:${r.email}`} className="flex min-h-11 items-center justify-center gap-1.5 active:bg-slate-50"><Mail className="size-3.5" /> Email</a>
                   </div>
-                  <dl className="mt-2 grid grid-cols-[88px_1fr] gap-x-3 gap-y-1 text-sm">
-                    <dt className="text-muted">Phone</dt><dd>{r.whatsapp}</dd>
-                    <dt className="text-muted">Email</dt><dd className="truncate">{r.email}</dd>
-                    <dt className="text-muted">Location</dt><dd>{dash(r.location)}</dd>
-                    <dt className="text-muted">Church</dt><dd>{dash(r.church)}</dd>
-                    <dt className="text-muted">Heard via</dt><dd>{heardFrom(r.answers)}</dd>
-                  </dl>
-                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                    <code className="rounded bg-surface-2 px-2 py-0.5 font-mono text-[11px]">{r.ref_code}</code>
-                    <span className={`rounded-full px-2.5 py-1 font-semibold ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span>
-                    {r.email_sent_at ? <MailCheck className="size-4 text-brand-green" aria-label="Email sent" /> : <Clock3 className="size-4 text-amber-600" aria-label="Email pending" />}
-                    {r.checked_in_at && <CheckCircle2 className="size-4 text-brand-green" aria-label="Checked in" />}
-                  </div>
-                </Link>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
 
           {/* Tablet and up: table. Fits the full workspace on wide screens;
@@ -135,7 +154,7 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
             </table>
           </div>
 
-          <div className="mt-5 flex items-center justify-between text-sm">
+          <div className="mt-5 flex items-center justify-between gap-3 text-sm">
             <span className="text-muted">Page {page} of {pages}</span>
             <div className="flex gap-2">
               {page > 1 ? <Link href={qs({ page: page - 1 })} className="btn-outline !py-2"><ChevronLeft className="size-4" /> Prev</Link> : null}

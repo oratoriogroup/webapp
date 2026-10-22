@@ -4,7 +4,7 @@
 // the title, the count and the page's data tools.
 export default function AdminHeader({ title, subtitle, children }: { title: string; subtitle?: string; children?: React.ReactNode }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-5">
+    <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3 border-b border-line pb-4 sm:pb-5">
       <div className="min-w-0">
         <h1 className="h-display text-3xl font-bold sm:text-4xl">{title}</h1>
         {subtitle && <p className="mt-1 text-xs text-muted sm:text-sm">{subtitle}</p>}
