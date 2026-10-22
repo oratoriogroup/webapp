@@ -223,7 +223,7 @@ export default function RegisterForm() {
             <button type="button" onClick={copyLink} className="btn-primary min-h-10 !py-2">{copied ? <Check className="size-4" /> : <Copy className="size-4" />} {copied ? 'Copied' : 'Copy'}</button>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            <a href={`https://wa.me/?text=${encodeURIComponent(`My Oratorio 2026 registration, continue here: ${resumeUrl(token)}`)}`} target="_blank" rel="noopener noreferrer" className="btn min-h-11 bg-[#25D366] !py-2 text-white"><WhatsAppIcon className="size-4" /> Send to my WhatsApp</a>
+            <a href={`https://wa.me/?text=${encodeURIComponent(`My Oratorio 2026 registration, continue here: ${resumeUrl(token)}`)}`} target="_blank" rel="noopener noreferrer" className="btn min-h-11 bg-[#15803d] !py-2 text-white hover:bg-[#166534]"><WhatsAppIcon className="size-4" /> Send to my WhatsApp</a>
             <a href={`mailto:${typeof answers[ENTRY.email] === 'string' ? encodeURIComponent(String(answers[ENTRY.email])) : ''}?subject=${encodeURIComponent('Continue my Oratorio 2026 registration')}&body=${encodeURIComponent(`Continue your registration here: ${resumeUrl(token)}`)}`} className="btn-outline min-h-11 !py-2"><Mail className="size-4" /> Email it to me</a>
           </div>
           <p className="mt-2 text-xs text-muted">Keep this link private. Anyone with it can see and finish this registration.</p>

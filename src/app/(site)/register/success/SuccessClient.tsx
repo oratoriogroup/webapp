@@ -49,8 +49,8 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
   const url = SITE_URL;
   const enc = encodeURIComponent;
   const shares = [
-    { label: 'WhatsApp', icon: WhatsAppIcon, href: `https://wa.me/?text=${enc(`${shareText} ${url}`)}`, cls: 'bg-[#25D366] text-white' },
-    { label: 'Facebook', icon: FacebookIcon, href: `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`, cls: 'bg-[#1877F2] text-white' },
+    { label: 'WhatsApp', icon: WhatsAppIcon, href: `https://wa.me/?text=${enc(`${shareText} ${url}`)}`, cls: 'bg-[#15803d] text-white hover:bg-[#166534]' },
+    { label: 'Facebook', icon: FacebookIcon, href: `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`, cls: 'bg-[#166fe5] text-white' },
     { label: 'X', icon: XIcon, href: `https://twitter.com/intent/tweet?text=${enc(shareText)}&url=${enc(url)}`, cls: 'bg-black text-white dark:bg-white dark:text-black' },
   ];
 
@@ -104,7 +104,7 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
             <p className="h-display mt-2 text-[28px] leading-tight sm:mt-3 sm:text-4xl">{EVENT.dateLabel}</p>
             <p className="mt-2 text-sm text-white/85 sm:text-base">{EVENT.timeLabel}, {EVENT.venueName}, {EVENT.venueAddress}</p>
             <div className="mt-5 grid gap-2.5 sm:mt-6 sm:grid-cols-2 sm:gap-3">
-              <a href={calendarUrl} target="_blank" rel="noopener noreferrer" className="btn bg-white !py-3.5 text-brand shadow-lg hover:-translate-y-0.5">
+              <a href={calendarUrl} target="_blank" rel="noopener noreferrer" className="btn bg-white !py-3.5 text-brand shadow-lg hover:-translate-y-0.5 dark:text-[#b91c1c]">
                 <CalendarPlus className="size-4" /> Add to Google Calendar
               </a>
               <a href="/oratorio-2026.ics" download className="btn !border !border-white/25 !py-3.5 text-white hover:!bg-white/10">
@@ -136,7 +136,7 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
           </div>
           {/* The floating WhatsApp button is hidden on this page (it covered the
               pass), so the group link lives here instead. */}
-          <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn mt-3 w-full !rounded-xl border border-[#25D366]/40 bg-white !py-3 text-sm text-[#128c4a] hover:bg-[#e9fbef] dark:bg-surface">
+          <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn mt-3 w-full !rounded-xl border border-[#25D366]/40 bg-white !py-3 text-sm text-[#128c4a] hover:bg-[#e9fbef] dark:bg-surface dark:text-[#4ade80] dark:hover:bg-surface-2">
             <WhatsAppIcon className="size-5" /> Join the Oratorio WhatsApp group
           </a>
         </div>

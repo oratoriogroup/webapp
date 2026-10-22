@@ -493,13 +493,13 @@ body {
 [data-theme='dark'] .admin-ui .bg-white {
   background-color: var(--surface);
 }
-/* Filled red (active nav item, selected tab, Save, Send pending): the dark
-   --brand is a light red meant for text; fills use a deeper red so white text
-   on them stays readable (4.8:1). */
-[data-theme='dark'] .admin-ui .bg-brand {
+/* Filled red anywhere in dark mode (badges, numbered steps, Register in the
+   phone menu, admin nav/tabs/Save): the dark --brand is a light red meant for
+   text, so fills use a deeper red to keep white text readable (4.8:1). */
+[data-theme='dark'] .bg-brand {
   background-color: #dc2626;
 }
-[data-theme='dark'] .admin-ui .hover\:bg-brand-deep:hover {
+[data-theme='dark'] .hover\:bg-brand-deep:hover {
   background-color: #b91c1c;
 }
 [data-theme='dark'] .admin-ui .border-white\/80 {

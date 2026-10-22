@@ -102,7 +102,7 @@ export default function LivePlayer({ pinnedVideoId }: { pinnedVideoId: string | 
             </div>
           )}
           {isLive && showPlayer && (
-            <span className="pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#ff0033] px-2.5 py-1 text-[11px] font-bold tracking-wider text-white uppercase shadow-lg">
+            <span className="pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-[#d90429] px-2.5 py-1 text-[11px] font-bold tracking-wider text-white uppercase shadow-lg">
               <span className="size-1.5 animate-pulse rounded-full bg-white" /> Live
             </span>
           )}
@@ -124,7 +124,7 @@ export default function LivePlayer({ pinnedVideoId }: { pinnedVideoId: string | 
           button spans both columns. */}
       <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
         {!showPlayer && (
-          <a href={`${YOUTUBE_CHANNEL_URL}?sub_confirmation=1`} target="_blank" rel="noopener noreferrer" className="btn col-span-2 min-h-11 bg-[#ff0033] text-white shadow-lg shadow-[#ff0033]/25 hover:-translate-y-0.5">
+          <a href={`${YOUTUBE_CHANNEL_URL}?sub_confirmation=1`} target="_blank" rel="noopener noreferrer" className="btn col-span-2 min-h-11 bg-[#d90429] text-white shadow-lg shadow-[#d90429]/25 hover:-translate-y-0.5">
             <Bell className="size-4" /> Subscribe for a reminder
           </a>
         )}

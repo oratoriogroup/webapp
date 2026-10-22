@@ -51,7 +51,7 @@ export default function FloatingWhatsApp() {
       rel="noopener noreferrer"
       aria-label="Join the Oratorio WhatsApp group"
       className={`wa-float fixed right-4 bottom-28 z-40 inline-flex items-center gap-2.5 rounded-full bg-[#25D366] p-3.5 font-semibold text-white shadow-xl shadow-[#25D366]/35 transition-all duration-300 hover:-translate-y-1 md:right-8 md:bottom-8 ${
-        compact ? '' : 'md:px-5'
+        compact ? '' : 'md:bg-[#15803d] md:px-5'
       } ${typing || atFooter ? 'pointer-events-none translate-y-6 opacity-0' : 'opacity-100'}`}
     >
       <WhatsAppIcon className="size-6" />

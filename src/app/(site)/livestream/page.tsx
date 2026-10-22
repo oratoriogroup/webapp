@@ -70,7 +70,7 @@ export default async function LivePage() {
           <div data-reveal style={{ ['--reveal-delay' as string]: '180ms' }} className="card p-5">
             <p className="font-semibold">Follow and join the community</p>
             {/* Phones: full-width group button, then the icons in one even row. */}
-            <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn mt-4 w-full bg-[#25D366] !py-2.5 text-white sm:w-auto"><WhatsAppIcon className="size-4" /> WhatsApp group</a>
+            <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn mt-4 w-full bg-[#15803d] !py-2.5 text-white hover:bg-[#166534] sm:w-auto"><WhatsAppIcon className="size-4" /> WhatsApp group</a>
             <div className="mt-2 grid grid-cols-5 gap-2 sm:flex sm:flex-wrap">
               {SOCIALS.map((s) => {
                 const Icon = SOCIAL_ICON[s.key];
