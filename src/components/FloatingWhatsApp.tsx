@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { WhatsAppIcon } from './icons';
 import { WHATSAPP_GROUP_URL } from '@/lib/event';
 
@@ -15,6 +16,7 @@ export const footerInView = () => {
 };
 
 export default function FloatingWhatsApp() {
+  const pathname = usePathname();
   const [typing, setTyping] = useState(false);
   const [compact, setCompact] = useState(false);
   const [atFooter, setAtFooter] = useState(false);
@@ -37,6 +39,9 @@ export default function FloatingWhatsApp() {
       window.removeEventListener('scroll', onScroll);
     };
   }, []);
+
+  // Never cover the QR code on an attendee's pass.
+  if (pathname?.startsWith('/pass/')) return null;
 
   return (
     <a

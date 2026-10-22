@@ -132,12 +132,12 @@ export default function PassCard({ code, name, refCode }: { code: string; name: 
       <div className="mx-auto max-w-xs overflow-hidden rounded-2xl border border-line bg-white shadow-xl sm:max-w-sm">
         <canvas ref={canvasRef} width={W * S} height={H * S} className="block h-auto w-full" role="img" aria-label={`Check-in pass QR code for ${name}`} />
       </div>
-      <div className="mx-auto mt-4 grid max-w-sm gap-2 sm:grid-cols-2">
-        <button type="button" onClick={download} disabled={!ready} className="btn-brand min-h-12">
-          <Download className="size-4" /> Download pass
+      <div className="mx-auto mt-4 grid max-w-xs grid-cols-2 gap-2 sm:max-w-sm">
+        <button type="button" onClick={download} disabled={!ready} className="btn-brand min-h-12 !px-3">
+          <Download className="size-4" /> <span className="sm:hidden">Download</span><span className="hidden sm:inline">Download pass</span>
         </button>
-        <button type="button" onClick={share} disabled={!ready} className="btn-outline min-h-12">
-          <Share2 className="size-4" /> {canShare ? 'Save or share' : 'Save image'}
+        <button type="button" onClick={share} disabled={!ready} className="btn-outline min-h-12 !px-3">
+          <Share2 className="size-4" /> <span className="sm:hidden">{canShare ? 'Share' : 'Save image'}</span><span className="hidden sm:inline">{canShare ? 'Save or share' : 'Save image'}</span>
         </button>
       </div>
     </div>
