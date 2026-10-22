@@ -120,27 +120,29 @@ export default function LivePlayer({ pinnedVideoId }: { pinnedVideoId: string | 
         )}
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      {/* MOBILE_LIVE_22OCT2026: phones get an even two-column grid; the reminder
+          button spans both columns. */}
+      <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
         {!showPlayer && (
-          <a href={`${YOUTUBE_CHANNEL_URL}?sub_confirmation=1`} target="_blank" rel="noopener noreferrer" className="btn min-h-11 bg-[#ff0033] text-white shadow-lg shadow-[#ff0033]/25 hover:-translate-y-0.5">
+          <a href={`${YOUTUBE_CHANNEL_URL}?sub_confirmation=1`} target="_blank" rel="noopener noreferrer" className="btn col-span-2 min-h-11 bg-[#ff0033] text-white shadow-lg shadow-[#ff0033]/25 hover:-translate-y-0.5">
             <Bell className="size-4" /> Subscribe for a reminder
           </a>
         )}
         {videoId && (
-          <button type="button" onClick={() => setChatOpen((o) => !o)} className="btn-outline min-h-11 lg:hidden">
-            {chatOpen ? <X className="size-4" /> : <MessageSquare className="size-4" />} {chatOpen ? 'Hide live chat' : 'Live chat'}
+          <button type="button" onClick={() => setChatOpen((o) => !o)} className="btn-outline min-h-11 !px-3 lg:hidden">
+            {chatOpen ? <X className="size-4" /> : <MessageSquare className="size-4" />} {chatOpen ? 'Hide chat' : 'Live chat'}
           </button>
         )}
-        <button type="button" onClick={share} className="btn-outline min-h-11">
-          {copied ? <Check className="size-4 text-brand" /> : <Share2 className="size-4" />} {copied ? 'Link copied' : 'Share livestream'}
+        <button type="button" onClick={share} className="btn-outline min-h-11 !px-3">
+          {copied ? <Check className="size-4 text-brand" /> : <Share2 className="size-4" />} {copied ? 'Link copied' : <><span className="sm:hidden">Share</span><span className="hidden sm:inline">Share livestream</span></>}
         </button>
         {showPlayer && (
-          <button type="button" onClick={() => { setReloadKey((k) => k + 1); void check(); }} className="btn-outline min-h-11">
-            <RefreshCw className="size-4" /> Reload player
+          <button type="button" onClick={() => { setReloadKey((k) => k + 1); void check(); }} className="btn-outline min-h-11 !px-3">
+            <RefreshCw className="size-4" /> <span className="sm:hidden">Reload</span><span className="hidden sm:inline">Reload player</span>
           </button>
         )}
-        <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="btn-outline min-h-11">
-          <YouTubeIcon className="size-4 text-[#ff0033]" /> Open on YouTube
+        <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="btn-outline min-h-11 !px-3">
+          <YouTubeIcon className="size-4 text-[#ff0033]" /> <span className="sm:hidden">YouTube</span><span className="hidden sm:inline">Open on YouTube</span>
         </a>
       </div>
       {!showPlayer && <div className="mt-5 sm:hidden"><Countdown tone="auto" /></div>}

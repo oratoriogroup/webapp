@@ -36,17 +36,17 @@ export default async function LivePage() {
           <p className="inline-flex items-center gap-2 rounded-full bg-brand px-3 py-1 text-xs font-bold tracking-wider text-white uppercase shadow-lg shadow-brand/30">
             <span className="size-2 animate-pulse rounded-full bg-white" /> Livestream
           </p>
-          <h1 className="h-display mt-4 text-4xl sm:text-6xl">
+          <h1 className="h-display mt-3 text-[34px] leading-tight sm:mt-4 sm:text-6xl">
             {EVENT.name}: <span className="text-gradient shimmer italic">{EVENT.theme}</span>
           </h1>
-          <p className="mt-2 text-muted">{EVENT.dateLabel}, {EVENT.timeLabel}. Live from Lagos to the world.</p>
+          <p className="mt-2 text-sm text-muted sm:text-base">{EVENT.dateLabel}, {EVENT.timeLabel}. Live from Lagos to the world.</p>
         </div>
 
-        <div data-reveal className="mt-8">
+        <div data-reveal className="mt-5 sm:mt-8">
           <PlayerLoader pinnedVideoId={id} />
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+        <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4 lg:grid-cols-3">
           <div data-reveal className="card p-5">
             <p className="font-semibold">Save the date</p>
             <p className="mt-1 text-sm text-muted">Get a reminder before we start.</p>
@@ -69,12 +69,13 @@ export default async function LivePage() {
           </div>
           <div data-reveal style={{ ['--reveal-delay' as string]: '180ms' }} className="card p-5">
             <p className="font-semibold">Follow and join the community</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn bg-[#25D366] !py-2.5 text-white"><WhatsAppIcon className="size-4" /> WhatsApp group</a>
+            {/* Phones: full-width group button, then the icons in one even row. */}
+            <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn mt-4 w-full bg-[#25D366] !py-2.5 text-white sm:w-auto"><WhatsAppIcon className="size-4" /> WhatsApp group</a>
+            <div className="mt-2 grid grid-cols-5 gap-2 sm:flex sm:flex-wrap">
               {SOCIALS.map((s) => {
                 const Icon = SOCIAL_ICON[s.key];
                 return (
-                  <a key={s.key} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="btn-outline !px-3 !py-2.5"><Icon className="size-4" /></a>
+                  <a key={s.key} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="btn-outline min-h-11 !px-0 !py-2.5 sm:!px-3"><Icon className="size-4" /></a>
                 );
               })}
             </div>

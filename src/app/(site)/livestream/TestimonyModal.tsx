@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Heart, Loader2, X, Check } from 'lucide-react';
 
 // "Share a testimony" button and dialog. Submissions are reviewed by the
@@ -52,10 +53,13 @@ export default function TestimonyModal() {
       <button type="button" onClick={() => { setDone(false); setOpen(true); }} className="btn-brand min-h-11">
         <Heart className="size-4" /> Share a testimony
       </button>
-      {open && (
+      {/* Rendered on <body>: the livestream section is its own stacking
+          context (isolate), which let the phone bottom menu sit on top of the
+          dialog and hide the Send button. */}
+      {open && createPortal(
         <div className="fixed inset-0 z-[70] flex items-end justify-center p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="testimony-title">
           <button type="button" aria-label="Close" className="absolute inset-0 bg-black/55 backdrop-blur-sm" onClick={() => setOpen(false)} />
-          <div ref={dialog} className="pop-in relative w-full max-w-lg rounded-t-3xl border border-line bg-surface p-6 shadow-2xl sm:rounded-3xl sm:p-8">
+          <div ref={dialog} className="pop-in relative max-h-[92dvh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-t-3xl border border-line bg-surface p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl sm:rounded-3xl sm:p-8">
             <button type="button" onClick={() => setOpen(false)} aria-label="Close" className="absolute top-4 right-4 inline-flex size-10 items-center justify-center rounded-full bg-surface-2"><X className="size-5" /></button>
             {done ? (
               <div className="py-6 text-center">
@@ -81,7 +85,8 @@ export default function TestimonyModal() {
               </form>
             )}
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );
