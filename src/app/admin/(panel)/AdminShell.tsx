@@ -22,6 +22,19 @@ const COLLAPSE_KEY = 'oratorio-admin-sidebar';
 function LogoutDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [pending, start] = useTransition();
   useEffect(() => {
+    const read = (k: string) => {
+      try {
+        return localStorage.getItem(k) === 'dark' ? 'dark' : 'light';
+      } catch {
+        return 'light';
+      }
+    };
+    document.documentElement.dataset.theme = read('admin-theme');
+    return () => {
+      document.documentElement.dataset.theme = read('theme');
+    };
+  }, []);
+  useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', onKey);

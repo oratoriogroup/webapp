@@ -51,7 +51,9 @@ export const viewport: Viewport = {
 
 // Runs before paint so the saved theme applies with no flash. Light is the
 // default; dark mode is used only when the visitor turns it on.
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}})()`;
+// The admin keeps its own theme ('admin-theme') and always starts light; the
+// public site's choice ('theme') never carries into it.
+const themeScript = `(function(){try{var t=localStorage.getItem(location.pathname.indexOf('/admin')===0?'admin-theme':'theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -3,16 +3,24 @@
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+// Admin pages store their own theme so the dashboard defaults to light
+// whatever was picked on the public site.
+export const themeKey = () => (location.pathname.startsWith('/admin') ? 'admin-theme' : 'theme');
+
 export function useTheme() {
   const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
   useEffect(() => {
-    setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(themeKey());
+    } catch {}
+    setTheme(saved === 'dark' ? 'dark' : 'light');
   }, []);
   const toggle = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
     try {
-      localStorage.setItem('theme', next);
+      localStorage.setItem(themeKey(), next);
     } catch {}
     setTheme(next);
   };
