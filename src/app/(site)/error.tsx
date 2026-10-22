@@ -24,14 +24,15 @@ export default function SiteError({ error, reset }: { error: Error & { digest?: 
   }, [error]);
 
   return (
-    <div className="container-x flex min-h-[60vh] flex-col items-center justify-center py-16 text-center">
+    <div className="container-x flex min-h-[60vh] flex-col items-center justify-center py-12 text-center sm:py-16">
       <p className="eyebrow">One moment</p>
-      <h1 className="h-display mt-3 text-3xl sm:text-4xl">This page needs a quick refresh</h1>
-      <p className="mt-3 max-w-md text-muted">We have just updated the site. Your registration and answers are safe.</p>
-      <div className="mt-7 flex flex-wrap justify-center gap-3">
+      <h1 className="h-display mt-3 text-3xl text-balance sm:text-4xl">This page needs a quick refresh</h1>
+      <p className="mt-3 max-w-md text-balance text-muted">We have just updated the site. Your registration and answers are safe.</p>
+      {/* Phones: full-width stacked buttons; larger screens: one row. */}
+      <div className="mt-7 grid w-full max-w-sm gap-2.5 sm:flex sm:max-w-none sm:flex-wrap sm:justify-center sm:gap-3">
         <button type="button" onClick={() => window.location.reload()} className="btn-brand min-h-12">Refresh page</button>
         <button type="button" onClick={reset} className="btn-outline min-h-12">Try again</button>
-        <Link href="/" className="btn-outline min-h-12">Home</Link>
+        <Link href="/" className="btn-outline min-h-12">Back to home</Link>
       </div>
     </div>
   );
