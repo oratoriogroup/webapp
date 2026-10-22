@@ -23,11 +23,11 @@ const INTRO: Record<ConnectType, string> = {
 };
 
 const button = (href: string, label: string, bg: string, color = '#ffffff', border = bg) =>
-  `<a href="${href}" target="_blank" style="display:inline-block;margin:6px 4px;padding:13px 22px;border-radius:999px;background:${bg};color:${color};border:1px solid ${border};font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none;mso-padding-alt:0">${label}</a>`;
+  `<a href="${href}" target="_blank" class="btn" style="display:inline-block;margin:6px 4px;padding:13px 22px;border-radius:999px;background:${bg};color:${color};border:1px solid ${border};font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none;mso-padding-alt:0">${label}</a>`;
 
 const row = (label: string, value: string, last = false) => {
   const b = last ? '' : `border-bottom:1px solid ${LINE};`;
-  return `<tr><td class="lbl" style="padding:10px 0;${b}font-family:${FONT};font-size:12px;letter-spacing:1px;text-transform:uppercase;color:${MUTED};width:110px;vertical-align:top">${label}</td><td style="padding:10px 0;${b}font-family:${FONT};font-size:15px;color:${INK};font-weight:600">${value}</td></tr>`;
+  return `<tr><td class="lbl" style="padding:10px 0;${b}font-family:${FONT};font-size:12px;letter-spacing:1px;text-transform:uppercase;color:${MUTED};width:110px;vertical-align:top">${label}</td><td class="val" style="padding:10px 0;${b}font-family:${FONT};font-size:15px;color:${INK};font-weight:600">${value}</td></tr>`;
 };
 
 export const registrationEmail = (r: { fullName: string; refCode: string; connect: ConnectType; checkinCode?: string | null }) => {
@@ -39,10 +39,10 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
 
   const contacts = CONTACTS.map(
     (c, i) => `<tr>
-      <td style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}font-family:${FONT};font-size:16px;font-weight:700;color:${INK};white-space:nowrap">${c.label}</td>
-      <td align="right" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}white-space:nowrap">
-        <a href="${whatsappLink(c.intl)}" target="_blank" style="display:inline-block;padding:8px 14px;border-radius:999px;background:${GREEN};color:#fff;font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">WhatsApp</a>
-        <a href="tel:+${c.intl}" style="display:inline-block;margin-left:6px;padding:8px 14px;border-radius:999px;background:#fde8ea;color:${RED};font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">Call</a>
+      <td class="cnum" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}font-family:${FONT};font-size:16px;font-weight:700;color:${INK};white-space:nowrap">${c.label}</td>
+      <td class="cbtn" align="right" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}">
+        <a href="${whatsappLink(c.intl)}" target="_blank" style="display:inline-block;margin-top:4px;padding:8px 14px;border-radius:999px;background:${GREEN};color:#fff;font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">WhatsApp</a>
+        <a href="tel:+${c.intl}" style="display:inline-block;margin:4px 0 0 6px;padding:8px 14px;border-radius:999px;background:#fde8ea;color:${RED};font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">Call</a>
       </td></tr>`,
   ).join('');
 
@@ -61,6 +61,19 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
     .h1 { font-size:24px !important; }
     .lbl { width:84px !important; }
     .qr { width:200px !important; height:200px !important; }
+    .btn { display:block !important; margin:8px 0 !important; text-align:center !important; }
+    .pass { padding:20px 14px !important; }
+  }
+  /* Phones under ~420px: stack detail labels over their values, and put the
+     WhatsApp / Call buttons under each number so nothing runs off screen. */
+  @media only screen and (max-width:420px) {
+    .px { padding-left:16px !important; padding-right:16px !important; }
+    .box { padding:16px 16px 6px !important; }
+    .lbl { display:block !important; width:auto !important; padding:10px 0 2px !important; border-bottom:0 !important; font-size:11px !important; }
+    .val { display:block !important; padding:0 0 10px !important; }
+    .cnum { display:block !important; padding:12px 0 6px !important; }
+    .cbtn { display:block !important; text-align:left !important; padding:0 0 12px !important; border-top:0 !important; }
+    .h1 { font-size:23px !important; }
   }
 </style></head>
 <body style="margin:0;padding:0;background:#f3eee9;-webkit-text-size-adjust:100%">
@@ -81,7 +94,7 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
 </td></tr>
 
 <tr><td class="px" style="padding:22px 44px 4px">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fffaf6;border:1px solid ${LINE};border-radius:14px"><tr><td style="padding:18px 22px 8px">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fffaf6;border:1px solid ${LINE};border-radius:14px"><tr><td class="box" style="padding:18px 22px 8px">
     <p style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:21px;color:${INK}">${EVENT.name}: <em style="color:${RED}">${EVENT.theme}</em></p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       ${row('Date', EVENT.dateLabel)}
@@ -93,7 +106,7 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
 </td></tr>
 
 ${r.checkinCode ? `<tr><td class="px" style="padding:22px 44px 4px">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px dashed #f0a24a;border-radius:16px"><tr><td align="center" style="padding:24px 18px">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px dashed #f0a24a;border-radius:16px"><tr><td align="center" class="pass" style="padding:24px 18px">
     <p style="margin:0;font-family:${FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${RED};font-weight:700">Your check-in pass</p>
     <p style="margin:8px 0 0;font-family:${FONT};font-size:14px;line-height:1.5;color:${MUTED}">Save it to your phone and show the QR code at the registration stand.</p>
     <img src="${SITE_URL}/api/pass/${r.checkinCode}" width="220" height="220" class="qr" alt="Your Oratorio 2026 check-in QR code" style="display:block;width:220px;height:220px;margin:18px auto 16px;border:0">
@@ -114,7 +127,7 @@ ${inPerson ? `<tr><td class="px" style="padding:24px 44px 4px">
 </td></tr>`}
 
 <tr><td class="px" style="padding:24px 44px 4px">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${LINE};border-radius:14px"><tr><td style="padding:16px 20px 12px">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${LINE};border-radius:14px"><tr><td class="box" style="padding:16px 20px 12px">
     <p style="margin:0 0 4px;font-family:${FONT};font-size:15px;font-weight:700;color:${INK}">Questions? Talk to us</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${contacts}</table>
     <p style="margin:6px 0 4px;text-align:center"><a href="${WHATSAPP_GROUP_URL}" target="_blank" style="display:block;padding:12px 16px;border-radius:12px;background:#e9fbef;color:#128c4a;font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none">Join the Oratorio WhatsApp group</a></p>
