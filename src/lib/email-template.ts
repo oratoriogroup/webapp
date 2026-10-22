@@ -42,7 +42,7 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
       <td class="cnum" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}font-family:${FONT};font-size:16px;font-weight:700;color:${INK};white-space:nowrap">${c.label}</td>
       <td class="cbtn" align="right" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}white-space:nowrap">
         <a href="${whatsappLink(c.intl)}" target="_blank" title="WhatsApp ${c.label}" style="display:inline-block;vertical-align:middle;text-decoration:none"><img src="${img('social/whatsapp.png')}" width="36" height="36" alt="WhatsApp" style="display:block;width:36px;height:36px;border:0"></a>
-        <a href="tel:+${c.intl}" style="display:inline-block;vertical-align:middle;margin-left:8px;padding:8px 14px;border-radius:999px;background:#fde8ea;color:${RED};font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">Call</a>
+        <a href="tel:+${c.intl}" title="Call ${c.label}" style="display:inline-block;vertical-align:middle;margin-left:8px;text-decoration:none"><img src="${img('social/phone.png')}" width="36" height="36" alt="Call" style="display:block;width:36px;height:36px;border:0"></a>
       </td></tr>`,
   ).join('');
 
