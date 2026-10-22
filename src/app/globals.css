@@ -502,6 +502,15 @@ body {
 [data-theme='dark'] .hover\:bg-brand-deep:hover {
   background-color: #b91c1c;
 }
+/* Green fills carrying white text (e.g. VALID PASS on the check-in screen):
+   the dark --green is a light green meant for text, so fills go deeper. */
+[data-theme='dark'] .bg-brand-green {
+  background-color: #15803d;
+}
+/* Admin section labels use a fixed red; lighten it on dark cards. */
+[data-theme='dark'] .admin-ui .text-\[\#DC2626\] {
+  color: #f87171;
+}
 [data-theme='dark'] .admin-ui .border-white\/80 {
   border-color: var(--border);
 }
