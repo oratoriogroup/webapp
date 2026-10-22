@@ -154,7 +154,9 @@ export default async function HomePage() {
             <Reveal className="mx-auto w-full max-w-xs sm:max-w-sm"><MinisterCard m={CONVENER} featured /></Reveal>
             <Stagger className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4" gap={0.07}>
               {MINISTERS.map((m) => (
-                <StaggerItem key={m.slug}><MinisterCard m={m} /></StaggerItem>
+                // Phones (2 columns): an odd last card is centred instead of
+                // sitting alone on the left. From sm up it is a normal cell.
+                <StaggerItem key={m.slug} className="last:odd:col-span-2 last:odd:mx-auto last:odd:w-[calc(50%-0.5rem)] sm:last:odd:col-span-1 sm:last:odd:mx-0 sm:last:odd:w-auto"><MinisterCard m={m} /></StaggerItem>
               ))}
             </Stagger>
           </div>
