@@ -425,13 +425,15 @@ body {
   }
 }
 
-/* Admin workspace: always light (ADMIN_LIGHT_ONLY_22OCT2026, COO 22 Oct 2026).
-   Warm off-white canvas, white cards, cool slate borders and ink text. It
-   overrides the site-wide dark theme so the dashboard reads the same on every
-   device, whatever the visitor chose on the public site. */
-.admin-ui,
-[data-theme='dark'] .admin-ui {
+/* Admin workspace (ADMIN_THEME_22OCT2026). Light: warm canvas, white cards,
+   slate borders, ink text. Dark: the site's dark palette. The admin pages use
+   plain Tailwind colours (bg-white, slate, emerald...) for the light design, so
+   in dark mode those are remapped here instead of adding dark: to every class.
+   color is set on .admin-ui itself because text inherits the body's already
+   computed colour, which would otherwise leak the other theme's ink. */
+.admin-ui {
   color-scheme: light;
+  color: var(--text);
   --bg: #faf5ef;
   --surface: #ffffff;
   --surface-2: #f8fafc;
@@ -440,14 +442,57 @@ body {
   --border: #e2e8f0;
   --brand: #dc2626;
   --brand-deep: #b91c1c;
-  --brand-2: #7a2a8f;
-  --gold: #c98a12;
-  --gold-soft: #fff1d6;
   --brand-soft: #fdeceb;
-  --red: #dc2626;
   --green: #15803d;
-  --ink: #12090f;
-  --ring: rgba(220, 38, 38, 0.18);
+}
+[data-theme='dark'] .admin-ui {
+  color-scheme: dark;
+  --bg: #0e080d;
+  --surface: #181016;
+  --surface-2: #22171f;
+  --text: #f6eff4;
+  --muted: #b3a3b0;
+  --border: #33242f;
+  --brand: #f05252;
+  --brand-deep: #b91c1c;
+  --brand-soft: #34141b;
+  --green: #8cc63f;
+  --color-slate-50: #1d141a;
+  --color-slate-100: #2a1e27;
+  --color-slate-200: #3a2b36;
+  --color-slate-300: #4f3d4a;
+  --color-slate-400: #8a7a86;
+  --color-slate-500: #b3a3b0;
+  --color-slate-600: #c9bcc6;
+  --color-slate-700: #ddd2da;
+  --color-slate-800: #ece4ea;
+  --color-slate-900: #f6eff4;
+  --color-emerald-50: rgba(16, 185, 129, 0.14);
+  --color-emerald-100: rgba(16, 185, 129, 0.24);
+  --color-emerald-200: rgba(16, 185, 129, 0.38);
+  --color-emerald-600: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+  --color-amber-50: rgba(245, 158, 11, 0.14);
+  --color-amber-100: rgba(245, 158, 11, 0.24);
+  --color-amber-200: rgba(245, 158, 11, 0.38);
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fcd34d;
+  --color-amber-800: #fde68a;
+  --color-amber-900: #fef3c7;
+  --color-rose-50: rgba(244, 63, 94, 0.14);
+  --color-rose-100: rgba(244, 63, 94, 0.24);
+  --color-rose-200: rgba(244, 63, 94, 0.38);
+  --color-rose-600: #fb7185;
+  --color-blue-50: rgba(59, 130, 246, 0.16);
+  --color-blue-600: #60a5fa;
+  --color-blue-700: #93c5fd;
+}
+[data-theme='dark'] .admin-ui .bg-white {
+  background-color: var(--surface);
+}
+[data-theme='dark'] .admin-ui .border-white\/80 {
+  border-color: var(--border);
 }
 .admin-ui body,
 .admin-ui {
