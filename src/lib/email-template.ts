@@ -40,9 +40,9 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
   const contacts = CONTACTS.map(
     (c, i) => `<tr>
       <td class="cnum" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}font-family:${FONT};font-size:16px;font-weight:700;color:${INK};white-space:nowrap">${c.label}</td>
-      <td class="cbtn" align="right" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}">
-        <a href="${whatsappLink(c.intl)}" target="_blank" style="display:inline-block;margin-top:4px;padding:8px 14px;border-radius:999px;background:${GREEN};color:#fff;font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">WhatsApp</a>
-        <a href="tel:+${c.intl}" style="display:inline-block;margin:4px 0 0 6px;padding:8px 14px;border-radius:999px;background:#fde8ea;color:${RED};font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">Call</a>
+      <td class="cbtn" align="right" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}white-space:nowrap">
+        <a href="${whatsappLink(c.intl)}" target="_blank" title="WhatsApp ${c.label}" style="display:inline-block;vertical-align:middle;text-decoration:none"><img src="${img('social/whatsapp.png')}" width="36" height="36" alt="WhatsApp" style="display:block;width:36px;height:36px;border:0"></a>
+        <a href="tel:+${c.intl}" style="display:inline-block;vertical-align:middle;margin-left:8px;padding:8px 14px;border-radius:999px;background:#fde8ea;color:${RED};font-family:${FONT};font-size:13px;font-weight:700;text-decoration:none">Call</a>
       </td></tr>`,
   ).join('');
 
@@ -64,15 +64,13 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
     .btn { display:block !important; margin:8px 0 !important; text-align:center !important; }
     .pass { padding:20px 14px !important; }
   }
-  /* Phones under ~420px: stack detail labels over their values, and put the
-     WhatsApp / Call buttons under each number so nothing runs off screen. */
+  /* Phones under ~420px: stack detail labels over their values, and
+     keep the side padding tight so nothing runs off screen. */
   @media only screen and (max-width:420px) {
     .px { padding-left:16px !important; padding-right:16px !important; }
     .box { padding:16px 16px 6px !important; }
     .lbl { display:block !important; width:auto !important; padding:10px 0 2px !important; border-bottom:0 !important; font-size:11px !important; }
     .val { display:block !important; padding:0 0 10px !important; }
-    .cnum { display:block !important; padding:12px 0 6px !important; }
-    .cbtn { display:block !important; text-align:left !important; padding:0 0 12px !important; border-top:0 !important; }
     .h1 { font-size:23px !important; }
   }
 </style></head>
@@ -130,7 +128,7 @@ ${inPerson ? `<tr><td class="px" style="padding:24px 44px 4px">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${LINE};border-radius:14px"><tr><td class="box" style="padding:16px 20px 12px">
     <p style="margin:0 0 4px;font-family:${FONT};font-size:15px;font-weight:700;color:${INK}">Questions? Talk to us</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${contacts}</table>
-    <p style="margin:6px 0 4px;text-align:center"><a href="${WHATSAPP_GROUP_URL}" target="_blank" style="display:block;padding:12px 16px;border-radius:12px;background:#e9fbef;color:#128c4a;font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none">Join the Oratorio WhatsApp group</a></p>
+    <p style="margin:6px 0 4px;text-align:center"><a href="${WHATSAPP_GROUP_URL}" target="_blank" style="display:block;padding:10px 14px;border-radius:12px;background:#e9fbef;color:#128c4a;font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none"><img src="${img('social/whatsapp.png')}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;border:0;vertical-align:middle;margin-right:8px">Join the Oratorio WhatsApp group</a></p>
   </td></tr></table>
 </td></tr>
 
