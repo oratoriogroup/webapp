@@ -32,16 +32,16 @@ export default function LoginForm({ initialError }: { initialError?: string }) {
   const error = state.error || oauthError || initialError;
 
   return (
-    <div className="mt-6">
+    <div className="mt-5 sm:mt-6">
       <form action={action} className="space-y-4">
         <div>
           <label htmlFor="email" className="text-sm font-semibold">Email</label>
-          <input id="email" name="email" type="email" autoComplete="username" required className="field mt-1.5" />
+          <input id="email" name="email" type="email" inputMode="email" autoComplete="username" autoCapitalize="none" autoCorrect="off" spellCheck={false} enterKeyHint="next" placeholder="you@example.com" required className="field mt-1.5" />
         </div>
         <div>
           <label htmlFor="password" className="text-sm font-semibold">Password</label>
           <div className="relative mt-1.5">
-            <input id="password" name="password" type={show ? 'text' : 'password'} autoComplete="current-password" required className="field pr-12" />
+            <input id="password" name="password" type={show ? 'text' : 'password'} autoComplete="current-password" enterKeyHint="go" required className="field pr-12" />
             <button type="button" onClick={() => setShow((s) => !s)} aria-label={show ? 'Hide password' : 'Show password'} className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-muted">
               {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
             </button>
@@ -52,7 +52,7 @@ export default function LoginForm({ initialError }: { initialError?: string }) {
           {pending && <Loader2 className="size-4 animate-spin" />} Sign in
         </button>
       </form>
-      <div className="my-5 flex items-center gap-3 text-[11px] font-semibold tracking-[0.18em] text-muted uppercase">
+      <div className="my-4 flex items-center sm:my-5 gap-3 text-[11px] font-semibold tracking-[0.18em] text-muted uppercase">
         <span className="h-px flex-1 bg-line" /> Or continue with <span className="h-px flex-1 bg-line" />
       </div>
       <div className="grid gap-2">
