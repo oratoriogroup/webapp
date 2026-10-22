@@ -1,12 +1,10 @@
 import Link from 'next/link';
-import { Users, UserCheck, MonitorPlay, HandHeart, Handshake, MailCheck, Clock3, CalendarClock, ArrowRight, TrendingUp, TrendingDown, Minus, Download } from 'lucide-react';
+import { Users, UserCheck, MonitorPlay, HandHeart, Handshake, MailCheck, Clock3, CalendarClock, ArrowRight, TrendingUp, TrendingDown, Minus, FileText, FileSpreadsheet } from 'lucide-react';
 import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
-import { getSettings } from '@/lib/settings';
-import { youtubeId, isChannelUrl } from '@/lib/youtube';
 import { initials } from '@/lib/event';
 import { TYPE_LABEL, TYPE_BADGE, fmtWAT } from './shared';
-import AdminHeader, { actionBtn, cardCls } from './AdminHeader';
+import AdminHeader, { pdfBtn, excelBtn, cardCls } from './AdminHeader';
 
 export const metadata = { title: 'Overview' };
 
@@ -24,7 +22,7 @@ function Trend({ today, yesterday }: { today: number; yesterday: number }) {
 
 export default async function Overview() {
   await requireAdmin();
-  const [[stats], daily, latest, settings] = await Promise.all([
+  const [[stats], daily, latest] = await Promise.all([
     sql<Stats[]>`
       select count(*)::int total,
         count(*) filter (where (created_at at time zone 'Africa/Lagos')::date = (now() at time zone 'Africa/Lagos')::date)::int today,
@@ -47,7 +45,6 @@ export default async function Overview() {
       order by d`,
     sql<{ id: string; full_name: string; connect_type: string; created_at: Date; location: string | null }[]>`
       select id, full_name, connect_type, created_at, location from public.registrations order by created_at desc limit 8`,
-    getSettings(),
   ]);
   const s = stats!;
   const primary = [
@@ -64,7 +61,6 @@ export default async function Overview() {
   ];
   const max = Math.max(1, ...daily.map((d) => d.n));
   const fortnight = daily.reduce((a, d) => a + d.n, 0);
-  const streamSet = !!youtubeId(settings.livestream_url) || isChannelUrl(settings.livestream_url);
 
   const Tile = ({ t }: { t: (typeof primary)[number] }) => {
     const body = (
@@ -87,10 +83,8 @@ export default async function Overview() {
   return (
     <div>
       <AdminHeader title="Overview" subtitle="Oratorio 2026 at a glance. Times are in WAT.">
-        <span className={`inline-flex h-11 items-center gap-2 rounded-xl px-4 text-sm font-semibold ${streamSet ? 'bg-brand-soft text-brand' : 'bg-surface-2 text-muted'}`}>
-          <span className={`size-2 rounded-full ${streamSet ? 'animate-pulse bg-brand' : 'bg-muted'}`} /> {streamSet ? 'Livestream ready' : 'No livestream link'}
-        </span>
-        <a href="/admin/export" className={actionBtn}><Download className="size-4" /> Export data</a>
+        <a href="/admin/export/pdf" className={pdfBtn}><FileText className="size-4" /> PDF</a>
+        <a href="/admin/export/xlsx" className={excelBtn}><FileSpreadsheet className="size-4" /> Excel</a>
       </AdminHeader>
 
       <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">{primary.map((t) => <Tile key={t.label} t={t} />)}</div>

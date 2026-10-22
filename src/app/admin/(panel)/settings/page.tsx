@@ -43,7 +43,7 @@ export default async function SettingsPage() {
                 <p className="text-xs text-muted">Confirmation email with the QR pass after every registration.</p>
               </div>
             </div>
-            <div className={`mt-4 rounded-xl border p-3 text-sm ${ready ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300' : 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200'}`}>
+            <div className={`mt-4 rounded-xl border p-3 text-sm ${ready ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
               {ready ? 'Emails are sending. Every new registration gets the confirmation and QR pass.' : 'Emails are not sending yet. Registrations are saved and can be emailed from each registration once the item below is done.'}
             </div>
             <ul className="mt-4 space-y-2.5 text-sm">

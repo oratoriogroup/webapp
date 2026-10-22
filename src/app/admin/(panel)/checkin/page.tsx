@@ -25,7 +25,7 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
     <div>
       <AdminHeader title="Check-in" subtitle="Scan an attendee's pass, or search by name, phone, email or reference." />
       {!checkinOpen() && (
-        <div className="mt-5 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+        <div className="mt-5 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           <Lock className="mt-0.5 size-4 shrink-0" />
           <p><strong>Check-in opens {CHECKIN_OPENS_LABEL}.</strong> You can scan a pass now to confirm it is genuine, but nobody can be checked in until then.</p>
         </div>

@@ -60,7 +60,7 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
           <span className="text-sm font-semibold">{open ? 'Registration is open' : 'Registration is closed'}</span>
           <span className="relative inline-flex items-center">
             <input type="checkbox" name="registration_open" checked={open} onChange={(e) => setOpen(e.target.checked)} className="peer sr-only" />
-            <span className="h-7 w-12 rounded-full bg-slate-300 transition-colors peer-checked:bg-brand dark:bg-slate-600" />
+            <span className="h-7 w-12 rounded-full bg-slate-300 transition-colors peer-checked:bg-brand" />
             <span className="absolute left-1 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
           </span>
         </label>

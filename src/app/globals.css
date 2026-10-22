@@ -425,20 +425,29 @@ body {
   }
 }
 
-/* Admin workspace: warm canvas, white cards, cool slate borders. */
-.admin-ui {
+/* Admin workspace: always light (ADMIN_LIGHT_ONLY_22OCT2026, COO 22 Oct 2026).
+   Warm off-white canvas, white cards, cool slate borders and ink text. It
+   overrides the site-wide dark theme so the dashboard reads the same on every
+   device, whatever the visitor chose on the public site. */
+.admin-ui,
+[data-theme='dark'] .admin-ui {
+  color-scheme: light;
   --bg: #faf5ef;
   --surface: #ffffff;
   --surface-2: #f8fafc;
-  --border: #e2e8f0;
+  --text: #0f172a;
   --muted: #64748b;
-}
-[data-theme='dark'] .admin-ui {
-  --bg: #0e080d;
-  --surface: #181016;
-  --surface-2: #22171f;
-  --border: #33242f;
-  --muted: #b3a3b0;
+  --border: #e2e8f0;
+  --brand: #dc2626;
+  --brand-deep: #b91c1c;
+  --brand-2: #7a2a8f;
+  --gold: #c98a12;
+  --gold-soft: #fff1d6;
+  --brand-soft: #fdeceb;
+  --red: #dc2626;
+  --green: #15803d;
+  --ink: #12090f;
+  --ring: rgba(220, 38, 38, 0.18);
 }
 .admin-ui body,
 .admin-ui {

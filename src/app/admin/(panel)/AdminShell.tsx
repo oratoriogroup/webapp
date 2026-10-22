@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { LayoutDashboard, Users, Settings, LogOut, ExternalLink, Radio, Heart, ScanLine, ChevronsLeft, ChevronsRight, Loader2 } from 'lucide-react';
-import ThemeToggle from '@/components/ThemeToggle';
 import { Logo } from '@/components/SiteHeader';
 import { signOut } from '../actions';
 
@@ -109,7 +108,6 @@ export default function AdminShell({ email, children }: { email: string; childre
         <div className={`border-t border-line ${collapsed ? 'flex flex-col items-center gap-2 p-3' : 'p-4'}`}>
           {!collapsed && <p className="truncate text-xs text-muted" title={email}>{email}</p>}
           <div className={collapsed ? 'flex flex-col items-center gap-2' : 'mt-3 flex items-center gap-2'}>
-            <ThemeToggle />
             {collapsed ? (
               <button type="button" onClick={() => setConfirmLogout(true)} aria-label="Log out" title="Log out" className="inline-flex size-10 items-center justify-center rounded-full border border-line text-muted hover:bg-surface-2 hover:text-text">
                 <LogOut className="size-4" />
@@ -126,7 +124,6 @@ export default function AdminShell({ email, children }: { email: string; childre
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-surface/95 px-4 backdrop-blur lg:hidden">
           <Logo className="h-7" />
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             <button type="button" onClick={() => setConfirmLogout(true)} aria-label="Log out" className="inline-flex size-10 items-center justify-center rounded-full border border-line"><LogOut className="size-4" /></button>
           </div>
         </header>

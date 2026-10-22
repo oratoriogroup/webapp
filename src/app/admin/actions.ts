@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { checkinOpen, CHECKIN_OPENS_LABEL } from '@/lib/checkin';
 import { revalidatePath } from 'next/cache';
+import { clearCache } from '@/lib/ttl-cache';
 import { supabaseServer } from '@/lib/supabase-server';
 import { isAllowedAdmin, requireAdmin } from '@/lib/admin';
 import { clientIp, rateLimited } from '@/lib/security';
@@ -70,6 +71,7 @@ export async function resendEmail(id: string): Promise<ActionState> {
   try {
     await sendRegistrationEmail({ fullName: r.full_name, email: r.email, refCode: r.ref_code, connect: r.connect_type, checkinCode: r.checkin_code });
     await sql`update public.registrations set email_sent_at = now(), email_error = null where id = ${id}`;
+    clearCache('regs:');
     revalidatePath(`/admin/registrations/${id}`);
     return { ok: 'Confirmation email sent.' };
   } catch (e) {
@@ -103,7 +105,8 @@ export async function sendPendingEmails(): Promise<ActionState> {
         const msg = e instanceof Error ? e.message : 'send failed';
         await sql`update public.registrations set email_error = ${msg.slice(0, 300)} where id = ${r.id}`;
         if (/quota|limit|429|too many/i.test(msg)) {
-          revalidatePath('/admin', 'layout');
+          clearCache('regs:');
+    revalidatePath('/admin', 'layout');
           return { error: `Sent ${sent}. Stopped: the email provider's limit was reached (${msg.slice(0, 120)}). Try again later.` };
         }
       }
@@ -130,7 +133,8 @@ export async function toggleCheckIn(id: string): Promise<ActionState> {
       checked_in_by = case when checked_in_at is null then ${admin.email} else null end
       where id = ${id}`;
   }
-  revalidatePath(`/admin/registrations/${id}`);
+  clearCache('regs:');
+    revalidatePath(`/admin/registrations/${id}`);
   revalidatePath('/admin/registrations');
   return { ok: 'Updated.' };
 }
@@ -160,7 +164,8 @@ export async function checkInByCode(code: string, undo = false): Promise<ActionS
     await sql`update public.registrations set checked_in_at = now(), checked_in_by = ${admin.email}
       where checkin_code = ${code} and checked_in_at is null`;
   }
-  revalidatePath(`/admin/checkin/${code}`);
+  clearCache('regs:');
+    revalidatePath(`/admin/checkin/${code}`);
   revalidatePath('/admin/checkin');
   revalidatePath('/admin');
   return { ok: undo ? 'Check-in undone.' : 'Checked in.' };

@@ -1,15 +1,17 @@
 import Link from 'next/link';
-import { Search, Download, FileText, ChevronLeft, ChevronRight, MailCheck, Clock3, CheckCircle2 } from 'lucide-react';
+import { FileText, FileSpreadsheet, ChevronLeft, ChevronRight, MailCheck, Clock3, CheckCircle2 } from 'lucide-react';
 import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
 import type { Answers } from '@/lib/form';
 import { TYPE_LABEL, TYPE_BADGE, fmtWAT, heardFrom } from '../shared';
-import AdminHeader, { actionBtn, inputCls, cardCls } from '../AdminHeader';
+import AdminHeader, { pdfBtn, excelBtn, cardCls } from '../AdminHeader';
+import FilterBar from './FilterBar';
+import { cached } from '@/lib/ttl-cache';
 import { filterSql, TYPES } from './filter';
 
 export const metadata = { title: 'Registrations' };
 
-const PAGE = 25;
+const PER_PAGE = [25, 50, 100];
 
 type Row = {
   id: string; ref_code: string; full_name: string; email: string; whatsapp: string; connect_type: string;
@@ -24,18 +26,24 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
   const q = String(sp.q || '').trim().slice(0, 100);
   const type = TYPES.includes(String(sp.type)) ? String(sp.type) : '';
   const page = Math.max(1, Math.min(10_000, Number(sp.page) || 1));
+  const PAGE = PER_PAGE.includes(Number(sp.per)) ? Number(sp.per) : 25;
 
+  // Parameterised by postgres.js (values are bound, never spliced into SQL);
+  // identical admin queries within 4 seconds share one database round trip.
   const where = filterSql(q, type);
-  const [rows, [{ n }]] = await Promise.all([
-    sql<Row[]>`select id, ref_code, full_name, email, whatsapp, connect_type, location, church, answers, created_at, email_sent_at, checked_in_at, checkin_code
-      from public.registrations ${where} order by created_at desc limit ${PAGE} offset ${(page - 1) * PAGE}`,
-    sql<{ n: number }[]>`select count(*)::int n from public.registrations ${where}`,
-  ]);
+  const [rows, [{ n }]] = await cached(`regs:${q}|${type}|${page}|${PAGE}`, 4000, () =>
+    Promise.all([
+      sql<Row[]>`select id, ref_code, full_name, email, whatsapp, connect_type, location, church, answers, created_at, email_sent_at, checked_in_at, checkin_code
+        from public.registrations ${where} order by created_at desc limit ${PAGE} offset ${(page - 1) * PAGE}`,
+      sql<{ n: number }[]>`select count(*)::int n from public.registrations ${where}`,
+    ]),
+  );
   const pages = Math.max(1, Math.ceil(n / PAGE));
   const qs = (p: Record<string, string | number>) => {
     const u = new URLSearchParams();
     if (q) u.set('q', q);
     if (type) u.set('type', type);
+    if (PAGE !== 25) u.set('per', String(PAGE));
     for (const [k, v] of Object.entries(p)) u.set(k, String(v));
     return `?${u.toString()}`;
   };
@@ -43,42 +51,11 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
   return (
     <div>
       <AdminHeader title="Registrations" subtitle={`${n.toLocaleString()} ${n === 1 ? 'person' : 'people'}${type ? `, ${TYPE_LABEL[type]}` : ''}${q ? `, matching "${q}"` : ''}`}>
-        <a href={`/admin/export/pdf${qs({})}`} className={actionBtn}><FileText className="size-4" /> Export PDF</a>
-        <a href={`/admin/export${qs({})}`} className={actionBtn}><Download className="size-4" /> Export CSV</a>
+        <a href={`/admin/export/pdf${qs({})}`} className={pdfBtn}><FileText className="size-4" /> PDF</a>
+        <a href={`/admin/export/xlsx${qs({})}`} className={excelBtn}><FileSpreadsheet className="size-4" /> Excel</a>
       </AdminHeader>
 
-      <div className={`${cardCls} mt-6 p-3`}>
-        <form className="flex flex-col gap-2 sm:flex-row sm:items-center" role="search">
-          <div className="relative w-full sm:max-w-sm">
-            <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" />
-            <input name="q" defaultValue={q} placeholder="Search name, email, phone or reference" className={`${inputCls} !pl-11`} aria-label="Search registrations" />
-          </div>
-          <select name="type" defaultValue={type} className={`${inputCls} sm:w-48`} aria-label="Filter by type">
-            <option value="">All types</option>
-            {TYPES.map((t) => <option key={t} value={t}>{TYPE_LABEL[t]}</option>)}
-          </select>
-          <button className="inline-flex h-11 items-center justify-center rounded-xl bg-brand px-6 text-sm font-semibold text-white shadow-lg shadow-brand/25 hover:bg-brand-deep">Apply</button>
-        </form>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {[
-            { label: 'All attendees', t: '' },
-            { label: 'Lagos in-person', t: 'attend' },
-            { label: 'Online streams', t: 'online' },
-            { label: 'Volunteers', t: 'volunteer' },
-            { label: 'Partners', t: 'partner' },
-          ].map((p) => {
-            const u = new URLSearchParams();
-            if (q) u.set('q', q);
-            if (p.t) u.set('type', p.t);
-            const on = type === p.t;
-            return (
-              <Link key={p.label} href={`?${u.toString()}`} className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${on ? 'bg-brand text-white shadow-md shadow-brand/25' : 'bg-surface-2 text-muted hover:text-brand'}`}>
-                {p.label}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
+      <FilterBar q={q} type={type} per={PAGE} types={TYPES.map((t) => ({ value: t, label: TYPE_LABEL[t] }))} />
 
       {rows.length === 0 ? (
         <div className={`${cardCls} mt-6 p-10 text-center text-muted`}>No registrations found.</div>
