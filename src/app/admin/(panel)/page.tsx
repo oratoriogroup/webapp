@@ -48,16 +48,16 @@ export default async function Overview() {
   ]);
   const s = stats!;
   const primary = [
-    { label: 'Total registrations', value: s.total, icon: Users, href: '/admin/registrations', extra: <span className="text-xs text-muted">{s.checked} checked in</span> },
-    { label: 'Registered today', value: s.today, icon: CalendarClock, extra: <Trend today={s.today} yesterday={s.yesterday} /> },
-    { label: 'Attending in Lagos', value: s.attend, icon: UserCheck, href: '/admin/registrations?type=attend' },
-    { label: 'Watching online', value: s.online, icon: MonitorPlay, href: '/admin/registrations?type=online' },
+    { label: 'Total registrations', short: 'Total', value: s.total, icon: Users, href: '/admin/registrations', extra: <span className="text-xs text-muted">{s.checked} checked in</span> },
+    { label: 'Registered today', short: 'Today', value: s.today, icon: CalendarClock, extra: <Trend today={s.today} yesterday={s.yesterday} /> },
+    { label: 'Attending in Lagos', short: 'In Lagos', value: s.attend, icon: UserCheck, href: '/admin/registrations?type=attend' },
+    { label: 'Watching online', short: 'Online', value: s.online, icon: MonitorPlay, href: '/admin/registrations?type=online' },
   ];
   const secondary = [
-    { label: 'Volunteers', value: s.volunteer, icon: HandHeart, href: '/admin/registrations?type=volunteer' },
-    { label: 'Partners & sponsors', value: s.partner, icon: Handshake, href: '/admin/registrations?type=partner' },
-    { label: 'Emails sent', value: s.sent, icon: MailCheck },
-    { label: 'Emails pending', value: s.pending, icon: Clock3 },
+    { label: 'Volunteers', short: 'Volunteers', value: s.volunteer, icon: HandHeart, href: '/admin/registrations?type=volunteer' },
+    { label: 'Partners & sponsors', short: 'Partners', value: s.partner, icon: Handshake, href: '/admin/registrations?type=partner' },
+    { label: 'Emails sent', short: 'Emails sent', value: s.sent, icon: MailCheck },
+    { label: 'Emails pending', short: 'Emails pending', value: s.pending, icon: Clock3 },
   ];
   const max = Math.max(1, ...daily.map((d) => d.n));
   const fortnight = daily.reduce((a, d) => a + d.n, 0);
@@ -65,18 +65,18 @@ export default async function Overview() {
   const Tile = ({ t }: { t: (typeof primary)[number] }) => {
     const body = (
       <>
-        <div className="flex items-start justify-between gap-3">
-          <p className="text-sm font-medium text-muted">{t.label}</p>
-          <span className="flex size-9 items-center justify-center rounded-xl bg-brand-soft text-brand"><t.icon className="size-[18px]" /></span>
+        <div className="flex items-start justify-between gap-2 sm:gap-3">
+          <p className="min-w-0 truncate text-xs font-medium text-muted sm:text-sm"><span className="sm:hidden">{t.short}</span><span className="hidden sm:inline">{t.label}</span></p>
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-brand-soft text-brand sm:size-9 sm:rounded-xl"><t.icon className="size-3.5 sm:size-[18px]" /></span>
         </div>
-        <p className="mt-3 text-3xl font-bold tabular-nums">{t.value.toLocaleString()}</p>
-        <div className="mt-1 min-h-5">{t.extra}</div>
+        <p className="mt-1.5 text-2xl font-bold tabular-nums sm:mt-3 sm:text-3xl">{t.value.toLocaleString()}</p>
+        {t.extra ? <div className="mt-0.5 text-[11px] sm:mt-1 sm:min-h-5">{t.extra}</div> : <div className="hidden sm:block sm:mt-1 sm:min-h-5" />}
       </>
     );
     return t.href ? (
-      <Link href={t.href} className={`${cardCls} block p-5 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md`}>{body}</Link>
+      <Link href={t.href} className={`${cardCls} block p-3.5 sm:p-5 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md`}>{body}</Link>
     ) : (
-      <div className={`${cardCls} p-5 transition-shadow hover:shadow-md`}>{body}</div>
+      <div className={`${cardCls} p-3.5 sm:p-5 transition-shadow hover:shadow-md`}>{body}</div>
     );
   };
 
@@ -87,21 +87,21 @@ export default async function Overview() {
         <a href="/admin/export/xlsx" className={excelBtn}><FileSpreadsheet className="size-4" /> Excel</a>
       </AdminHeader>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">{primary.map((t) => <Tile key={t.label} t={t} />)}</div>
-      <div className="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">{secondary.map((t) => <Tile key={t.label} t={t as (typeof primary)[number]} />)}</div>
+      <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-6 sm:gap-3 lg:grid-cols-4">{primary.map((t) => <Tile key={t.label} t={t} />)}</div>
+      <div className="mt-2.5 grid grid-cols-2 gap-2.5 sm:mt-3 sm:gap-3 lg:grid-cols-4">{secondary.map((t) => <Tile key={t.label} t={t as (typeof primary)[number]} />)}</div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-[65fr_35fr]">
-        <section className={`${cardCls} p-5`}>
+      <div className="mt-4 grid gap-3 sm:mt-6 sm:gap-4 lg:grid-cols-[65fr_35fr]">
+        <section className={`${cardCls} p-4 sm:p-5`}>
           <div className="flex flex-wrap items-end justify-between gap-2">
             <div>
               <h2 className="font-semibold">Registrations, last 14 days</h2>
               <p className="text-xs text-muted">{fortnight.toLocaleString()} in total</p>
             </div>
           </div>
-          <div className="mt-6 flex h-56 items-end gap-1.5" role="img" aria-label="Registrations per day for the last 14 days">
+          <div className="mt-4 flex h-40 items-end gap-1 sm:mt-6 sm:h-56 sm:gap-1.5" role="img" aria-label="Registrations per day for the last 14 days">
             {daily.map((d) => (
               <div key={d.day} className="group flex h-full flex-1 flex-col items-center justify-end gap-1.5">
-                <span className="text-[10px] font-semibold text-muted opacity-0 transition-opacity group-hover:opacity-100">{d.n}</span>
+                <span className={`text-[10px] font-semibold text-muted transition-opacity sm:opacity-0 sm:group-hover:opacity-100 ${d.n ? '' : 'opacity-0'}`}>{d.n}</span>
                 <div className="w-full rounded-t-lg bg-gradient-to-t from-brand-deep/80 to-brand/70 transition-all group-hover:from-brand-deep group-hover:to-brand" style={{ height: `${Math.max(3, (d.n / max) * 100)}%` }} title={`${d.day}: ${d.n}`} />
               </div>
             ))}
@@ -109,7 +109,7 @@ export default async function Overview() {
           <div className="mt-2 flex justify-between text-[10px] text-muted"><span>{daily[0]?.day}</span><span>{daily.at(-1)?.day}</span></div>
         </section>
 
-        <section className={`${cardCls} p-5`}>
+        <section className={`${cardCls} p-4 sm:p-5`}>
           <div className="flex items-center justify-between">
             <h2 className="font-semibold">Latest registrations</h2>
             <Link href="/admin/registrations" className="inline-flex items-center gap-1 text-sm font-semibold text-brand">View all <ArrowRight className="size-3.5" /></Link>
@@ -120,13 +120,13 @@ export default async function Overview() {
             <ul className="mt-3 divide-y divide-line">
               {latest.map((r) => (
                 <li key={r.id}>
-                  <Link href={`/admin/registrations/${r.id}`} className="group flex items-center gap-3 py-3">
+                  <Link href={`/admin/registrations/${r.id}`} className="group flex items-center gap-3 py-2.5 sm:py-3">
                     <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-xs font-bold text-brand">{initials(r.full_name)}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-semibold group-hover:text-brand">{r.full_name}</span>
                       <span className={`mt-0.5 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span>
                     </span>
-                    <span className="shrink-0 rounded-lg bg-surface-2 px-2 py-1 text-[11px] text-muted">{fmtWAT(r.created_at)}</span>
+                    <span className="shrink-0 rounded-lg bg-surface-2 px-2 py-1 text-[10px] text-muted sm:text-[11px]">{fmtWAT(r.created_at)}</span>
                   </Link>
                 </li>
               ))}
