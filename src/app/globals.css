@@ -127,8 +127,10 @@ body {
   @apply btn bg-text text-bg hover:opacity-90;
 }
 
+/* Dark mode uses a lighter --brand so red text reads on dark; filled buttons
+   use a deeper red there so white button text keeps good contrast. */
 @utility btn-brand {
-  @apply btn bg-brand text-white shadow-lg shadow-brand/25 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand/30;
+  @apply btn bg-brand text-white shadow-lg shadow-brand/25 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand/30 dark:bg-[#dc2626] dark:shadow-black/30;
 }
 
 @utility btn-gold {
@@ -144,7 +146,7 @@ body {
 }
 
 @utility field {
-  @apply min-h-12 w-full rounded-xl border border-line bg-surface-2/60 px-4 py-3 text-base text-text transition-all duration-200 placeholder:text-muted/70 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none sm:text-[15px];
+  @apply min-h-12 w-full rounded-xl border border-line bg-surface-2/60 px-4 py-3 text-base text-text dark:border-[#47343f] transition-all duration-200 placeholder:text-muted/70 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none sm:text-[15px];
 }
 
 @utility section-y {
