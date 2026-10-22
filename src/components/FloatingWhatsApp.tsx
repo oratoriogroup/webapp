@@ -12,7 +12,14 @@ import { WHATSAPP_GROUP_URL } from '@/lib/event';
 export const footerInView = () => {
   if (window.innerWidth >= 768) return false;
   const f = document.querySelector('footer');
-  return !!f && f.getBoundingClientRect().top < window.innerHeight - 40;
+  if (f && f.getBoundingClientRect().top < window.innerHeight - 40) return true;
+  // Also step aside for anything marked data-no-float (e.g. the registration
+  // form's Continue / Save / Back buttons) while it sits in the lower part of
+  // the screen, where the floating buttons live.
+  return [...document.querySelectorAll('[data-no-float]')].some((el) => {
+    const r = el.getBoundingClientRect();
+    return r.bottom > window.innerHeight * 0.45 && r.top < window.innerHeight;
+  });
 };
 
 export default function FloatingWhatsApp() {

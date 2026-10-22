@@ -270,19 +270,21 @@ export default function RegisterForm() {
           </p>
         )}
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6">
+        {/* Phones: full-width stack, main action first (Continue, then Save for
+            later, then Back). Larger screens: Back left, the rest right. */}
+        <div data-no-float className="mt-8 flex flex-col gap-2 border-t border-line pt-6 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
           {step > 0 ? (
-            <button type="button" onClick={back} className="btn-outline min-h-12" disabled={submitting}>
+            <button type="button" onClick={back} className="btn-outline order-3 min-h-12 w-full sm:order-none sm:w-auto" disabled={submitting}>
               <ArrowLeft className="size-4" /> Back
             </button>
           ) : (
-            <span />
+            <span className="hidden sm:block" />
           )}
-          <div className="flex flex-wrap items-center justify-end gap-2">
-          <button type="button" onClick={saveForLater} disabled={saving || submitting} className="btn-outline min-h-12 whitespace-nowrap">
+          <div className="contents sm:flex sm:flex-wrap sm:items-center sm:justify-end sm:gap-2">
+          <button type="button" onClick={saveForLater} disabled={saving || submitting} className="btn-outline order-2 min-h-12 w-full whitespace-nowrap sm:order-none sm:w-auto">
             {saving ? <Loader2 className="size-4 animate-spin" /> : <Bookmark className="size-4" />} <span className="hidden sm:inline">Save and continue later</span><span className="sm:hidden">Save for later</span>
           </button>
-          <button type="submit" className="btn-brand min-h-12 min-w-36 whitespace-nowrap" disabled={submitting}>
+          <button type="submit" className="btn-brand order-1 min-h-12 w-full min-w-36 whitespace-nowrap sm:order-none sm:w-auto" disabled={submitting}>
             {submitting ? (
               <>
                 <Loader2 className="size-4 animate-spin" /> Submitting
