@@ -12,7 +12,7 @@ const NAV = [
   { href: '/admin', label: 'Overview', icon: LayoutDashboard, exact: true },
   { href: '/admin/checkin', label: 'Check-in', icon: ScanLine },
   { href: '/admin/registrations', label: 'Registrations', icon: Users },
-  { href: '/admin/testimonies', label: 'Testimonies', short: 'Stories', icon: Heart },
+  { href: '/admin/testimonies', label: 'Testimonies', icon: Heart },
   { href: '/admin/settings', label: 'Livestream & settings', short: 'Settings', icon: Settings },
 ];
 
@@ -148,11 +148,11 @@ export default function AdminShell({ email, children }: { email: string; childre
 
       {/* Mobile bottom nav */}
       <nav aria-label="Admin" className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur lg:hidden">
-        <div className="flex px-2 pt-1.5">
+        <div className="flex px-1 pt-1.5 min-[400px]:px-2">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className={`flex flex-1 flex-col items-center gap-1 py-1.5 text-[11px] font-medium ${active(n) ? 'text-brand' : 'text-muted'}`}>
+            <Link key={n.href} href={n.href} className={`flex min-w-0 flex-1 flex-col items-center gap-1 py-1.5 text-[10px] font-medium tracking-tight min-[400px]:text-[11px] min-[400px]:tracking-normal ${active(n) ? 'text-brand' : 'text-muted'}`}>
               <span className={`flex h-8 w-14 items-center justify-center rounded-full ${active(n) ? 'bg-brand-soft' : ''}`}><n.icon className="size-5" /></span>
-              {n.short || n.label}
+              <span className="max-w-full truncate">{n.short || n.label}</span>
             </Link>
           ))}
         </div>
