@@ -27,7 +27,7 @@ const button = (href: string, label: string, bg: string, color = '#ffffff', bord
 
 const row = (label: string, value: string, last = false) => {
   const b = last ? '' : `border-bottom:1px solid ${LINE};`;
-  return `<tr><td class="lbl" style="padding:10px 0;${b}font-family:${FONT};font-size:12px;letter-spacing:1px;text-transform:uppercase;color:${MUTED};width:110px;vertical-align:top">${label}</td><td class="val" style="padding:10px 0;${b}font-family:${FONT};font-size:15px;color:${INK};font-weight:600">${value}</td></tr>`;
+  return `<tr><td class="lbl dm-mu dm-line" style="padding:10px 0;${b}font-family:${FONT};font-size:12px;letter-spacing:1px;text-transform:uppercase;color:${MUTED};width:110px;vertical-align:top">${label}</td><td class="val dm-ink dm-line" style="padding:10px 0;${b}font-family:${FONT};font-size:15px;color:${INK};font-weight:600">${value}</td></tr>`;
 };
 
 export const registrationEmail = (r: { fullName: string; refCode: string; connect: ConnectType; checkinCode?: string | null }) => {
@@ -39,8 +39,8 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
 
   const contacts = CONTACTS.map(
     (c, i) => `<tr>
-      <td class="cnum" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}font-family:${FONT};font-size:16px;font-weight:700;color:${INK};white-space:nowrap">${c.label}</td>
-      <td class="cbtn" align="right" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}white-space:nowrap">
+      <td class="cnum dm-ink dm-line" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}font-family:${FONT};font-size:16px;font-weight:700;color:${INK};white-space:nowrap">${c.label}</td>
+      <td class="cbtn dm-line" align="right" style="padding:12px 0;${i ? `border-top:1px solid ${LINE};` : ''}white-space:nowrap">
         <a href="${whatsappLink(c.intl)}" target="_blank" title="WhatsApp ${c.label}" style="display:inline-block;vertical-align:middle;text-decoration:none"><img src="${img('social/whatsapp.png')}" width="36" height="36" alt="WhatsApp" style="display:block;width:36px;height:36px;border:0"></a>
         <a href="tel:+${c.intl}" title="Call ${c.label}" style="display:inline-block;vertical-align:middle;margin-left:8px;text-decoration:none"><img src="${img('social/phone.png')}" width="36" height="36" alt="Call" style="display:block;width:36px;height:36px;border:0"></a>
       </td></tr>`,
@@ -52,7 +52,7 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
   ).join('');
 
   const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>${EVENT.name}</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><title>${EVENT.name}</title>
 <style>
   @media only screen and (max-width:620px) {
     .shell { padding:0 !important; }
@@ -73,38 +73,62 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
     .val { display:block !important; padding:0 0 10px !important; }
     .h1 { font-size:23px !important; }
   }
+  /* DARK_EMAIL_22OCT2026: mail apps that honour prefers-color-scheme get a
+     proper dark version. The logo sits on a white panel and the QR pass box is
+     locked white (background-image is never recoloured), so both stay legible
+     in apps that invert colours on their own, such as the Gmail app. */
+  @media (prefers-color-scheme: dark) {
+    .dm-bg { background:#0e080d !important; }
+    .dm-card { background:#181016 !important; border-color:#33242f !important; }
+    .dm-box { background:#22171f !important; border-color:#33242f !important; }
+    .dm-ink { color:#f6eff4 !important; }
+    .dm-body { color:#e6dbe3 !important; }
+    .dm-mu { color:#b3a3b0 !important; }
+    .dm-line { border-color:#33242f !important; }
+    .dm-red { color:#ff7a7a !important; }
+    .dm-ok { color:#4ade80 !important; }
+    .dm-dkbtn { background:#f6eff4 !important; color:#1c1220 !important; border-color:#f6eff4 !important; }
+    .dm-wa { background:#12321f !important; color:#4ade80 !important; }
+  }
+  [data-ogsc] .dm-ink { color:#f6eff4 !important; }
+  [data-ogsc] .dm-body { color:#e6dbe3 !important; }
+  [data-ogsc] .dm-mu { color:#b3a3b0 !important; }
+  [data-ogsc] .dm-red { color:#ff7a7a !important; }
+  [data-ogsc] .dm-ok { color:#4ade80 !important; }
 </style></head>
-<body style="margin:0;padding:0;background:#f3eee9;-webkit-text-size-adjust:100%">
+<body class="dm-bg" style="margin:0;padding:0;background:#f3eee9;-webkit-text-size-adjust:100%">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">You are registered for ${EVENT.name}: ${EVENT.theme}, ${EVENT.dateShort}, ${EVENT.timeLabel}. Your check-in pass is inside.</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3eee9"><tr><td align="center" class="shell" style="padding:32px 16px">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card" style="max-width:640px;background:#ffffff;border-radius:20px;overflow:hidden;border:1px solid ${LINE}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="dm-bg" style="background:#f3eee9"><tr><td align="center" class="shell dm-bg" style="padding:32px 16px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card dm-card" style="max-width:640px;background:#ffffff;border-radius:20px;overflow:hidden;border:1px solid ${LINE}">
 
 <tr><td style="height:6px;background:${RED};background-image:linear-gradient(90deg,${RED},#e0a21b,#7a2a8f);font-size:0;line-height:0">&nbsp;</td></tr>
 
 <tr><td align="center" class="px" style="padding:32px 44px 4px">
-  <a href="${SITE_URL}" target="_blank"><img src="${img('logo-color.png')}" width="200" alt="Oratorio Music Foundation" style="display:block;width:200px;max-width:62%;height:auto;border:0"></a>
+  <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td style="padding:10px 16px;border-radius:14px;background:#ffffff;background-image:linear-gradient(#ffffff,#ffffff)">
+    <a href="${SITE_URL}" target="_blank"><img src="${img('logo-color.png')}" width="200" alt="Oratorio Music Foundation" style="display:block;width:200px;max-width:100%;height:auto;border:0"></a>
+  </td></tr></table>
 </td></tr>
 
 <tr><td class="px" style="padding:26px 44px 4px">
-  <p style="margin:0 0 10px;font-family:${FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#15803d;font-weight:700">&#10003;&nbsp; Registration confirmed</p>
-  <h1 class="h1" style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.25;color:${INK};font-weight:normal">Dear ${first},</h1>
-  <p style="margin:0;font-family:${FONT};font-size:16px;line-height:1.65;color:#3d3240">${INTRO[r.connect]}</p>
+  <p style="margin:0 0 10px;font-family:${FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#15803d;font-weight:700" class="dm-ok">&#10003;&nbsp; Registration confirmed</p>
+  <h1 class="h1 dm-ink" style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.25;color:${INK};font-weight:normal">Dear ${first},</h1>
+  <p class="dm-body" style="margin:0;font-family:${FONT};font-size:16px;line-height:1.65;color:#3d3240">${INTRO[r.connect]}</p>
 </td></tr>
 
 <tr><td class="px" style="padding:22px 44px 4px">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fffaf6;border:1px solid ${LINE};border-radius:14px"><tr><td class="box" style="padding:18px 22px 8px">
-    <p style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:21px;color:${INK}">${EVENT.name}: <em style="color:${RED}">${EVENT.theme}</em></p>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="dm-box" style="background:#fffaf6;border:1px solid ${LINE};border-radius:14px"><tr><td class="box" style="padding:18px 22px 8px">
+    <p class="dm-ink" style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:21px;color:${INK}">${EVENT.name}: <em class="dm-red" style="color:${RED}">${EVENT.theme}</em></p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       ${row('Date', EVENT.dateLabel)}
       ${row('Time', EVENT.timeLabel)}
-      ${row('Venue', `${esc(EVENT.venueName)}<br><span style="font-weight:400;color:${MUTED}">${esc(EVENT.venueAddress)}</span>`)}
+      ${row('Venue', `${esc(EVENT.venueName)}<br><span class="dm-mu" style="font-weight:400;color:${MUTED}">${esc(EVENT.venueAddress)}</span>`)}
       ${row('Reference', `<span style="font-family:Menlo,Consolas,monospace;letter-spacing:1px">${r.refCode}</span>`, true)}
     </table>
   </td></tr></table>
 </td></tr>
 
 ${r.checkinCode ? `<tr><td class="px" style="padding:22px 44px 4px">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px dashed #f0a24a;border-radius:16px"><tr><td align="center" class="pass" style="padding:24px 18px">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px dashed #f0a24a;border-radius:16px;background:#ffffff;background-image:linear-gradient(#ffffff,#ffffff)"><tr><td align="center" class="pass" style="padding:24px 18px;background:#ffffff;background-image:linear-gradient(#ffffff,#ffffff);border-radius:14px">
     <p style="margin:0;font-family:${FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${RED};font-weight:700">Your check-in pass</p>
     <p style="margin:8px 0 0;font-family:${FONT};font-size:14px;line-height:1.5;color:${MUTED}">Save it to your phone and show the QR code at the registration stand.</p>
     <img src="${SITE_URL}/api/pass/${r.checkinCode}" width="220" height="220" class="qr" alt="Your Oratorio 2026 check-in QR code" style="display:block;width:220px;height:220px;margin:18px auto 16px;border:0">
@@ -114,32 +138,32 @@ ${r.checkinCode ? `<tr><td class="px" style="padding:22px 44px 4px">
 
 <tr><td align="center" class="px" style="padding:20px 44px 4px">
   ${button(googleCalendarUrl(), 'Add to Google Calendar', RED)}
-  <p style="margin:6px 0 0;font-family:${FONT};font-size:12px;color:${MUTED}">Apple Calendar or Outlook: open the attached calendar file.</p>
+  <p class="dm-mu" style="margin:6px 0 0;font-family:${FONT};font-size:12px;color:${MUTED}">Apple Calendar or Outlook: open the attached calendar file.</p>
 </td></tr>
 
 ${inPerson ? `<tr><td class="px" style="padding:24px 44px 4px">
   <a href="${DIRECTIONS_URL}" target="_blank"><img src="${img('email-map.jpg')}" width="552" alt="Map: ${esc(EVENT.venueName)}, ${esc(EVENT.venueAddress)}. Tap for directions." style="display:block;width:100%;max-width:552px;height:auto;border:0;border-radius:14px"></a>
-  <p style="margin:10px 0 0;font-family:${FONT};font-size:13px;color:${MUTED};text-align:center">Tap the map for directions in Google Maps.</p>
+  <p class="dm-mu" style="margin:10px 0 0;font-family:${FONT};font-size:13px;color:${MUTED};text-align:center">Tap the map for directions in Google Maps.</p>
 </td></tr>` : `<tr><td align="center" class="px" style="padding:16px 44px 4px">
-  ${button(live, 'Open the livestream page', INK)}
+  ${button(live, 'Open the livestream page', INK).replace('class="btn"', 'class="btn dm-dkbtn"')}
 </td></tr>`}
 
 <tr><td class="px" style="padding:24px 44px 4px">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${LINE};border-radius:14px"><tr><td class="box" style="padding:16px 20px 12px">
-    <p style="margin:0 0 4px;font-family:${FONT};font-size:15px;font-weight:700;color:${INK}">Questions? Talk to us</p>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="dm-line" style="border:1px solid ${LINE};border-radius:14px"><tr><td class="box" style="padding:16px 20px 12px">
+    <p class="dm-ink" style="margin:0 0 4px;font-family:${FONT};font-size:15px;font-weight:700;color:${INK}">Questions? Talk to us</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${contacts}</table>
-    <p style="margin:6px 0 4px;text-align:center"><a href="${WHATSAPP_GROUP_URL}" target="_blank" style="display:block;padding:10px 14px;border-radius:12px;background:#e9fbef;color:#128c4a;font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none"><img src="${img('social/whatsapp.png')}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;border:0;vertical-align:middle;margin-right:8px">Join the Oratorio WhatsApp group</a></p>
+    <p style="margin:6px 0 4px;text-align:center"><a href="${WHATSAPP_GROUP_URL}" target="_blank" class="dm-wa" style="display:block;padding:10px 14px;border-radius:12px;background:#e9fbef;color:#128c4a;font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none"><img src="${img('social/whatsapp.png')}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;border:0;vertical-align:middle;margin-right:8px">Join the Oratorio WhatsApp group</a></p>
   </td></tr></table>
 </td></tr>
 
 <tr><td align="center" class="px" style="padding:26px 44px 4px">
   <a href="${SITE_URL}" target="_blank"><img src="${img('email-flyer.jpg')}" width="460" alt="${EVENT.name} lineup" style="display:block;width:100%;max-width:460px;height:auto;border:0;border-radius:14px"></a>
-  ${inPerson ? `<p style="margin:14px 0 0;font-family:${FONT};font-size:14px;line-height:1.6;color:#3d3240">Cannot make it to Lagos? Watch live on <a href="${live}" target="_blank" style="color:${RED};font-weight:700">our website</a> or <a href="${YOUTUBE_CHANNEL_URL}" target="_blank" style="color:${RED};font-weight:700">YouTube</a>.</p>` : ''}
+  ${inPerson ? `<p class="dm-body" style="margin:14px 0 0;font-family:${FONT};font-size:14px;line-height:1.6;color:#3d3240">Cannot make it to Lagos? Watch live on <a href="${live}" target="_blank" class="dm-red" style="color:${RED};font-weight:700">our website</a> or <a href="${YOUTUBE_CHANNEL_URL}" target="_blank" class="dm-red" style="color:${RED};font-weight:700">YouTube</a>.</p>` : ''}
 </td></tr>
 
 <tr><td class="px" style="padding:26px 44px 32px">
-  <p style="margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-size:17px;font-style:italic;color:${INK};text-align:center">&ldquo;Enter into His gates with thanksgiving.&rdquo; Psalm 100:4</p>
-  <p style="margin:0;font-family:${FONT};font-size:14px;line-height:1.6;color:${INK}">With gratitude,<br><strong>Dr. Oyindamola Adejumo-Ayibiowu</strong><br><span style="color:${MUTED}">Convener &amp; Founder, ${EVENT.organiser}</span></p>
+  <p class="dm-ink" style="margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-size:17px;font-style:italic;color:${INK};text-align:center">&ldquo;Enter into His gates with thanksgiving.&rdquo; Psalm 100:4</p>
+  <p class="dm-ink" style="margin:0;font-family:${FONT};font-size:14px;line-height:1.6;color:${INK}">With gratitude,<br><strong>Dr. Oyindamola Adejumo-Ayibiowu</strong><br><span class="dm-mu" style="color:${MUTED}">Convener &amp; Founder, ${EVENT.organiser}</span></p>
 </td></tr>
 
 <tr><td align="center" class="px" style="background:#2b0a1f;padding:28px 44px 26px">
