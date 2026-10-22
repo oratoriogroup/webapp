@@ -5,7 +5,8 @@ import { Check, EyeOff, Trash2, Loader2, X, RotateCcw } from 'lucide-react';
 import { moderateTestimony } from '../../actions';
 
 type Act = 'approve' | 'hide' | 'reject' | 'restore' | 'delete';
-const btn = 'inline-flex h-11 items-center justify-center gap-1.5 rounded-xl px-3.5 text-sm font-semibold transition disabled:opacity-60 sm:h-10';
+// Under 360px the buttons tighten so "Approve" / "Reject" stay on one line.
+const btn = 'inline-flex h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 text-sm font-semibold transition disabled:opacity-60 max-[359px]:gap-1 max-[359px]:px-2 max-[359px]:text-[13px] sm:h-10';
 
 export default function TestimonyActions({ id, state }: { id: string; state: 'pending' | 'approved' | 'archived' }) {
   const [pending, start] = useTransition();
