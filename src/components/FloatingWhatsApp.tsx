@@ -40,8 +40,9 @@ export default function FloatingWhatsApp() {
     };
   }, []);
 
-  // Never cover the QR code on an attendee's pass.
-  if (pathname?.startsWith('/pass/')) return null;
+  // Never cover the QR code on an attendee's pass (the pass page, and the
+  // registration success page, which shows the pass and has its own group link).
+  if (pathname?.startsWith('/pass/') || pathname === '/register/success') return null;
 
   return (
     <a
