@@ -32,10 +32,10 @@ export default async function SettingsPage() {
   return (
     <div>
       <AdminHeader title="Livestream & settings" subtitle="Changes show on the website within a few seconds." />
-      <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_380px]">
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:gap-6 xl:grid-cols-[1fr_380px]">
         <SettingsForm initial={s} />
-        <aside className="space-y-4 xl:sticky xl:top-6 xl:self-start">
-          <section className={`${cardCls} p-5`}>
+        <aside className="min-w-0 space-y-4 xl:sticky xl:top-6 xl:self-start">
+          <section className={`${cardCls} p-4 sm:p-5`}>
             <div className="flex items-center gap-3">
               <span className="flex size-10 items-center justify-center rounded-xl bg-brand-soft text-brand"><Mail className="size-5" /></span>
               <div>
@@ -50,7 +50,7 @@ export default async function SettingsPage() {
               {checks.map((c) => (
                 <li key={c.label} className="flex items-start gap-2.5">
                   {c.ok ? <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-brand-green" /> : <CircleAlert className="mt-0.5 size-4 shrink-0 text-amber-600" />}
-                  <span className={c.ok ? '' : 'font-semibold'}>{c.label}</span>
+                  <span className={`min-w-0 break-words ${c.ok ? '' : 'font-semibold'}`}>{c.label}</span>
                 </li>
               ))}
             </ul>

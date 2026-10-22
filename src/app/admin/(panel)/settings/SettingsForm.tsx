@@ -8,17 +8,20 @@ import { youtubeId, thumbUrl, isChannelUrl } from '@/lib/youtube';
 import { cardCls } from '../AdminHeader';
 
 const field =
-  'h-11 w-full rounded-xl border border-line bg-surface-2 px-4 font-mono text-xs text-text transition placeholder:text-muted/70 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
+  'h-12 w-full min-w-0 rounded-xl border border-line bg-surface-2 px-3.5 font-mono text-base text-text sm:h-11 sm:px-4 sm:text-xs transition placeholder:text-muted/70 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
 
 function Section({ icon: Icon, title, desc, children }: { icon: typeof Radio; title: string; desc: string; children: React.ReactNode }) {
   return (
-    <section className={`${cardCls} p-5 sm:p-6`}>
+    <section className={`${cardCls} min-w-0 p-4 sm:p-6`}>
       <div className="flex items-start gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand"><Icon className="size-5" /></span>
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand sm:size-10"><Icon className="size-[18px] sm:size-5" /></span>
         <div className="min-w-0 flex-1">
-          <h2 className="font-semibold">{title}</h2>
-          <p className="mt-0.5 text-xs text-muted">{desc}</p>
-          <div className="mt-4">{children}</div>
+          <h2 className="font-semibold leading-tight sm:leading-normal">{title}</h2>
+          <p className="mt-1 text-xs leading-relaxed text-muted sm:mt-0.5">{desc}</p>
+          {/* Phones: pull the field back under the icon (size-9 + gap-3 = 3rem)
+              so it uses the full card width. Rendered once, so form values
+              and ids stay unique. */}
+          <div className="mt-3 -ml-12 sm:mt-4 sm:ml-0">{children}</div>
         </div>
       </div>
     </section>
@@ -40,9 +43,9 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
         {live && !id && !channel && <p className="mt-2 text-xs font-semibold text-brand-red">This does not look like a YouTube channel or video link.</p>}
         {channel && <p className="mt-2 text-xs font-semibold text-brand-green">Channel mode: the live page plays the channel&apos;s current live stream during the event.</p>}
         {id && (
-          <div className="mt-3 flex items-center gap-3 rounded-xl bg-surface-2 p-3">
-            <img src={thumbUrl(id)} alt="" className="h-14 w-24 rounded-md object-cover" />
-            <p className="text-xs">Video <span className="font-mono font-semibold">{id}</span> will play on <a href="/livestream" target="_blank" className="font-semibold text-brand hover:underline">/livestream</a>.</p>
+          <div className="mt-3 flex min-w-0 items-center gap-3 rounded-xl bg-surface-2 p-3">
+            <img src={thumbUrl(id)} alt="" className="h-12 w-20 shrink-0 rounded-md object-cover sm:h-14 sm:w-24" />
+            <p className="min-w-0 text-xs break-words">Video <span className="font-mono font-semibold">{id}</span> will play on <a href="/livestream" target="_blank" className="font-semibold text-brand hover:underline">/livestream</a>.</p>
           </div>
         )}
       </Section>
@@ -68,12 +71,12 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
 
       {/* Sticky save bar */}
       <div className="sticky bottom-24 z-20 lg:bottom-4">
-        <div className={`${cardCls} flex flex-wrap items-center justify-between gap-3 p-3 shadow-lg`}>
-          <p role="status" className={`text-sm ${state.error ? 'font-semibold text-brand-red' : state.ok ? 'font-semibold text-brand-green' : 'text-muted'}`}>
-            {state.error || state.ok || 'Review your changes, then save.'}
+        <div className={`${cardCls} flex items-center justify-between gap-3 p-2.5 pl-4 shadow-lg sm:flex-wrap sm:p-3`}>
+          <p role="status" className={`min-w-0 text-xs leading-snug sm:text-sm ${state.error ? 'font-semibold text-brand-red' : state.ok ? 'font-semibold text-brand-green' : 'text-muted'}`}>
+            {state.error || state.ok || <><span className="sm:hidden">Tap Save to apply your changes.</span><span className="hidden sm:inline">Review your changes, then save.</span></>}
           </p>
-          <button type="submit" disabled={pending} className="inline-flex h-11 items-center gap-2 rounded-xl bg-brand px-6 text-sm font-semibold text-white shadow-lg shadow-brand/25 hover:bg-brand-deep disabled:opacity-60">
-            {pending ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />} Save changes
+          <button type="submit" disabled={pending} className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-brand px-4 text-sm font-semibold sm:px-6 text-white shadow-lg shadow-brand/25 hover:bg-brand-deep disabled:opacity-60">
+            {pending ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />} Save<span className="hidden sm:inline"> changes</span>
           </button>
         </div>
       </div>
