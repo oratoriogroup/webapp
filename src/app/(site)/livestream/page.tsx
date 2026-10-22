@@ -50,19 +50,20 @@ export default async function LivePage() {
           <div data-reveal className="card p-5">
             <p className="font-semibold">Save the date</p>
             <p className="mt-1 text-sm text-muted">Get a reminder before we start.</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <a href={googleCalendarUrl()} target="_blank" rel="noopener noreferrer" className="btn-brand !py-2.5"><CalendarPlus className="size-4" /> Google Calendar</a>
-              <a href="/oratorio-2026.ics" className="btn-outline !py-2.5"><Download className="size-4" /> .ics</a>
+            {/* One row on every phone: the calendar button takes the space, .ics stays compact. */}
+            <div className="mt-4 grid grid-cols-[1fr_auto] gap-2 sm:flex sm:flex-wrap">
+              <a href={googleCalendarUrl()} target="_blank" rel="noopener noreferrer" className="btn-brand min-w-0 !px-3 !py-2.5 whitespace-nowrap sm:!px-5"><CalendarPlus className="size-4 shrink-0" /> Google Calendar</a>
+              <a href="/oratorio-2026.ics" className="btn-outline !px-3.5 !py-2.5 sm:!px-5"><Download className="size-4" /> .ics</a>
             </div>
           </div>
           <div data-reveal style={{ ['--reveal-delay' as string]: '90ms' }} className="card p-5">
             <p className="font-semibold">Enquiries and directions</p>
             <ul className="mt-3 space-y-2 text-sm">
               {CONTACTS.map((c) => (
-                <li key={c.intl} className="flex flex-wrap items-center gap-2">
-                  <span className="min-w-28 font-semibold">{c.label}</span>
-                  <a href={whatsappLink(c.intl)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-1.5 rounded-full bg-[#25D366]/15 px-4 font-semibold text-[#128C4B] dark:text-[#4ade80]"><MessageCircle className="size-3.5" /> Chat</a>
-                  <a href={`tel:+${c.intl}`} className="inline-flex min-h-12 items-center gap-1.5 rounded-full bg-brand-soft px-4 font-semibold text-brand"><Phone className="size-3.5" /> Call</a>
+                <li key={c.intl} className="flex items-center gap-2">
+                  <span className="min-w-0 flex-1 font-semibold whitespace-nowrap">{c.label}</span>
+                  <a href={whatsappLink(c.intl)} target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#25D366]/15 px-4 font-semibold text-[#128C4B] max-[359px]:w-12 max-[359px]:px-0 dark:text-[#4ade80]"><MessageCircle className="size-3.5 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Chat</span></a>
+                  <a href={`tel:+${c.intl}`} aria-label={`Call ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-brand-soft px-4 font-semibold text-brand max-[359px]:w-12 max-[359px]:px-0"><Phone className="size-3.5 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Call</span></a>
                 </li>
               ))}
             </ul>
