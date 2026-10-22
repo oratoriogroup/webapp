@@ -23,6 +23,28 @@ const loadImage = (src: string) =>
     img.src = src;
   });
 
+// HD_DP_22OCT2026: shrink a large photo in halving steps before the final
+// draw. Safari ignores imageSmoothingQuality, so one big jump (e.g. a 4000px
+// phone photo into a ~1400px circle) would alias; halving keeps it smooth.
+const stepDown = (img: CanvasImageSource & { width: number; height: number }, targetW: number, targetH: number) => {
+  let src: CanvasImageSource = img;
+  let w = img.width;
+  let h = img.height;
+  while (w / 2 >= targetW && h / 2 >= targetH) {
+    w = Math.round(w / 2);
+    h = Math.round(h / 2);
+    const c = document.createElement('canvas');
+    c.width = w;
+    c.height = h;
+    const x = c.getContext('2d')!;
+    x.imageSmoothingEnabled = true;
+    x.imageSmoothingQuality = 'high';
+    x.drawImage(src, 0, 0, w, h);
+    src = c;
+  }
+  return src;
+};
+
 const roundRect = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) => {
   ctx.beginPath();
   ctx.roundRect(x, y, w, h, r);
@@ -144,7 +166,8 @@ export default function DpMaker({ name }: { name: string }) {
     if (photo) {
       const s = Math.max((r * 2) / photo.width, (r * 2) / photo.height);
       const w = photo.width * s, h = photo.height * s;
-      ctx.drawImage(photo, cx - w / 2, cy - h / 2, w, h);
+      // Target size in real canvas pixels (the canvas is drawn at S x).
+      ctx.drawImage(stepDown(photo, Math.ceil(w * S), Math.ceil(h * S)), cx - w / 2, cy - h / 2, w, h);
     } else {
       ctx.fillStyle = '#f6e9ee';
       ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
@@ -252,14 +275,24 @@ export default function DpMaker({ name }: { name: string }) {
     }
   };
 
-  const blob = () => new Promise<Blob | null>((res) => canvasRef.current?.toBlob(res, 'image/jpeg', 0.95));
+  // Lossless PNG at the full 2160 x 2700, so WhatsApp / Instagram recompress
+  // from a perfect original (no JPEG blur on the red text and edges). Falls
+  // back to maximum-quality JPEG if the PNG is unusually large.
+  const blob = async (): Promise<Blob | null> => {
+    const c = canvasRef.current;
+    if (!c) return null;
+    const png = await new Promise<Blob | null>((res) => c.toBlob(res, 'image/png'));
+    if (png && png.size <= 15 * 1024 * 1024) return png;
+    return new Promise<Blob | null>((res) => c.toBlob(res, 'image/jpeg', 1));
+  };
+  const fileName = (b: Blob) => (b.type === 'image/png' ? 'oratorio-2026-dp-hd.png' : 'oratorio-2026-dp-hd.jpg');
 
   const download = async () => {
     const b = await blob();
     if (!b) return;
     const a = document.createElement('a');
     a.href = URL.createObjectURL(b);
-    a.download = 'oratorio-2026-dp.jpg';
+    a.download = fileName(b);
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   };
@@ -267,7 +300,7 @@ export default function DpMaker({ name }: { name: string }) {
   const share = async () => {
     const b = await blob();
     if (!b) return;
-    const file = new File([b], 'oratorio-2026-dp.jpg', { type: 'image/jpeg' });
+    const file = new File([b], fileName(b), { type: b.type });
     if (navigator.canShare?.({ files: [file] })) {
       try {
         await navigator.share({ files: [file], title: EVENT.name, text: `I will be attending ${EVENT.name}: ${EVENT.theme}. Register at oratoriogroup.org` });

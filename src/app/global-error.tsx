@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CONTACTS, whatsappLink } from '@/lib/event';
 
 // Last-resort boundary (errors in the root layout). Same one-time reload for
@@ -10,7 +10,11 @@ import { CONTACTS, whatsappLink } from '@/lib/event';
 // phone first), and it uses only plain HTML.
 const CSS = `
 :root{--bg:#fffbf7;--card:#fff;--text:#1a1114;--muted:#64585c;--line:#eee3d8;--brand:#dc2626;--brand-deep:#b91c1c;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#0e080d;--card:#181016;--text:#f6eff4;--muted:#b3a3b0;--line:#33242f;--brand:#f05252;color-scheme:dark}.logo-light{display:none!important}.logo-dark{display:block!important}}
+html[data-theme=dark]{--bg:#0e080d;--card:#181016;--text:#f6eff4;--muted:#b3a3b0;--line:#33242f;--brand:#f05252;color-scheme:dark}
+html[data-theme=dark] .logo-light{display:none!important}html[data-theme=dark] .logo-dark{display:block!important}
+html[data-theme=dark] .btn-primary{background:#dc2626;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+html[data-theme=dark] .card{box-shadow:0 12px 40px rgba(0,0,0,.45)}
+html[data-theme=dark] body{background-image:radial-gradient(60% 40% at 50% 0%,rgba(240,82,82,.14),transparent 70%),radial-gradient(50% 35% at 100% 100%,rgba(240,189,79,.10),transparent 70%)}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-text-size-adjust:100%}
 body{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px max(24px,env(safe-area-inset-bottom));
@@ -29,7 +33,7 @@ p.lead{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--muted);text-w
 .btn-outline{border:1px solid var(--line);background:transparent;color:var(--text)}
 .help{margin:18px 0 0;font-size:14px;color:var(--muted)}
 .help a{color:#128c4b;font-weight:600;text-decoration:none}
-@media (prefers-color-scheme:dark){.help a{color:#4ade80}}
+html[data-theme=dark] .help a{color:#4ade80}
 .foot{margin-top:22px;font-size:12px;color:var(--muted)}
 @media (min-width:640px){.card{padding:36px 32px 28px}h1{font-size:30px}.btns{grid-template-columns:1fr 1fr}}
 `;
@@ -45,9 +49,18 @@ export default function GlobalError({ error }: { error: Error & { digest?: strin
       }
     } catch {}
   }, [error]);
+  // Match the theme the visitor chose on the site (the admin keeps its own
+  // setting); with no choice saved the site is light, so this page is too.
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  useEffect(() => {
+    try {
+      const key = window.location.pathname.startsWith('/admin') ? 'admin-theme' : 'theme';
+      if (localStorage.getItem(key) === 'dark') setTheme('dark');
+    } catch {}
+  }, []);
   const help = CONTACTS[0];
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme}>
       <head>
         <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
         <title>Please refresh | Oratorio 2026</title>
