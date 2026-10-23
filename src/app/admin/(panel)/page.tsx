@@ -66,7 +66,7 @@ export default async function Overview() {
     const body = (
       <>
         <div className="flex items-start justify-between gap-2 sm:gap-3">
-          <p className="min-w-0 truncate text-xs font-medium text-muted sm:text-sm"><span className="sm:hidden">{t.short}</span><span className="hidden sm:inline">{t.label}</span></p>
+          <p className="min-w-0 truncate text-xs font-medium text-muted max-[359px]:whitespace-normal max-[359px]:leading-tight sm:text-sm"><span className="sm:hidden">{t.short}</span><span className="hidden sm:inline">{t.label}</span></p>
           <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-brand-soft text-brand sm:size-9 sm:rounded-xl"><t.icon className="size-3.5 sm:size-[18px]" /></span>
         </div>
         <p className="mt-1.5 text-2xl font-bold tabular-nums sm:mt-3 sm:text-3xl">{t.value.toLocaleString()}</p>
@@ -122,11 +122,16 @@ export default async function Overview() {
                 <li key={r.id}>
                   <Link href={`/admin/registrations/${r.id}`} className="group flex items-center gap-3 py-2.5 sm:py-3">
                     <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-xs font-bold text-brand">{initials(r.full_name)}</span>
+                    {/* Phones: the date moves under the name so long names get the full
+                        width (up to two lines); larger screens keep the date chip on the right. */}
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-semibold group-hover:text-brand">{r.full_name}</span>
-                      <span className={`mt-0.5 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span>
+                      <span className="line-clamp-2 block text-sm leading-snug font-semibold break-words group-hover:text-brand sm:line-clamp-1 sm:truncate">{r.full_name}</span>
+                      <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span>
+                        <span className="text-[10px] text-muted sm:hidden">{fmtWAT(r.created_at)}</span>
+                      </span>
                     </span>
-                    <span className="shrink-0 rounded-lg bg-surface-2 px-2 py-1 text-[10px] text-muted sm:text-[11px]">{fmtWAT(r.created_at)}</span>
+                    <span className="hidden shrink-0 rounded-lg bg-surface-2 px-2 py-1 text-[11px] text-muted sm:inline-block">{fmtWAT(r.created_at)}</span>
                   </Link>
                 </li>
               ))}
