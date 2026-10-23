@@ -219,7 +219,7 @@ export default function RegisterForm() {
             <button type="button" onClick={() => setSavedOpen(false)} aria-label="Close" className="text-muted"><X className="size-5" /></button>
           </div>
           <div className="mt-3 flex gap-2 rounded-xl border border-line bg-surface p-1.5">
-            <input readOnly value={resumeUrl(token)} aria-label="Your resume link" onFocus={(e) => e.currentTarget.select()} className="min-w-0 flex-1 bg-transparent px-2 text-sm outline-none" />
+            <input readOnly value={resumeUrl(token)} aria-label="Your resume link" onFocus={(e) => e.currentTarget.select()} className="min-w-0 flex-1 bg-transparent px-2 text-base outline-none" />
             <button type="button" onClick={copyLink} className="btn-primary min-h-10 !py-2">{copied ? <Check className="size-4" /> : <Copy className="size-4" />} {copied ? 'Copied' : 'Copy'}</button>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">

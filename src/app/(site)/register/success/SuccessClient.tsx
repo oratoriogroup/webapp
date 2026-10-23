@@ -122,7 +122,7 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
           <h2 className="h-display text-center text-2xl sm:text-3xl">Spread the word</h2>
           <p className="mx-auto mt-2 max-w-md text-center text-sm text-balance text-muted sm:text-base">Invite friends, family and your church to register.</p>
           <div className="mt-4 flex gap-2 rounded-2xl border border-line bg-surface p-1.5 sm:mt-6 sm:p-2">
-            <input readOnly value={url} aria-label="Website link" className="min-w-0 flex-1 bg-transparent px-3 text-sm outline-none" />
+            <input readOnly value={url} aria-label="Website link" className="min-w-0 flex-1 bg-transparent px-3 text-base outline-none" />
             <button type="button" onClick={copy} className="btn-primary shrink-0 !px-4 !py-2.5">
               {copied ? <Check className="size-4" /> : <Copy className="size-4" />} {copied ? 'Copied' : 'Copy link'}
             </button>
