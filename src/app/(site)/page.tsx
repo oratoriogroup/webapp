@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { ArrowRight, CalendarDays, Clock, MapPin, Radio, Navigation, Music, Mic2, Drama, Laugh, Footprints, Drum, Flame, PlayCircle, MessageCircle, Phone } from 'lucide-react';
+import { ArrowRight, CalendarDays, Clock, MapPin, Radio, Navigation, Music, Mic2, Drama, Laugh, Footprints, Drum, Flame, PlayCircle, Phone } from 'lucide-react';
 import Countdown from '@/components/Countdown';
 import VideoShowcase from '@/components/VideoShowcase';
 import MinisterCard from '@/components/MinisterCard';
@@ -10,7 +10,7 @@ import StageLights from '@/components/StageLights';
 import Marquee from '@/components/Marquee';
 import HeroShowcase from '@/components/HeroShowcase';
 import { Reveal, Stagger, StaggerItem } from '@/components/anim';
-import { SOCIAL_ICON } from '@/components/icons';
+import { SOCIAL_ICON, WhatsAppIcon } from '@/components/icons';
 import { EVENT, CONVENER, MINISTERS, SOCIALS, CONTACTS, MAP_EMBED_URL, DIRECTIONS_URL, whatsappLink } from '@/lib/event';
 import { getSettings } from '@/lib/settings';
 import { youtubeId } from '@/lib/youtube';
@@ -229,7 +229,7 @@ export default async function HomePage() {
                 {CONTACTS.map((c) => (
                   <li key={c.intl} className="flex items-center gap-2">
                     <span className="min-w-0 flex-1 font-semibold whitespace-nowrap">{c.label}</span>
-                    <a href={whatsappLink(c.intl)} target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#25D366]/15 px-4 font-semibold text-[#128C4B] max-[359px]:w-12 max-[359px]:px-0 dark:text-[#4ade80]"><MessageCircle className="size-4 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Chat</span></a>
+                    <a href={whatsappLink(c.intl)} target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#25D366]/15 px-4 font-semibold text-[#128C4B] max-[359px]:w-12 max-[359px]:px-0 dark:text-[#4ade80]"><WhatsAppIcon className="size-4 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Chat</span></a>
                     <a href={`tel:+${c.intl}`} aria-label={`Call ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-brand-soft px-4 font-semibold text-brand max-[359px]:w-12 max-[359px]:px-0"><Phone className="size-4 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Call</span></a>
                   </li>
                 ))}

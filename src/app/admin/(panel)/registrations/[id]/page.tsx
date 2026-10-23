@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Mail, Phone, MessageCircle, MailCheck, MailX, UserCheck, Clock3 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MailCheck, MailX, UserCheck, Clock3 } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/icons';
 import { checkinOpen } from '@/lib/checkin';
 import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
@@ -74,7 +75,7 @@ export default async function RegistrationDetail({ params }: { params: Promise<{
           <span className="sm:hidden">Call</span><span className="hidden truncate sm:inline">{r.whatsapp}</span>
         </a>
         <a href={`https://wa.me/${wa}?text=${waText}`} target="_blank" rel="noopener noreferrer" className={contactCard}>
-          <span className={`${iconWrap} bg-emerald-50 text-emerald-600`}><MessageCircle className="size-4" /></span>
+          <span className={`${iconWrap} bg-emerald-50 text-emerald-600`}><WhatsAppIcon className="size-4" /></span>
           <span className="sm:hidden">WhatsApp</span><span className="hidden truncate sm:inline">Message on WhatsApp</span>
         </a>
       </div>

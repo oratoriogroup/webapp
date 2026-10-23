@@ -1,7 +1,8 @@
 import { checkinOpen } from '@/lib/checkin';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, UserCheck, AlertTriangle, Phone, MessageCircle } from 'lucide-react';
+import { ArrowLeft, UserCheck, AlertTriangle, Phone } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/icons';
 import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
 import { describe, type Answers } from '@/lib/form';
@@ -61,7 +62,7 @@ export default async function CheckinDetail({ params }: { params: Promise<{ code
         </dl>
         <div className="mt-4 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
           <a href={`tel:${r.whatsapp.replace(/\s/g, '')}`} className="btn-outline min-h-11 !px-2 !py-2 text-xs sm:!px-5 sm:text-sm"><Phone className="size-4" /> Call</a>
-          <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="btn-outline min-h-11 !px-2 !py-2 text-xs sm:!px-5 sm:text-sm"><MessageCircle className="size-4" /> WhatsApp</a>
+          <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="btn-outline min-h-11 !px-2 !py-2 text-xs sm:!px-5 sm:text-sm"><WhatsAppIcon className="size-4" /> WhatsApp</a>
           <Link href={`/admin/registrations/${r.id}`} className="btn-outline min-h-11 !px-2 !py-2 text-xs sm:!px-5 sm:text-sm"><span className="sm:hidden">Full record</span><span className="hidden sm:inline">Full registration</span></Link>
         </div>
       </section>

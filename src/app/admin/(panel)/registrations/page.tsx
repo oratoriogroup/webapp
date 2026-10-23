@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { FileText, FileSpreadsheet, ChevronLeft, ChevronRight, MailCheck, Clock3, CheckCircle2, Phone, MessageCircle, Mail, MapPin } from 'lucide-react';
+import { FileText, FileSpreadsheet, ChevronLeft, ChevronRight, MailCheck, Clock3, CheckCircle2, Phone, Mail, MapPin } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/icons';
 import { requireAdmin } from '@/lib/admin';
 import { sql } from '@/lib/db';
 import type { Answers } from '@/lib/form';
@@ -99,7 +100,7 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
                   </Link>
                   <div className="grid grid-cols-3 border-t border-slate-100 text-xs font-semibold text-slate-700">
                     <a href={`tel:+${wa}`} className="flex min-h-11 items-center justify-center gap-1.5 active:bg-slate-50"><Phone className="size-3.5" /> Call</a>
-                    <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-1.5 border-x border-slate-100 text-emerald-700 active:bg-slate-50"><MessageCircle className="size-3.5" /> WhatsApp</a>
+                    <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center gap-1.5 border-x border-slate-100 text-emerald-700 active:bg-slate-50"><WhatsAppIcon className="size-3.5" /> WhatsApp</a>
                     <a href={`mailto:${r.email}`} className="flex min-h-11 items-center justify-center gap-1.5 active:bg-slate-50"><Mail className="size-3.5" /> Email</a>
                   </div>
                 </li>
