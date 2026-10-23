@@ -52,7 +52,7 @@ export default async function TestimoniesPage({ searchParams }: { searchParams: 
           </p>
         </div>
       ) : (
-        <ul className="mt-4 grid grid-cols-1 gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <ul className="mt-4 grid grid-cols-1 gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2 2xl:grid-cols-3">
           {rows.map((t) => (
             <li key={t.id} className={`${cardCls} flex min-w-0 flex-col p-4 sm:p-5`}>
               <div className="flex items-start gap-3">

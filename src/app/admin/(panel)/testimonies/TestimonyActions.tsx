@@ -17,17 +17,17 @@ export default function TestimonyActions({ id, state }: { id: string; state: 'pe
     });
   };
   return (
-    <div className="flex items-center gap-2 sm:flex-wrap">
+    <div className="flex items-center gap-2 2xl:flex-wrap">
       {pending && <Loader2 className="size-5 animate-spin text-muted" />}
       {state === 'pending' && (
         <>
-          <button type="button" disabled={pending} onClick={() => run('approve')} className={`${btn} flex-1 bg-brand text-white shadow-md shadow-brand/25 hover:bg-brand-deep sm:flex-none`}><Check className="size-4" /> <span className="sm:hidden">Approve</span><span className="hidden sm:inline">Approve & publish</span></button>
-          <button type="button" disabled={pending} onClick={() => run('reject')} className={`${btn} flex-1 border border-line bg-surface hover:text-brand-red sm:flex-none`}><X className="size-4" /> Reject</button>
+          <button type="button" disabled={pending} onClick={() => run('approve')} className={`${btn} flex-1 bg-brand text-white shadow-md shadow-brand/25 hover:bg-brand-deep 2xl:flex-none`}><Check className="size-4" /> <span className="2xl:hidden">Approve</span><span className="hidden 2xl:inline">Approve & publish</span></button>
+          <button type="button" disabled={pending} onClick={() => run('reject')} className={`${btn} flex-1 border border-line bg-surface hover:text-brand-red 2xl:flex-none`}><X className="size-4" /> Reject</button>
         </>
       )}
-      {state === 'approved' && <button type="button" disabled={pending} onClick={() => run('hide')} className={`${btn} flex-1 border border-line bg-surface sm:flex-none`}><EyeOff className="size-4" /> Unpublish</button>}
-      {state === 'archived' && <button type="button" disabled={pending} onClick={() => run('restore')} className={`${btn} flex-1 border border-line bg-surface sm:flex-none`}><RotateCcw className="size-4" /> Back to review</button>}
-      <button type="button" disabled={pending} onClick={() => run('delete')} aria-label="Delete permanently" className={`${btn} w-11 shrink-0 border border-line px-0 text-muted hover:text-brand-red sm:ml-auto sm:w-auto sm:border-0 sm:px-3.5`}><Trash2 className="size-4" /></button>
+      {state === 'approved' && <button type="button" disabled={pending} onClick={() => run('hide')} className={`${btn} flex-1 border border-line bg-surface 2xl:flex-none`}><EyeOff className="size-4" /> Unpublish</button>}
+      {state === 'archived' && <button type="button" disabled={pending} onClick={() => run('restore')} className={`${btn} flex-1 border border-line bg-surface 2xl:flex-none`}><RotateCcw className="size-4" /> Back to review</button>}
+      <button type="button" disabled={pending} onClick={() => run('delete')} aria-label="Delete permanently" className={`${btn} w-11 shrink-0 border border-line px-0 text-muted hover:text-brand-red 2xl:ml-auto 2xl:w-auto 2xl:border-0 2xl:px-3.5`}><Trash2 className="size-4" /></button>
     </div>
   );
 }
