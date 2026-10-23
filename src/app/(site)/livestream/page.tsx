@@ -46,17 +46,17 @@ export default async function LivePage() {
           <PlayerLoader pinnedVideoId={id} />
         </div>
 
-        <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4 lg:grid-cols-3">
+        <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
           <div data-reveal className="card p-5">
             <p className="font-semibold">Save the date</p>
             <p className="mt-1 text-sm text-muted">Get a reminder before we start.</p>
-            {/* One row on every phone: the calendar button takes the space, .ics stays compact. */}
-            <div className="mt-4 grid grid-cols-[1fr_auto] gap-2 sm:flex sm:flex-wrap">
+            {/* One row at every width: the calendar button takes the space, .ics stays compact. */}
+            <div className="mt-4 grid grid-cols-[1fr_auto] gap-2">
               <a href={googleCalendarUrl()} target="_blank" rel="noopener noreferrer" className="btn-brand min-w-0 !px-3 !py-2.5 whitespace-nowrap sm:!px-5"><CalendarPlus className="size-4 shrink-0" /> Google Calendar</a>
               <a href="/oratorio-2026.ics" className="btn-outline !px-3.5 !py-2.5 sm:!px-5"><Download className="size-4" /> .ics</a>
             </div>
           </div>
-          <div data-reveal style={{ ['--reveal-delay' as string]: '90ms' }} className="card p-5">
+          <div data-reveal style={{ ['--reveal-delay' as string]: '90ms' }} className="card p-5 md:order-last md:col-span-2 lg:order-none lg:col-span-1">
             <p className="font-semibold">Enquiries and directions</p>
             <ul className="mt-3 space-y-2 text-sm">
               {CONTACTS.map((c) => (
