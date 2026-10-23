@@ -22,7 +22,7 @@ function Section({ icon: Icon, title, desc, children, className = '' }: { icon: 
               so it uses the full card width; tablets (two-column cards) do the
               same with the larger icon (size-10 + gap-3 = 3.25rem). Rendered
               once, so form values and ids stay unique. */}
-          <div className="mt-3 -ml-12 sm:mt-4 sm:ml-0 md:-ml-[3.25rem] xl:ml-0">{children}</div>
+          <div className="mt-3 -ml-12 sm:mt-4 sm:ml-0 md:-ml-[3.25rem] xl:ml-0 2xl:-ml-[3.25rem]">{children}</div>
         </div>
       </div>
     </section>
@@ -37,7 +37,7 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
   const channel = !id && isChannelUrl(live);
 
   return (
-    <form action={action} className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 xl:block xl:space-y-4">
+    <form action={action} className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 xl:block xl:space-y-4 2xl:grid 2xl:space-y-0">
       <Section className="md:col-span-2" icon={Radio} title="YouTube stream configuration" desc="The channel link plays whatever the channel is streaming, from an hour before the start. For one specific stream, paste its video link instead.">
         <label htmlFor="livestream_url" className="sr-only">Livestream link</label>
         <input id="livestream_url" name="livestream_url" value={live} onChange={(e) => setLive(e.target.value)} placeholder="https://www.youtube.com/@channel or /live/..." className={field} inputMode="url" />
