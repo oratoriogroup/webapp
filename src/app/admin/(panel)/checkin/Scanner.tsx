@@ -69,12 +69,12 @@ export default function Scanner() {
         <div aria-hidden className="absolute inset-[18%] rounded-3xl border-4 border-white/80 shadow-[0_0_0_9999px_rgba(0,0,0,0.35)]" />
       </div>
       <canvas ref={canvas} className="hidden" />
-      <div className="flex flex-col gap-3 p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 p-4 md:p-5 xl:flex-row xl:flex-wrap xl:items-center xl:justify-between xl:p-4">
         <p className="text-sm text-muted">{on ? 'Point the camera at the QR code on the pass.' : 'Use the phone camera to scan passes.'}</p>
         {on ? (
-          <button type="button" onClick={stop} className="btn-outline min-h-12 w-full sm:w-auto"><CameraOff className="size-4" /> Stop</button>
+          <button type="button" onClick={stop} className="btn-outline min-h-14 w-full text-base xl:min-h-12 xl:w-auto xl:text-sm"><CameraOff className="size-4" /> Stop</button>
         ) : (
-          <button type="button" onClick={start} className="btn-brand min-h-14 w-full text-base sm:min-h-12 sm:w-auto sm:text-sm"><Camera className="size-4" /> Scan a pass</button>
+          <button type="button" onClick={start} className="btn-brand min-h-14 w-full text-base md:min-h-16 md:text-lg xl:min-h-12 xl:w-auto xl:text-sm"><Camera className="size-4 md:size-5 xl:size-4" /> Scan a pass</button>
         )}
       </div>
       {error && <p role="alert" className="px-4 pb-4 text-sm text-brand-red">{error}</p>}

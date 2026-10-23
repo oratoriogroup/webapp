@@ -30,10 +30,10 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
           <p><strong>Check-in opens {CHECKIN_OPENS_LABEL}.</strong> You can scan a pass now to confirm it is genuine, but nobody can be checked in until then.</p>
         </div>
       )}
-      {/* MOBILE_CHECKIN_22OCT2026: single minmax(0,1fr) column on phones so
-          nothing pushes past the screen edge; scanner first, since that is
-          what door staff use. */}
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      {/* MOBILE_CHECKIN_22OCT2026: single minmax(0,1fr) column on phones and
+          tablets (side by side only from 1280px) so nothing is squeezed;
+          scanner first, since that is what door staff use. */}
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:gap-6 xl:grid-cols-[1.1fr_0.9fr]">
       <div className="min-w-0">
       <Scanner />
       <div className="mt-3 grid grid-cols-3 gap-2 sm:mt-4 sm:gap-3">
@@ -51,7 +51,7 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
         <button className="btn-primary min-h-12 shrink-0 !px-4 sm:!px-5" aria-label="Search"><Search className="size-4 sm:hidden" /><span className="hidden sm:inline">Search</span></button>
       </form>
       {q && (
-        <ul className="mt-3 space-y-2 sm:mt-4">
+        <ul className="mt-3 space-y-2 sm:mt-4 md:grid md:grid-cols-2 md:gap-2 md:space-y-0 xl:block xl:space-y-2">
           {rows.length === 0 && <li className="card p-6 text-center text-muted">No match for &quot;{q}&quot;.</li>}
           {rows.map((r) => (
             <li key={r.checkin_code}>
