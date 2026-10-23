@@ -36,12 +36,12 @@ export default function LoginForm({ initialError }: { initialError?: string }) {
       <form action={action} className="space-y-4">
         <div>
           <label htmlFor="email" className="text-sm font-semibold">Email</label>
-          <input id="email" name="email" type="email" inputMode="email" autoComplete="username" autoCapitalize="none" autoCorrect="off" spellCheck={false} enterKeyHint="next" placeholder="you@example.com" required className="field mt-1.5" />
+          <input id="email" name="email" type="email" inputMode="email" autoComplete="username" autoCapitalize="none" autoCorrect="off" spellCheck={false} enterKeyHint="next" placeholder="you@example.com" required className="field mt-1.5 sm:text-base" />
         </div>
         <div>
           <label htmlFor="password" className="text-sm font-semibold">Password</label>
           <div className="relative mt-1.5">
-            <input id="password" name="password" type={show ? 'text' : 'password'} autoComplete="current-password" enterKeyHint="go" required className="field pr-12" />
+            <input id="password" name="password" type={show ? 'text' : 'password'} autoComplete="current-password" enterKeyHint="go" required className="field pr-12 sm:text-base" />
             <button type="button" onClick={() => setShow((s) => !s)} aria-label={show ? 'Hide password' : 'Show password'} className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-muted">
               {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
             </button>
