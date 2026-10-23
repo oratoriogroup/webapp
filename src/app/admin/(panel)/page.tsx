@@ -66,7 +66,7 @@ export default async function Overview() {
     const body = (
       <>
         <div className="flex items-start justify-between gap-2 sm:gap-3">
-          <p className="min-w-0 truncate text-xs font-medium text-muted max-[359px]:whitespace-normal max-[359px]:leading-tight sm:text-sm"><span className="sm:hidden">{t.short}</span><span className="hidden sm:inline">{t.label}</span></p>
+          <p className="min-w-0 truncate text-xs font-medium text-muted max-[359px]:whitespace-normal max-[359px]:leading-tight sm:text-sm lg:whitespace-normal lg:leading-tight xl:whitespace-nowrap xl:leading-normal"><span className="sm:hidden lg:inline xl:hidden">{t.short}</span><span className="hidden sm:inline lg:hidden xl:inline">{t.label}</span></p>
           <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-brand-soft text-brand sm:size-9 sm:rounded-xl"><t.icon className="size-3.5 sm:size-[18px]" /></span>
         </div>
         <p className="mt-1.5 text-2xl font-bold tabular-nums sm:mt-3 sm:text-3xl">{t.value.toLocaleString()}</p>
@@ -90,7 +90,7 @@ export default async function Overview() {
       <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-6 sm:gap-3 lg:grid-cols-4">{primary.map((t) => <Tile key={t.label} t={t} />)}</div>
       <div className="mt-2.5 grid grid-cols-2 gap-2.5 sm:mt-3 sm:gap-3 lg:grid-cols-4">{secondary.map((t) => <Tile key={t.label} t={t as (typeof primary)[number]} />)}</div>
 
-      <div className="mt-4 grid gap-3 sm:mt-6 sm:gap-4 lg:grid-cols-[65fr_35fr]">
+      <div className="mt-4 grid gap-3 sm:mt-6 sm:gap-4 xl:grid-cols-[65fr_35fr]">
         <section className={`${cardCls} p-4 sm:p-5`}>
           <div className="flex flex-wrap items-end justify-between gap-2">
             <div>
@@ -125,13 +125,13 @@ export default async function Overview() {
                     {/* Phones: the date moves under the name so long names get the full
                         width (up to two lines); larger screens keep the date chip on the right. */}
                     <span className="min-w-0 flex-1">
-                      <span className="line-clamp-2 block text-sm leading-snug font-semibold break-words group-hover:text-brand sm:line-clamp-1 sm:truncate">{r.full_name}</span>
+                      <span className="line-clamp-2 block text-sm leading-snug font-semibold break-words group-hover:text-brand">{r.full_name}</span>
                       <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
                         <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span>
-                        <span className="text-[10px] text-muted sm:hidden">{fmtWAT(r.created_at)}</span>
+                        <span className="text-[10px] text-muted sm:hidden xl:inline 2xl:hidden">{fmtWAT(r.created_at)}</span>
                       </span>
                     </span>
-                    <span className="hidden shrink-0 rounded-lg bg-surface-2 px-2 py-1 text-[11px] text-muted sm:inline-block">{fmtWAT(r.created_at)}</span>
+                    <span className="hidden shrink-0 rounded-lg bg-surface-2 px-2 py-1 text-[11px] text-muted sm:inline-block xl:hidden 2xl:inline-block">{fmtWAT(r.created_at)}</span>
                   </Link>
                 </li>
               ))}
