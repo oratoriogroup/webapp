@@ -64,7 +64,7 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
           {/* Phones: compact cards (MOBILE_CARDS_22OCT2026). Name, ref and status
               up top, then one-tap call / WhatsApp / email, then where they are
               from. Tapping the card body opens the full record. */}
-          <ul className="mt-4 space-y-3 md:hidden">
+          <ul className="mt-4 space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 xl:hidden">
             {rows.map((r) => {
               const wa = r.whatsapp.replace(/[^\d]/g, '').replace(/^0/, '234');
               const initials = r.full_name.trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() || '').join('');
@@ -107,19 +107,20 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
             })}
           </ul>
 
-          {/* Tablet and up: table. Fits the full workspace on wide screens;
-              only scrolls sideways on narrower tablets. */}
-          <div className={`${cardCls} mt-5 hidden w-full max-w-none overflow-x-auto md:block xl:overflow-visible`}>
-            <table className="w-full table-auto text-left text-xs">
+          {/* 1280px and up: table (tablets use the two-column cards above).
+              1280-1535px merges phone + email into Contact and hides Heard from
+              so it fits; it can only scroll inside its own card, never the page. */}
+          <div className={`${cardCls} mt-5 hidden w-full max-w-none overflow-x-auto xl:block`}>
+            <table className="w-full table-auto text-left text-xs [&_td]:px-2.5 [&_th]:px-2.5 2xl:[&_td]:px-3 2xl:[&_th]:px-3">
               <thead className="bg-surface-2 text-[11px] font-semibold tracking-wider text-muted uppercase">
                 <tr>
                   <th className="min-w-[140px] px-3 py-3.5">Name & ref</th>
                   <th className="w-12 px-3 py-3.5">QR</th>
-                  <th className="px-3 py-3.5 whitespace-nowrap">Phone</th>
-                  <th className="min-w-[180px] px-3 py-3.5">Email</th>
+                  <th className="hidden px-3 py-3.5 whitespace-nowrap 2xl:table-cell">Phone</th>
+                  <th className="min-w-[180px] px-3 py-3.5"><span className="2xl:hidden">Contact</span><span className="hidden 2xl:inline">Email</span></th>
                   <th className="min-w-[100px] px-3 py-3.5">Location</th>
                   <th className="min-w-[120px] px-3 py-3.5">Church / fellowship</th>
-                  <th className="min-w-[100px] px-3 py-3.5">Heard from</th>
+                  <th className="hidden min-w-[100px] px-3 py-3.5 2xl:table-cell">Heard from</th>
                   <th className="min-w-[130px] px-3 py-3.5">Connecting as</th>
                   <th className="min-w-[90px] px-3 py-3.5">Email</th>
                   <th className="px-3 py-3.5 whitespace-nowrap">Registered</th>
@@ -140,11 +141,11 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
                         </a>
                       ) : '-'}
                     </td>
-                    <td className="px-3 py-3 whitespace-nowrap">{r.whatsapp}</td>
-                    <td className="max-w-[220px] px-3 py-3"><span className="block truncate" title={r.email}>{r.email}</span></td>
-                    <td className="px-3 py-3">{dash(r.location)}</td>
-                    <td className="px-3 py-3">{dash(r.church)}</td>
-                    <td className="px-3 py-3">{heardFrom(r.answers)}</td>
+                    <td className="hidden px-3 py-3 whitespace-nowrap 2xl:table-cell">{r.whatsapp}</td>
+                    <td className="max-w-[220px] px-3 py-3"><span className="block whitespace-nowrap 2xl:hidden">{r.whatsapp}</span><span className="block truncate text-muted 2xl:text-text" title={r.email}>{r.email}</span></td>
+                    <td className="px-3 py-3 [overflow-wrap:anywhere]">{dash(r.location)}</td>
+                    <td className="px-3 py-3 [overflow-wrap:anywhere]">{dash(r.church)}</td>
+                    <td className="hidden px-3 py-3 2xl:table-cell">{heardFrom(r.answers)}</td>
                     <td className="px-3 py-3"><span className={`inline-block rounded-full px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap ${TYPE_BADGE[r.connect_type]}`}>{TYPE_LABEL[r.connect_type]}</span></td>
                     <td className="px-3 py-3 whitespace-nowrap">{r.email_sent_at ? <span className="inline-flex items-center gap-1 font-semibold text-brand-green"><MailCheck className="size-3.5" /> Sent</span> : <span className="inline-flex items-center gap-1 font-semibold text-amber-600"><Clock3 className="size-3.5" /> Pending</span>}</td>
                     <td className="px-3 py-3 text-[11px] whitespace-nowrap text-muted">{fmtWAT(r.created_at)}</td>
