@@ -21,7 +21,7 @@ export default async function PassPage({ params }: { params: Promise<{ code: str
     // MOBILE_PASS_22OCT2026: compact header on phones so the whole pass
     // (QR, name and reference) shows on the first screen. On short phone
     // screens the intro line is dropped and the title fits on one line.
-    <div className="container-x pt-5 pb-8 sm:py-12 lg:py-16">
+    <div className="container-x pt-5 pb-8 sm:py-12 lg:py-16 [@media(min-width:640px)_and_(max-height:820px)]:py-6">
       <div className="mx-auto max-w-xl text-center">
         <p className="eyebrow">Check-in pass</p>
         <h1 className="h-display mt-2 text-2xl text-balance max-[359px]:text-[21px] sm:mt-3 sm:text-4xl">Your pass for {EVENT.name}</h1>

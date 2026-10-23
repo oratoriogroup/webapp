@@ -108,7 +108,7 @@ export default async function HomePage() {
 
       {/* About */}
       <section id="about" className="border-y border-line bg-surface/70">
-        <div className="container-x section-y grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div className="container-x section-y grid items-center gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-10 lg:gap-16">
           <Reveal className="relative mx-auto w-full max-w-sm">
             <img src="/images/about-oratorio-800.webp" srcSet="/images/about-oratorio-800.webp 800w, /images/about-oratorio.webp 1601w" sizes="(min-width: 1024px) 384px, (min-width: 640px) 384px, 92vw" alt="Giving thanks in worship" width={1601} height={2000} loading="lazy" decoding="async" className="halo relative aspect-[4/5] w-full rounded-[2rem] object-cover" />
           </Reveal>
@@ -152,11 +152,11 @@ export default async function HomePage() {
           <SectionHead eyebrow="Lineup" title="Ministering at Oratorio 2026" center />
           <div className="mt-8 grid items-center gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-12">
             <Reveal className="mx-auto w-full max-w-xs sm:max-w-sm"><MinisterCard m={CONVENER} featured /></Reveal>
-            <Stagger className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4" gap={0.07}>
+            <Stagger className="flex flex-wrap justify-center gap-x-4 gap-y-8" gap={0.07}>
               {MINISTERS.map((m) => (
-                // Phones (2 columns): an odd last card is centred instead of
-                // sitting alone on the left. From sm up it is a normal cell.
-                <StaggerItem key={m.slug} className="last:odd:col-span-2 last:odd:mx-auto last:odd:w-[calc(50%-0.5rem)] sm:last:odd:col-span-1 sm:last:odd:mx-0 sm:last:odd:w-auto"><MinisterCard m={m} /></StaggerItem>
+                // Centred rows (2 / 3 / 4 per row): an incomplete last row sits in
+                // the middle instead of hanging on the left, whatever the count.
+                <StaggerItem key={m.slug} className="w-[calc(50%-0.5rem)] sm:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/4)]"><MinisterCard m={m} /></StaggerItem>
               ))}
             </Stagger>
           </div>
