@@ -91,14 +91,15 @@ export default async function Overview() {
       <div className="mt-2.5 grid grid-cols-2 gap-2.5 sm:mt-3 sm:gap-3 lg:grid-cols-4">{secondary.map((t) => <Tile key={t.label} t={t as (typeof primary)[number]} />)}</div>
 
       <div className="mt-4 grid gap-3 sm:mt-6 sm:gap-4 xl:grid-cols-[65fr_35fr]">
-        <section className={`${cardCls} p-4 sm:p-5`}>
+        {/* Desktop: the chart grows to the height of the latest-registrations card beside it. */}
+        <section className={`${cardCls} p-4 sm:p-5 xl:flex xl:flex-col`}>
           <div className="flex flex-wrap items-end justify-between gap-2">
             <div>
               <h2 className="font-semibold">Registrations, last 14 days</h2>
               <p className="text-xs text-muted">{fortnight.toLocaleString()} in total</p>
             </div>
           </div>
-          <div className="mt-4 flex h-40 items-end gap-1 sm:mt-6 sm:h-56 sm:gap-1.5" role="img" aria-label="Registrations per day for the last 14 days">
+          <div className="mt-4 flex h-40 items-end gap-1 sm:mt-6 sm:h-56 sm:gap-1.5 xl:h-auto xl:min-h-56 xl:flex-1" role="img" aria-label="Registrations per day for the last 14 days">
             {daily.map((d) => (
               <div key={d.day} className="group flex h-full flex-1 flex-col items-center justify-end gap-1.5">
                 <span className={`text-[10px] font-semibold text-muted transition-opacity sm:opacity-0 sm:group-hover:opacity-100 ${d.n ? '' : 'opacity-0'}`}>{d.n}</span>
