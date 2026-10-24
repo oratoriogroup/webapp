@@ -18,7 +18,11 @@ export default async function RegisterPage() {
   const open = settings.registration_open === 'true';
 
   return (
-    <div className="relative isolate overflow-hidden">
+    // REGISTER_DESKTOP_24OCT2026: overflow-hidden made this wrapper the scroll
+    // box for the sticky intro, so on desktop it scrolled away and left an
+    // empty column beside the long form. overflow: clip still trims the
+    // backdrop but keeps sticky working (old browsers fall back to hidden).
+    <div className="relative isolate overflow-hidden supports-[overflow:clip]:overflow-clip">
       <Backdrop className="opacity-60" />
       <StageLights />
     <div className="container-x relative section-y">
