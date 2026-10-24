@@ -49,11 +49,11 @@ export default async function HomePage() {
       <section className="relative isolate overflow-hidden">
         <Backdrop />
         <StageLights />
-        <div className="container-x relative grid items-center gap-10 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-16">
+        <div className="container-x relative grid items-center gap-10 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-16 [@media(min-width:1024px)_and_(max-height:820px)]:py-6">
           <Stagger gap={0.1}>
             <StaggerItem><p className="eyebrow">{EVENT.organiser} presents</p></StaggerItem>
             <StaggerItem>
-              <h1 className="h-display mt-4 text-[2.6rem] leading-[1.05] sm:text-6xl lg:text-7xl">
+              <h1 className="h-display mt-4 text-[2.6rem] leading-[1.05] sm:text-6xl lg:text-7xl [@media(min-width:1024px)_and_(max-height:820px)]:mt-3 [@media(min-width:1024px)_and_(max-height:820px)]:text-6xl">
                 Oratorio 2026
                 <span className="text-gradient shimmer mt-1 block pb-2 italic">{EVENT.theme}</span>
               </h1>

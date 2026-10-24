@@ -25,7 +25,7 @@ export default function HeroShowcase() {
 
   return (
     <div
-      className="relative"
+      className="relative [@media(min-width:1024px)_and_(max-height:820px)]:mx-auto [@media(min-width:1024px)_and_(max-height:820px)]:max-w-[calc((100dvh-12rem)*0.8)]"
       onMouseEnter={() => {
         // Mouse over the poster shows the other one straight away.
         setI((n) => (n + 1) % SLIDES.length);
