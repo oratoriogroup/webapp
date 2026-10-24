@@ -79,8 +79,11 @@ export default function LivePlayer({ pinnedVideoId }: { pinnedVideoId: string | 
   };
   const [copied, setCopied] = useState(false);
 
+  // Desktop: the player is sized from the screen height so the whole video
+  // and its buttons fit on the first screen; with the live chat beside it the
+  // cap grows by the chat column (360px + 16px gap).
   return (
-    <div>
+    <div className={`lg:mx-auto ${videoId ? 'lg:max-w-[calc(max(36rem,calc((100dvh-24rem)*16/9))+376px)]' : 'lg:max-w-[max(36rem,calc((100dvh-24rem)*16/9))]'}`}>
       <div className={`grid gap-4 ${videoId ? 'lg:grid-cols-[1fr_360px]' : ''}`}>
         <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-2xl shadow-brand/20">
           {showPlayer ? (
@@ -122,7 +125,7 @@ export default function LivePlayer({ pinnedVideoId }: { pinnedVideoId: string | 
 
       {/* MOBILE_LIVE_22OCT2026: phones get an even two-column grid; the reminder
           button spans both columns. */}
-      <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
+      <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center lg:justify-center">
         {!showPlayer && (
           <a href={`${YOUTUBE_CHANNEL_URL}?sub_confirmation=1`} target="_blank" rel="noopener noreferrer" className="btn col-span-2 min-h-11 bg-[#d90429] text-white shadow-lg shadow-[#d90429]/25 hover:-translate-y-0.5">
             <Bell className="size-4" /> Subscribe for a reminder

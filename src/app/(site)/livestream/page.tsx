@@ -31,18 +31,22 @@ export default async function LivePage() {
     <section className="relative isolate overflow-hidden">
       <Backdrop className="opacity-70" />
       <StageLights />
-      <div className="container-x relative section-y">
-        <div data-reveal>
+      <div className="container-x relative section-y [@media(min-width:1024px)_and_(max-height:820px)]:pt-8">
+        {/* LIVESTREAM_DESKTOP_24OCT2026: on desktop the title is centred over a
+            player sized to the screen height, so the whole video and its
+            buttons fit on the first screen (a full-width 16:9 player was
+            684px tall and ran off a 900px screen). */}
+        <div data-reveal className="lg:text-center">
           <p className="inline-flex items-center gap-2 rounded-full bg-brand px-3 py-1 text-xs font-bold tracking-wider text-white uppercase shadow-lg shadow-brand/30">
             <span className="size-2 animate-pulse rounded-full bg-white" /> Livestream
           </p>
-          <h1 className="h-display mt-3 text-[34px] leading-tight sm:mt-4 sm:text-6xl">
+          <h1 className="h-display mt-3 text-[34px] leading-tight sm:mt-4 sm:text-6xl [@media(min-width:1024px)_and_(max-height:820px)]:mt-3 [@media(min-width:1024px)_and_(max-height:820px)]:text-5xl">
             {EVENT.name}: <span className="text-gradient shimmer italic">{EVENT.theme}</span>
           </h1>
           <p className="mt-2 text-sm text-muted sm:text-base">{EVENT.dateLabel}, {EVENT.timeLabel}. Live from Lagos to the world.</p>
         </div>
 
-        <div data-reveal className="mt-5 sm:mt-8">
+        <div data-reveal className="mt-5 sm:mt-8 [@media(min-width:1024px)_and_(max-height:820px)]:mt-6">
           <PlayerLoader pinnedVideoId={id} />
         </div>
 
