@@ -34,7 +34,8 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
           tablets (side by side only from 1280px) so nothing is squeezed;
           scanner first, since that is what door staff use. */}
       <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-      <div className="min-w-0">
+      {/* Desktop: scanner and counts stay in view while scrolling long results. */}
+      <div className="min-w-0 xl:sticky xl:top-6 xl:self-start">
       <Scanner />
       <div className="mt-3 grid grid-cols-3 gap-2 sm:mt-4 sm:gap-3">
         <div className={`${cardCls} min-w-0 p-3 sm:p-4`}><p className="text-2xl font-bold tabular-nums text-brand-green sm:text-3xl">{stats!.inside}</p><p className="truncate text-[11px] text-muted sm:text-xs">Checked in</p></div>
@@ -50,6 +51,11 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
         </div>
         <button className="btn-primary min-h-12 shrink-0 !px-4 sm:!px-5" aria-label="Search"><Search className="size-4 sm:hidden" /><span className="hidden sm:inline">Search</span></button>
       </form>
+      {!q && (
+        <p className="mt-3 hidden rounded-2xl border border-dashed border-line p-4 text-sm text-muted xl:block">
+          No pass with them? Search by name, phone, email or reference, then tap the person to open their check-in screen.
+        </p>
+      )}
       {q && (
         <ul className="mt-3 space-y-2 sm:mt-4 md:grid md:grid-cols-2 md:gap-2 md:space-y-0 xl:block xl:space-y-2">
           {rows.length === 0 && <li className="card p-6 text-center text-muted">No match for &quot;{q}&quot;.</li>}
