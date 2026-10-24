@@ -67,7 +67,10 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
       <Backdrop className="opacity-60" />
       <StageLights />
     <div className="container-x relative section-y">
-      <div className="mx-auto max-w-2xl">
+      {/* SUCCESS_DESKTOP_24OCT2026: on desktop (lg and up) the four cards sit in
+          a 2 x 2 grid (pass | DP, save the date | share) instead of one long
+          672px column. Phones and tablets keep the same order, one column. */}
+      <div className={`mx-auto max-w-2xl ${done.pass ? 'lg:max-w-6xl' : ''}`}>
         <div className="text-center">
           <div className="pop-in relative mx-auto flex size-16 items-center sm:size-20 justify-center rounded-full bg-gradient-to-b from-[#22c55e] to-[#15803d] text-white shadow-lg shadow-[#16a34a]/35 ring-8 ring-[#16a34a]/12">
             <Check className="size-8 sm:size-10" strokeWidth={3} />
@@ -79,9 +82,10 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
           </p>
         </div>
 
+        <div className={done.pass ? 'lg:mt-10 lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-6' : ''}>
         {/* Check-in pass */}
         {done.pass && (
-          <div className="card mt-6 px-3 py-5 text-center sm:mt-10 sm:p-8">
+          <div className="card mt-6 px-3 py-5 text-center sm:mt-10 sm:p-8 lg:mt-0 lg:flex lg:flex-col lg:justify-center">
             <p className="eyebrow">Your check-in pass</p>
             <p className="mx-auto mt-2 max-w-md text-sm text-balance text-muted sm:text-base">Save it to your phone and show the QR code at the registration stand.</p>
             <div className="mt-4 sm:mt-6"><PassCard code={done.pass} name={done.name} refCode={done.ref} /></div>
@@ -89,7 +93,7 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
         )}
 
         {/* DP */}
-        <div className="card mt-4 p-4 sm:mt-6 sm:p-8">
+        <div className="card mt-4 p-4 sm:mt-6 sm:p-8 lg:mt-0">
           <p className="eyebrow">Your Oratorio DP</p>
           <h2 className="h-display mt-2 text-2xl text-balance sm:text-3xl">Tell everyone you&apos;ll be there.</h2>
           <p className="mt-2 text-sm text-muted sm:text-base">Add your photo, then download it for your status. On WhatsApp, tap <strong>HD</strong> before sending.</p>
@@ -97,7 +101,7 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
         </div>
 
         {/* Save the date */}
-        <div className="band relative mt-4 overflow-hidden rounded-3xl p-5 sm:mt-6 sm:p-8">
+        <div className="band relative mt-4 overflow-hidden rounded-3xl p-5 sm:mt-6 sm:p-8 lg:mt-0 lg:flex lg:flex-col lg:justify-center">
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(70% 90% at 100% 0%, rgba(255,255,255,.18), transparent 70%)' }} />
           <div className="relative">
             <p className="text-xs font-semibold tracking-[0.2em] text-white/85 uppercase">Save the date</p>
@@ -118,7 +122,7 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
         </div>
 
         {/* Share */}
-        <div className="mt-4 rounded-3xl border border-brand/20 bg-brand-soft p-4 sm:mt-6 sm:p-8">
+        <div className="mt-4 rounded-3xl border border-brand/20 bg-brand-soft p-4 sm:mt-6 sm:p-8 lg:mt-0">
           <h2 className="h-display text-center text-2xl sm:text-3xl">Spread the word</h2>
           <p className="mx-auto mt-2 max-w-md text-center text-sm text-balance text-muted sm:text-base">Invite friends, family and your church to register.</p>
           <div className="mt-4 flex gap-2 rounded-2xl border border-line bg-surface p-1.5 sm:mt-6 sm:p-2">
@@ -139,6 +143,7 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
           <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn mt-3 w-full !rounded-xl border border-[#25D366]/40 bg-white !py-3 text-sm text-[#128c4a] hover:bg-[#e9fbef] dark:bg-surface dark:text-[#4ade80] dark:hover:bg-surface-2">
             <WhatsAppIcon className="size-5" /> Join the Oratorio WhatsApp group
           </a>
+        </div>
         </div>
       </div>
     </div>
