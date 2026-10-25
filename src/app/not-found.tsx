@@ -18,8 +18,10 @@ export default function NotFound() {
   const help = CONTACTS[0];
   return (
     <div className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-bg">
-      <Backdrop className="opacity-70" />
-      <StageLights />
+      {/* Desktop dark mode: dim the rings so they do not compete with the text
+          on a big screen (same treatment as the admin sign-in page). */}
+      <Backdrop className="opacity-70 lg:dark:opacity-45" />
+      <StageLights className="lg:dark:opacity-70" />
       <header className="relative flex justify-center px-4 pt-6 sm:pt-8 [@media(max-height:620px)]:pt-4">
         <Link href="/" aria-label="Oratorio home"><Logo className="h-10 sm:h-11" /></Link>
       </header>
