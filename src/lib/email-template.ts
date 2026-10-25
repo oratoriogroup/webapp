@@ -95,6 +95,17 @@ export const registrationEmail = (r: { fullName: string; refCode: string; connec
   [data-ogsc] .dm-mu { color:#b3a3b0 !important; }
   [data-ogsc] .dm-red { color:#ff7a7a !important; }
   [data-ogsc] .dm-ok { color:#4ade80 !important; }
+  /* Outlook on the web and Outlook desktop in dark mode mark the email with
+     data-ogsc (text) and data-ogsb (backgrounds) and otherwise pick their own
+     colours, so the same dark palette is repeated for them here. */
+  [data-ogsc] .dm-dkbtn { color:#1c1220 !important; }
+  [data-ogsc] .dm-wa { color:#4ade80 !important; }
+  [data-ogsb] .dm-bg { background:#0e080d !important; }
+  [data-ogsb] .dm-card { background:#181016 !important; border-color:#33242f !important; }
+  [data-ogsb] .dm-box { background:#22171f !important; border-color:#33242f !important; }
+  [data-ogsb] .dm-line { border-color:#33242f !important; }
+  [data-ogsb] .dm-dkbtn { background:#f6eff4 !important; border-color:#f6eff4 !important; }
+  [data-ogsb] .dm-wa { background:#12321f !important; }
 </style></head>
 <body class="dm-bg" style="margin:0;padding:0;background:#f3eee9;-webkit-text-size-adjust:100%">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">You are registered for ${EVENT.name}: ${EVENT.theme}, ${EVENT.dateShort}, ${EVENT.timeLabel}. Your check-in pass is inside.</div>
