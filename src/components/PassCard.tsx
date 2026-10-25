@@ -129,7 +129,7 @@ export default function PassCard({ code, name, refCode }: { code: string; name: 
 
   return (
     <div>
-      <div className="mx-auto max-w-xs overflow-hidden rounded-2xl border border-line bg-white shadow-xl sm:max-w-sm [@media(min-width:640px)_and_(max-height:820px)]:max-w-[min(18rem,calc(100dvh*0.355))]">
+      <div className="mx-auto max-w-xs overflow-hidden rounded-2xl border border-line bg-white shadow-xl sm:max-w-sm [@media(min-width:640px)_and_(max-height:820px)]:max-w-[min(18rem,calc(100dvh*0.355))] [@media(max-width:639px)_and_(max-height:620px)]:max-w-[min(20rem,calc((100dvh-15rem)*0.78))]">
         <canvas ref={canvasRef} width={W * S} height={H * S} className="block h-auto w-full" role="img" aria-label={`Check-in pass QR code for ${name}`} />
       </div>
       <div className="mx-auto mt-4 grid max-w-xs grid-cols-2 gap-2 sm:max-w-sm">

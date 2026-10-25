@@ -40,6 +40,11 @@ export default function BottomNav() {
     return pathname.startsWith(t.href);
   };
 
+  // The pass page is a screen attendees hold up at the registration stand:
+  // the dock covered their name and reference on shorter phones, so it is
+  // left out there (the header logo still links home).
+  if (pathname?.startsWith('/pass/')) return null;
+
   return (
     <nav aria-label="Primary" className="pb-safe fixed inset-x-0 bottom-0 z-50 px-3 md:hidden">
       <div className="mx-auto mb-2 flex max-w-md items-stretch rounded-2xl border border-line/80 no-blur-touch bg-surface/[.97] p-1.5 shadow-2xl shadow-black/10 backdrop-blur-xl lg:bg-surface/90">
