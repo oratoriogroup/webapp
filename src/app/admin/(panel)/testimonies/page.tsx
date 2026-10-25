@@ -38,7 +38,7 @@ export default async function TestimoniesPage({ searchParams }: { searchParams: 
         {TABS.map((t) => (
           <Link key={t.key} href={`?tab=${t.key}`} role="tab" aria-selected={tab === t.key}
             className={`inline-flex h-10 min-w-0 items-center justify-center gap-1.5 rounded-xl px-2 text-[13px] font-semibold transition max-[359px]:h-12 max-[359px]:flex-col max-[359px]:gap-0.5 max-[359px]:text-[12px] max-[359px]:leading-none sm:gap-2 sm:px-4 sm:text-sm ${tab === t.key ? 'bg-brand text-white shadow-lg shadow-brand/25' : 'text-muted hover:text-brand sm:border sm:border-line sm:bg-surface'}`}>
-            <span className="truncate sm:hidden">{t.short}</span><span className="hidden sm:inline">{t.label}</span> <span className={`rounded-full px-2 text-xs max-[359px]:px-1.5 max-[359px]:py-0.5 max-[359px]:text-[10px] ${tab === t.key ? 'bg-white/20' : 'bg-surface-2'}`}>{c[t.key]}</span>
+            <span className="truncate sm:hidden">{t.short}</span><span className="hidden sm:inline">{t.label}</span> <span className={`rounded-full px-2 text-xs max-[359px]:px-1.5 max-[359px]:py-0.5 max-[359px]:text-[10px] ${tab === t.key ? 'bg-black/25' : 'bg-surface-2'}`}>{c[t.key]}</span>
           </Link>
         ))}
       </div>
