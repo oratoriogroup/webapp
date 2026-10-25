@@ -85,7 +85,7 @@ export default function LivePlayer({ pinnedVideoId }: { pinnedVideoId: string | 
   return (
     <div className={`lg:mx-auto ${videoId ? 'lg:max-w-[calc(max(36rem,calc((100dvh-24rem)*16/9))+376px)]' : 'lg:max-w-[max(36rem,calc((100dvh-24rem)*16/9))]'}`}>
       <div className={`grid gap-4 ${videoId ? 'lg:grid-cols-[1fr_360px]' : ''}`}>
-        <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-2xl shadow-brand/20">
+        <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-2xl shadow-brand/20 dark:shadow-black/60 dark:ring-1 dark:ring-white/10">
           {showPlayer ? (
             <iframe
               key={`${videoId ?? 'channel'}-${reloadKey}`}
