@@ -47,7 +47,7 @@ export default async function CheckinPage({ searchParams }: { searchParams: Prom
       <form className="flex min-w-0 gap-2" role="search">
         <div className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" />
-          <input name="q" defaultValue={q} placeholder="Name, phone, email or reference" className="field !pl-11" aria-label="Search attendees" />
+          <input name="q" defaultValue={q} placeholder="Name, phone, email, ref" className="field !pl-11 max-[359px]:placeholder:text-[15px]" aria-label="Search attendees" />
         </div>
         <button className="btn-primary min-h-12 shrink-0 !px-4 sm:!px-5" aria-label="Search"><Search className="size-4 sm:hidden" /><span className="hidden sm:inline">Search</span></button>
       </form>
