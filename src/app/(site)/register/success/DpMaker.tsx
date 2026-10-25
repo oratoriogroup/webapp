@@ -315,14 +315,17 @@ export default function DpMaker({ name }: { name: string }) {
       </div>
       <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => onFile(e.target.files?.[0])} />
       {error && <p className="mt-3 text-center text-sm font-medium text-brand-red">{error}</p>}
-      <div className="mt-5 grid gap-2 sm:grid-cols-3">
-        <button type="button" onClick={() => inputRef.current?.click()} className="btn-outline">
+      {/* Desktop: the success page puts this card in a half-width column, where
+          three buttons in a row squeezed "Add your photo" onto two lines, so
+          the photo button gets its own row there. */}
+      <div className="mt-5 grid gap-2 sm:grid-cols-3 lg:grid-cols-2">
+        <button type="button" onClick={() => inputRef.current?.click()} className="btn-outline whitespace-nowrap lg:col-span-2">
           {photo ? <RefreshCw className="size-4" /> : <ImagePlus className="size-4" />} {photo ? 'Change photo' : 'Add your photo'}
         </button>
-        <button type="button" onClick={download} disabled={!photo} className="btn-primary">
+        <button type="button" onClick={download} disabled={!photo} className="btn-primary whitespace-nowrap">
           <Download className="size-4" /> Download
         </button>
-        <button type="button" onClick={share} disabled={!photo} className="btn-brand">
+        <button type="button" onClick={share} disabled={!photo} className="btn-brand whitespace-nowrap">
           <Share2 className="size-4" /> {canShare ? 'Share' : 'Save to share'}
         </button>
       </div>
