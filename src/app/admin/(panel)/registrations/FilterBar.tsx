@@ -42,11 +42,11 @@ export default function FilterBar({ q, type, per, types }: { q: string; type: st
           type="search"
           value={text}
           onChange={(e) => onText(e.target.value)}
-          placeholder="Search name, email, phone, ref"
+          placeholder="Name, email, phone, ref"
           aria-label="Search registrations"
           maxLength={100}
           autoComplete="off"
-          className="h-11 w-full rounded-xl border border-slate-200/80 bg-white pr-10 pl-10 text-base text-slate-800 sm:text-sm shadow-sm transition placeholder:text-slate-400 focus:border-brand focus:ring-2 focus:ring-(--ring) focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+          className="h-11 w-full rounded-xl border border-slate-200/80 bg-white pr-10 pl-10 text-base text-slate-800 sm:text-sm shadow-sm transition placeholder:text-slate-400 max-[359px]:placeholder:text-[15px] focus:border-brand focus:ring-2 focus:ring-(--ring) focus:outline-none [&::-webkit-search-cancel-button]:hidden"
         />
         {pending ? (
           <Loader2 className="absolute top-1/2 right-3.5 size-4 -translate-y-1/2 animate-spin text-slate-400" />
