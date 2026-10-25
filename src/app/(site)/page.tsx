@@ -237,8 +237,11 @@ export default async function HomePage() {
             </div>
             <a href={DIRECTIONS_URL} target="_blank" rel="noopener noreferrer" className="btn-brand mt-6 min-h-12"><Navigation className="size-4" /> Get directions</a>
           </Reveal>
+          {/* Dark mode: the Google map is recoloured dark (inverted, then hue
+              turned back so roads and the pin keep roughly their colours) so a
+              bright white map does not glare from the dark page. */}
           <Reveal delay={0.1} className="overflow-hidden rounded-3xl border border-line shadow-xl shadow-brand/5">
-            <iframe src={MAP_EMBED_URL} title={`Map: ${EVENT.venueName}`} className="aspect-[4/3] w-full lg:h-full lg:min-h-[440px]" loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
+            <iframe src={MAP_EMBED_URL} title={`Map: ${EVENT.venueName}`} className="aspect-[4/3] w-full lg:h-full lg:min-h-[440px] dark:[filter:invert(0.9)_hue-rotate(180deg)_saturate(0.85)_brightness(0.95)]" loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
           </Reveal>
         </div>
       </section>
