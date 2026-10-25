@@ -22,5 +22,5 @@ export const pdfBtn =
 export const excelBtn =
   'inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-600 shadow-sm transition-all hover:bg-emerald-100';
 export const inputCls =
-  'h-11 w-full rounded-xl border border-line bg-surface-2 px-4 text-sm text-text transition placeholder:text-muted/70 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
+  'h-11 w-full rounded-xl border border-line bg-surface-2 px-4 text-sm text-text transition placeholder:text-muted/85 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
 export const cardCls = 'rounded-2xl border border-line bg-surface shadow-sm';

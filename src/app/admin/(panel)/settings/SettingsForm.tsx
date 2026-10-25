@@ -8,7 +8,7 @@ import { youtubeId, thumbUrl, isChannelUrl } from '@/lib/youtube';
 import { cardCls } from '../AdminHeader';
 
 const field =
-  'h-12 w-full min-w-0 rounded-xl border border-line bg-surface-2 px-3.5 font-mono text-base text-text sm:h-11 sm:px-4 sm:text-xs transition placeholder:text-muted/70 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
+  'h-12 w-full min-w-0 rounded-xl border border-line bg-surface-2 px-3.5 font-mono text-base text-text sm:h-11 sm:px-4 sm:text-xs transition placeholder:text-muted/85 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
 
 function Section({ icon: Icon, title, desc, children, className = '' }: { icon: typeof Radio; title: string; desc: string; children: React.ReactNode; className?: string }) {
   return (
@@ -77,7 +77,7 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
             {state.error || state.ok || <><span className="sm:hidden">Tap Save to apply your changes.</span><span className="hidden sm:inline">Review your changes, then save.</span></>}
           </p>
           <button type="submit" disabled={pending} className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-brand px-4 text-sm font-semibold sm:px-6 text-white shadow-lg shadow-brand/25 hover:bg-brand-deep disabled:opacity-60">
-            {pending ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />} Save<span className="hidden sm:inline"> changes</span>
+            {pending ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />} <span>Save<span className="hidden sm:inline"> changes</span></span>
           </button>
         </div>
       </div>
