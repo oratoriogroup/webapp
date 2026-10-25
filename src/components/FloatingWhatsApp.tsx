@@ -10,12 +10,14 @@ import { WHATSAPP_GROUP_URL } from '@/lib/event';
 // shrinks to an icon once the visitor scrolls deep into the page.
 // Phones: step aside once the footer shows, so its icons are not covered.
 export const footerInView = () => {
-  if (window.innerWidth >= 768) return false;
-  const f = document.querySelector('footer');
-  if (f && f.getBoundingClientRect().top < window.innerHeight - 40) return true;
+  if (window.innerWidth < 768) {
+    const f = document.querySelector('footer');
+    if (f && f.getBoundingClientRect().top < window.innerHeight - 40) return true;
+  }
   // Also step aside for anything marked data-no-float (e.g. the registration
   // form's Continue / Save / Back buttons) while it sits in the lower part of
-  // the screen, where the floating buttons live.
+  // the screen, where the floating buttons live. This applies on desktop too:
+  // the full "Join our WhatsApp group" pill covered the form's Continue button.
   return [...document.querySelectorAll('[data-no-float]')].some((el) => {
     const r = el.getBoundingClientRect();
     return r.bottom > window.innerHeight * 0.45 && r.top < window.innerHeight;
