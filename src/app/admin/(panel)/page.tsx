@@ -100,18 +100,18 @@ export default async function Overview() {
             </div>
           </div>
           <div className="mt-4 flex h-40 items-end gap-1 sm:mt-6 sm:h-56 sm:gap-1.5 xl:h-auto xl:min-h-56 xl:flex-1" role="img" aria-label="Registrations per day for the last 14 days">
-            {/* Desktop (xl): every bar shows its count and its date, so the chart reads
+            {/* Tablet and desktop (md+): every bar shows its count and its date, so the chart reads
                 at a glance without hovering. Empty days are a grey stub, and in
                 dark mode the bars are a softer red so the block is not glaring. */}
             {daily.map((d) => (
               <div key={d.day} className="group flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1.5">
-                <span className={`text-[10px] font-semibold text-muted tabular-nums transition-opacity sm:opacity-0 sm:group-hover:opacity-100 ${d.n ? 'xl:text-xs xl:text-text xl:opacity-100' : 'opacity-0'}`}>{d.n}</span>
+                <span className={`text-[10px] font-semibold text-muted tabular-nums transition-opacity sm:opacity-0 sm:group-hover:opacity-100 ${d.n ? 'md:text-xs md:text-text md:opacity-100' : 'opacity-0'}`}>{d.n}</span>
                 <div className={`w-full rounded-t-lg transition-all ${d.n ? 'bg-gradient-to-t from-brand-deep/80 to-brand/70 group-hover:from-brand-deep group-hover:to-brand dark:from-brand-deep/55 dark:to-brand/60 dark:group-hover:from-brand-deep/90 dark:group-hover:to-brand/90' : 'bg-line'}`} style={{ height: `${Math.max(3, (d.n / max) * 100)}%` }} title={`${d.day}: ${d.n}`} />
               </div>
             ))}
           </div>
-          <div className="mt-2 flex justify-between text-[10px] text-muted xl:hidden"><span>{daily[0]?.day}</span><span>{daily.at(-1)?.day}</span></div>
-          <div aria-hidden className="mt-2 hidden gap-1.5 text-center text-[10px] text-muted tabular-nums xl:flex">
+          <div className="mt-2 flex justify-between text-[10px] text-muted md:hidden"><span>{daily[0]?.day}</span><span>{daily.at(-1)?.day}</span></div>
+          <div aria-hidden className="mt-2 hidden gap-1 text-center text-[10px] text-muted tabular-nums sm:gap-1.5 md:flex">
             {daily.map((d, i) => <span key={d.day} className="min-w-0 flex-1 whitespace-nowrap">{i === 0 || i === daily.length - 1 ? d.day : d.day.split(' ')[0]}</span>)}
           </div>
         </section>
