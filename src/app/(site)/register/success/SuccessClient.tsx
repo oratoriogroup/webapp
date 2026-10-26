@@ -140,7 +140,7 @@ export default function SuccessClient({ calendarUrl }: { getdpUrl?: string; cale
           </div>
           {/* The floating WhatsApp button is hidden on this page (it covered the
               pass), so the group link lives here instead. */}
-          <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn mt-3 w-full !rounded-xl border border-[#25D366]/40 bg-white !py-3 text-sm text-[#128c4a] hover:bg-[#e9fbef] dark:bg-surface dark:text-[#4ade80] dark:hover:bg-surface-2">
+          <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="btn mt-3 w-full !rounded-xl border border-[#25D366]/40 bg-white !py-3 text-sm text-[#0d6b35] hover:bg-[#e9fbef] dark:bg-surface dark:text-[#4ade80] dark:hover:bg-surface-2">
             <WhatsAppIcon className="size-5" /> Join the Oratorio WhatsApp group
           </a>
         </div>

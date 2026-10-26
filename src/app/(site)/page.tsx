@@ -229,8 +229,8 @@ export default async function HomePage() {
                 {CONTACTS.map((c) => (
                   <li key={c.intl} className="flex items-center gap-2">
                     <span className="min-w-0 flex-1 font-semibold whitespace-nowrap">{c.label}</span>
-                    <a href={whatsappLink(c.intl)} target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#25D366]/15 px-4 font-semibold text-[#128C4B] max-[359px]:w-12 max-[359px]:px-0 dark:text-[#4ade80]"><WhatsAppIcon className="size-4 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Chat</span></a>
-                    <a href={`tel:+${c.intl}`} aria-label={`Call ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-brand-soft px-4 font-semibold text-brand max-[359px]:w-12 max-[359px]:px-0"><Phone className="size-4 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Call</span></a>
+                    <a href={whatsappLink(c.intl)} target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#25D366]/15 px-4 font-semibold text-[#0d6b35] max-[359px]:w-12 max-[359px]:px-0 dark:text-[#4ade80]"><WhatsAppIcon className="size-4 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Chat</span></a>
+                    <a href={`tel:+${c.intl}`} aria-label={`Call ${c.label}`} className="inline-flex min-h-12 shrink-0 items-center justify-center gap-1.5 rounded-full bg-brand-soft px-4 font-semibold text-brand-deep dark:text-brand max-[359px]:w-12 max-[359px]:px-0"><Phone className="size-4 max-[359px]:size-5" /> <span className="max-[359px]:sr-only">Call</span></a>
                   </li>
                 ))}
               </ul>

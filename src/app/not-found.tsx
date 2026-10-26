@@ -40,7 +40,7 @@ export default function NotFound() {
           {help && (
             <p className="mt-6 text-sm text-muted">
               Need help?{' '}
-              <a href={whatsappLink(help.intl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-[#128C4B] underline-offset-4 hover:underline dark:text-[#4ade80]">
+              <a href={whatsappLink(help.intl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-[#0d6b35] underline-offset-4 hover:underline dark:text-[#4ade80]">
                 <WhatsAppIcon className="size-4" /> WhatsApp {help.label}
               </a>
             </p>
