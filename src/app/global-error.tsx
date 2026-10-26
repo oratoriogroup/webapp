@@ -36,8 +36,8 @@ p.lead{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--muted);text-w
 html[data-theme=dark] .help a{color:#4ade80}
 .foot{margin-top:22px;font-size:12px;color:var(--muted)}
 @media (min-width:640px){.card{padding:36px 32px 28px}h1{font-size:30px}.btns{grid-template-columns:1fr 1fr}}
-/* Desktop: a wider card and larger type so it does not look lost on a big screen. */
-@media (min-width:1024px){.wrap{max-width:520px}.logo{height:48px;margin-bottom:28px}.card{padding:44px 44px 32px;border-radius:28px}.icon{width:64px;height:64px}.icon svg{width:30px;height:30px}.eyebrow{margin-top:20px}h1{font-size:36px}p.lead{font-size:17px;margin-top:12px}.btns{margin-top:28px;gap:12px}.btn{min-height:52px;font-size:16px}.btn-outline:hover{background:rgba(127,127,127,.08)}.btn-primary:hover{background:var(--brand-deep)}.help{margin-top:22px;font-size:15px}.foot{margin-top:28px}}
+/* Tablet and desktop: a wider card and larger type so it does not look lost on a big screen. */
+@media (min-width:768px){.wrap{max-width:520px}.logo{height:48px;margin-bottom:28px}.card{padding:44px 44px 32px;border-radius:28px}.icon{width:64px;height:64px}.icon svg{width:30px;height:30px}.eyebrow{margin-top:20px}h1{font-size:36px}p.lead{font-size:17px;margin-top:12px}.btns{margin-top:28px;gap:12px}.btn{min-height:52px;font-size:16px}.btn-outline:hover{background:rgba(127,127,127,.08)}.btn-primary:hover{background:var(--brand-deep)}.help{margin-top:22px;font-size:15px}.foot{margin-top:28px}}
 /* Short phone screens (e.g. 320 x 568): tighter spacing so it fits without scrolling. */
 @media (max-height:640px){body{padding:14px 16px max(14px,env(safe-area-inset-bottom))}.logo{height:38px;margin-bottom:14px}.card{padding:20px 18px 18px}.icon{width:44px;height:44px}.eyebrow{margin-top:12px}h1{font-size:23px}.btns{margin-top:16px}.help{margin-top:12px}.foot{margin-top:14px}}
 `;
