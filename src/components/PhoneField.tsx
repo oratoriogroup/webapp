@@ -77,7 +77,7 @@ export default function PhoneField({
           onChange={(e) => setNational(e.target.value.replace(/[^\d]/g, '').slice(0, 15))}
           aria-invalid={invalid}
           aria-describedby={describedBy}
-          className="min-h-12 w-full min-w-0 bg-transparent px-4 text-base text-text outline-none"
+          className="min-h-12 w-full min-w-0 bg-transparent px-4 text-base text-text outline-none placeholder:text-muted"
         />
       </div>
       <div className="mt-1.5 flex items-center gap-2 text-xs text-muted">
