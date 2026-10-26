@@ -163,7 +163,7 @@ ${inPerson ? `<tr><td class="px" style="padding:24px 44px 4px">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="dm-line" style="border:1px solid ${LINE};border-radius:14px"><tr><td class="box" style="padding:16px 20px 12px">
     <p class="dm-ink" style="margin:0 0 4px;font-family:${FONT};font-size:15px;font-weight:700;color:${INK}">Questions? Talk to us</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${contacts}</table>
-    <p style="margin:6px 0 4px;text-align:center"><a href="${WHATSAPP_GROUP_URL}" target="_blank" class="dm-wa" style="display:block;padding:10px 14px;border-radius:12px;background:#e9fbef;color:#128c4a;font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none"><img src="${img('social/whatsapp.png')}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;border:0;vertical-align:middle;margin-right:8px">Join the Oratorio WhatsApp group</a></p>
+    <p style="margin:6px 0 4px;text-align:center"><a href="${WHATSAPP_GROUP_URL}" target="_blank" class="dm-wa" style="display:block;padding:10px 14px;border-radius:12px;background:#e9fbef;color:#0d6b35;font-family:${FONT};font-size:14px;font-weight:700;text-decoration:none"><img src="${img('social/whatsapp.png')}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;border:0;vertical-align:middle;margin-right:8px">Join the Oratorio WhatsApp group</a></p>
   </td></tr></table>
 </td></tr>
 
