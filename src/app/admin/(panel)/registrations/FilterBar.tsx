@@ -4,8 +4,9 @@ import { useEffect, useRef, useState, useTransition } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, Search, X } from 'lucide-react';
 
+// 16px until desktop (xl): iPads zoom the page when a box under 16px is tapped.
 const select =
-  'h-11 w-full min-w-0 rounded-xl xl:w-auto border border-slate-200/80 bg-white px-3 text-base sm:text-sm text-slate-800 shadow-sm transition focus:border-brand focus:ring-2 focus:ring-(--ring) focus:outline-none';
+  'h-11 w-full min-w-0 rounded-xl xl:w-auto border border-slate-200/80 bg-white px-3 text-base xl:text-sm text-slate-800 shadow-sm transition focus:border-brand focus:ring-2 focus:ring-(--ring) focus:outline-none';
 
 // Instant search (ADMIN_UPGRADE_22OCT2026): results update 300ms after the last
 // keystroke or paste, with no Apply button. Type and page size apply at once.
@@ -46,7 +47,7 @@ export default function FilterBar({ q, type, per, types }: { q: string; type: st
           aria-label="Search registrations"
           maxLength={100}
           autoComplete="off"
-          className="h-11 w-full rounded-xl border border-slate-200/80 bg-white pr-10 pl-10 text-base text-slate-800 sm:text-sm shadow-sm transition placeholder:text-slate-400 max-[359px]:placeholder:text-[15px] focus:border-brand focus:ring-2 focus:ring-(--ring) focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+          className="h-11 w-full rounded-xl border border-slate-200/80 bg-white pr-10 pl-10 text-base text-slate-800 xl:text-sm shadow-sm transition placeholder:text-slate-400 max-[359px]:placeholder:text-[15px] focus:border-brand focus:ring-2 focus:ring-(--ring) focus:outline-none [&::-webkit-search-cancel-button]:hidden"
         />
         {pending ? (
           <Loader2 className="absolute top-1/2 right-3.5 size-4 -translate-y-1/2 animate-spin text-slate-400" />
