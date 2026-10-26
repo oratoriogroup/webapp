@@ -61,9 +61,9 @@ export default function FloatingWhatsApp() {
       aria-label="Join the Oratorio WhatsApp group"
       // Phones and tablets (under 1280px): shown only near the top of the page.
       // Further down it covered headings and text, and every page has its own
-      // WhatsApp buttons lower down (livestream: hidden on phones, it covered
-      // the countdown).
-      className={`wa-float fixed right-4 bottom-28 z-40 ${pathname === '/livestream' ? 'max-md:hidden' : ''} ${compact ? 'max-xl:hidden' : ''} inline-flex items-center gap-2.5 rounded-full bg-[#25D366] p-3.5 font-semibold text-white shadow-xl shadow-[#25D366]/35 transition-all duration-300 hover:-translate-y-1 md:right-8 md:bottom-8 ${
+      // WhatsApp buttons lower down. On /livestream it is hidden under 1280px
+      // altogether: it covered the countdown and the page's own WhatsApp buttons.
+      className={`wa-float fixed right-4 bottom-28 z-40 ${pathname === '/livestream' || compact ? 'max-xl:hidden' : ''} inline-flex items-center gap-2.5 rounded-full bg-[#25D366] p-3.5 font-semibold text-white shadow-xl shadow-[#25D366]/35 transition-all duration-300 hover:-translate-y-1 md:right-8 md:bottom-8 ${
         compact ? '' : 'md:bg-[#15803d] md:px-5'
       } ${typing || atFooter ? 'pointer-events-none translate-y-6 opacity-0' : 'opacity-100'}`}
     >
