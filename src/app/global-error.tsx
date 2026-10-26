@@ -32,7 +32,7 @@ p.lead{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--muted);text-w
 .btn-primary:active{background:var(--brand-deep)}
 .btn-outline{border:1px solid var(--line);background:transparent;color:var(--text)}
 .help{margin:18px 0 0;font-size:14px;color:var(--muted)}
-.help a{color:#128c4b;font-weight:600;text-decoration:none;white-space:nowrap}
+.help a{color:#0d6b35;font-weight:600;text-decoration:none;white-space:nowrap}
 html[data-theme=dark] .help a{color:#4ade80}
 .foot{margin-top:22px;font-size:12px;color:var(--muted)}
 @media (min-width:640px){.card{padding:36px 32px 28px}h1{font-size:30px}.btns{grid-template-columns:1fr 1fr}}
