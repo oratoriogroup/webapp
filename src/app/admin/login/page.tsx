@@ -19,11 +19,11 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const err = ERRORS[String((await searchParams).error || '')];
   return (
     <div className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-bg">
-      {/* Desktop dark mode: the rings were bright enough to compete with the
+      {/* Tablet and desktop dark mode: the rings were bright enough to compete with the
           sign-in card on a big screen, so they are dimmed there and the card
           gets a deeper shadow and a faint edge. */}
-      <Backdrop className="lg:dark:opacity-55" />
-      <StageLights className="lg:dark:opacity-70" />
+      <Backdrop className="md:dark:opacity-55" />
+      <StageLights className="md:dark:opacity-70" />
       <div className="relative flex justify-end p-3 sm:absolute sm:top-0 sm:right-0 sm:z-10 sm:p-4">
         <ThemeToggle />
       </div>
@@ -32,7 +32,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <div className="flex justify-center">
             <Logo className="h-10 sm:h-11 [@media(min-width:640px)_and_(max-height:700px)]:h-9" />
           </div>
-          <div className="glass-card mt-6 p-5 sm:mt-8 sm:p-8 lg:dark:shadow-black/60 lg:dark:ring-1 lg:dark:ring-white/5 [@media(min-width:640px)_and_(max-height:820px)]:mt-5 [@media(min-width:640px)_and_(max-height:820px)]:py-6 [@media(min-width:640px)_and_(max-height:700px)]:mt-3">
+          <div className="glass-card mt-6 p-5 sm:mt-8 sm:p-8 md:dark:shadow-black/60 md:dark:ring-1 md:dark:ring-white/5 [@media(min-width:640px)_and_(max-height:820px)]:mt-5 [@media(min-width:640px)_and_(max-height:820px)]:py-6 [@media(min-width:640px)_and_(max-height:700px)]:mt-3">
             <h1 className="h-display text-[28px] leading-tight sm:text-3xl">Admin sign in</h1>
             <p className="mt-1 text-sm text-muted">Oratorio 2026 control centre</p>
             <LoginForm initialError={err} />
