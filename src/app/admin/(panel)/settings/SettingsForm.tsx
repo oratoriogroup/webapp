@@ -9,7 +9,7 @@ import { cardCls } from '../AdminHeader';
 
 // 16px text until desktop (xl): iPads zoom the page when a box under 16px is tapped.
 const field =
-  'h-12 w-full min-w-0 rounded-xl border border-line bg-surface-2 px-3.5 font-mono text-base text-text sm:h-11 sm:px-4 xl:text-xs transition placeholder:text-muted/85 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
+  'h-12 w-full min-w-0 rounded-xl border border-line bg-surface-2 px-3.5 font-mono text-base text-text sm:h-11 sm:px-4 xl:text-xs transition placeholder:text-muted focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
 
 function Section({ icon: Icon, title, desc, children, className = '' }: { icon: typeof Radio; title: string; desc: string; children: React.ReactNode; className?: string }) {
   return (
