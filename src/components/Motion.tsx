@@ -42,15 +42,15 @@ export function BackToTop() {
   // Same pages as the floating WhatsApp button: on the pass and the
   // registration success page it covered the pass, the DP and Copy link.
   if (pathname?.startsWith('/pass/') || pathname === '/register/success') return null;
-  // Phones: hidden. With the bottom dock and the WhatsApp button it made a
-  // stack of floating buttons that covered text all down the page, and phones
-  // already scroll to the top when the status bar is tapped.
+  // Shown only from 1400px wide, where the page has a side margin for it.
+  // Below that it covered text and buttons down the page (phones, tablets and
+  // 1280px laptops), and touch devices scroll to the top from the status bar.
   return (
     <button
       type="button"
       aria-label="Back to top"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      className={`fixed right-5 bottom-48 z-40 hidden size-12 md:inline-flex items-center justify-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-all duration-300 hover:-translate-y-1 md:right-9 md:bottom-28 ${
+      className={`fixed right-5 bottom-48 z-40 hidden size-12 min-[1400px]:inline-flex items-center justify-center rounded-full bg-brand text-white shadow-xl shadow-brand/30 transition-all duration-300 hover:-translate-y-1 md:right-9 md:bottom-28 ${
         show ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
       }`}
     >
