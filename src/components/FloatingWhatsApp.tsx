@@ -28,6 +28,9 @@ export default function FloatingWhatsApp() {
   const pathname = usePathname();
   const [typing, setTyping] = useState(false);
   const [compact, setCompact] = useState(false);
+  // Phones/tablets hide the button sooner than desktop shrinks it: at 900px it
+  // had already slid over the next section's heading on a phone.
+  const [deep, setDeep] = useState(false);
   const [atFooter, setAtFooter] = useState(false);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ export default function FloatingWhatsApp() {
     const onOut = (e: FocusEvent) => isField(e.target) && setTyping(false);
     const onScroll = () => {
       setCompact(window.scrollY > 900);
+      setDeep(window.scrollY > 500);
       setAtFooter(footerInView());
     };
     document.addEventListener('focusin', onIn);
@@ -65,7 +69,7 @@ export default function FloatingWhatsApp() {
       // altogether (it covered the countdown and the page's own WhatsApp
       // buttons), and on /register under 1400px (it covered the form's
       // questions and answers, which run to the right edge up to that width).
-      className={`wa-float fixed right-4 bottom-28 z-40 ${pathname === '/livestream' || compact ? 'max-xl:hidden' : ''} ${pathname === '/register' ? 'max-[1399px]:hidden' : ''} inline-flex items-center gap-2.5 rounded-full bg-[#25D366] p-3.5 font-semibold text-white shadow-xl shadow-[#25D366]/35 transition-all duration-300 hover:-translate-y-1 md:right-8 md:bottom-8 ${
+      className={`wa-float fixed right-4 bottom-28 z-40 ${pathname === '/livestream' || deep ? 'max-xl:hidden' : ''} ${pathname === '/register' ? 'max-[1399px]:hidden' : ''} inline-flex items-center gap-2.5 rounded-full bg-[#25D366] p-3.5 font-semibold text-white shadow-xl shadow-[#25D366]/35 transition-all duration-300 hover:-translate-y-1 md:right-8 md:bottom-8 ${
         compact ? '' : 'md:bg-[#15803d] md:px-5'
       } ${typing || atFooter ? 'pointer-events-none translate-y-6 opacity-0' : 'opacity-100'}`}
     >

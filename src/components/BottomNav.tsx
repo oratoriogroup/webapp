@@ -57,7 +57,7 @@ export default function BottomNav() {
               href={t.href}
               aria-current={active ? 'page' : undefined}
               className={`flex min-h-12 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl text-[11px] font-semibold transition-colors ${
-                cta ? 'bg-brand text-white shadow-lg shadow-brand/30' : active ? 'bg-brand-soft text-brand' : 'text-muted'
+                cta ? 'bg-brand text-white shadow-lg shadow-brand/30' : active ? 'bg-brand-soft text-brand-deep dark:text-brand' : 'text-muted'
               }`}
             >
               <t.icon className="size-5" strokeWidth={active || cta ? 2.2 : 1.8} />
