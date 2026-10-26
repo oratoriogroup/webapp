@@ -128,7 +128,7 @@ export default async function Overview() {
               {latest.map((r) => (
                 <li key={r.id}>
                   <Link href={`/admin/registrations/${r.id}`} className="group flex items-center gap-3 py-2.5 sm:py-3">
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-xs font-bold text-brand">{initials(r.full_name)}</span>
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-xs font-bold text-brand-deep dark:text-brand">{initials(r.full_name)}</span>
                     {/* Phones: the date moves under the name so long names get the full
                         width (up to two lines); larger screens keep the date chip on the right. */}
                     <span className="min-w-0 flex-1">

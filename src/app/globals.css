@@ -440,7 +440,8 @@ body {
   --surface: #ffffff;
   --surface-2: #f8fafc;
   --text: #0f172a;
-  --muted: #64748b;
+  /* #64748b was 4.4:1 on the cream page; this keeps grey text readable. */
+  --muted: #556377;
   --border: #e2e8f0;
   --brand: #dc2626;
   --brand-deep: #b91c1c;
@@ -486,6 +487,7 @@ body {
   --color-rose-100: rgba(244, 63, 94, 0.24);
   --color-rose-200: rgba(244, 63, 94, 0.38);
   --color-rose-600: #fb7185;
+  --color-rose-700: #fda4af;
   --color-blue-50: rgba(59, 130, 246, 0.16);
   --color-blue-600: #60a5fa;
   --color-blue-700: #93c5fd;

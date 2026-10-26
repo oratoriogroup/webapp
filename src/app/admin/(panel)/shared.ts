@@ -19,7 +19,7 @@ export const heardFrom = (answers: Record<string, string | string[]> | null | un
 
 // Colour of each attendance type, used consistently across the admin.
 export const TYPE_BADGE: Record<string, string> = {
-  attend: 'bg-brand-soft text-brand',
+  attend: 'bg-brand-soft text-brand-deep dark:text-brand',
   online: 'bg-blue-50 text-blue-700',
   volunteer: 'bg-emerald-50 text-emerald-700',
   partner: 'bg-amber-50 text-amber-800',

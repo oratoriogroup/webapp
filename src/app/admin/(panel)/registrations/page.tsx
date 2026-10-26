@@ -73,7 +73,7 @@ export default async function Registrations({ searchParams }: { searchParams: Pr
               return (
                 <li key={r.id} className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
                   <Link href={`/admin/registrations/${r.id}`} className="flex gap-3 p-4 pb-3 active:bg-slate-50">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-bold text-brand">{initials}</span>
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-bold text-brand-deep dark:text-brand">{initials}</span>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
                         <p className="text-[15px] leading-snug font-semibold text-slate-900">{r.full_name}</p>

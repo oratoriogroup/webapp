@@ -58,7 +58,7 @@ export default async function TestimoniesPage({ searchParams }: { searchParams: 
           {rows.map((t) => (
             <li key={t.id} className={`${cardCls} flex min-w-0 flex-col p-4 sm:p-5`}>
               <div className="flex items-start gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-bold text-brand">{t.name.slice(0, 1).toUpperCase()}</span>
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-bold text-brand-deep dark:text-brand">{t.name.slice(0, 1).toUpperCase()}</span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold">{t.name}</p>
                   <p className="flex min-w-0 flex-wrap items-center gap-x-1 text-xs text-muted">{t.location && <><MapPin className="size-3 shrink-0" /> <span className="truncate">{t.location}</span> ·</>} <span className="whitespace-nowrap">{fmtWAT(t.created_at)}</span></p>

@@ -18,9 +18,9 @@ export const actionBtn =
   'inline-flex h-11 items-center gap-2 rounded-xl border border-line bg-surface px-4 text-sm font-semibold text-text shadow-sm transition hover:border-brand/40 hover:text-brand';
 // Export pills, matching the BJT admin toolbar.
 export const pdfBtn =
-  'inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-600 shadow-sm transition-all hover:bg-rose-100';
+  'inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-700 shadow-sm transition-all hover:bg-rose-100';
 export const excelBtn =
-  'inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-600 shadow-sm transition-all hover:bg-emerald-100';
+  'inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-700 shadow-sm transition-all hover:bg-emerald-100';
 export const inputCls =
   'h-11 w-full rounded-xl border border-line bg-surface-2 px-4 text-sm text-text transition placeholder:text-muted/85 focus:border-brand focus:bg-surface focus:ring-2 focus:ring-(--ring) focus:outline-none';
 export const cardCls = 'rounded-2xl border border-line bg-surface shadow-sm';
